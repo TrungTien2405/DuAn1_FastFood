@@ -4,13 +4,13 @@ public class TaiKhoan {
     private String MaTK;
     private String HoTen;
     private String MatKhau;
-    private int SDT;
+    private String SDT;
     private String DiaChi;
     private int Quyen;
     private String HinhAnh;
     private int SoDu;
 
-    public TaiKhoan(String maTK, String hoTen, String matKhau, int SDT, String diaChi, int quyen, String hinhAnh, int soDu) {
+    public TaiKhoan(String maTK, String hoTen, String matKhau, String SDT, String diaChi, int quyen, String hinhAnh, int soDu) {
         MaTK = maTK;
         HoTen = hoTen;
         MatKhau = matKhau;
@@ -45,11 +45,11 @@ public class TaiKhoan {
         MatKhau = matKhau;
     }
 
-    public int getSDT() {
+    public String getSDT() {
         return SDT;
     }
 
-    public void setSDT(int SDT) {
+    public void setSDT(String SDT) {
         this.SDT = SDT;
     }
 

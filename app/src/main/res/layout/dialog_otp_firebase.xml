@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/edMaOTP"
+        android:background="@drawable/custom_edt"
+        android:layout_marginHorizontal="20dp"
+        android:paddingLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Nhập OTP"/>
+    <Button
+        android:id="@+id/btnXacNhanOTP"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/custom_edt"
+        android:backgroundTint="@color/mauchinh"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:text="Xác thực"/>
+</LinearLayout>

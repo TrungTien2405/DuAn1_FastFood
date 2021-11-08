@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".RegisterActivity"
+    android:background="@color/mauchinh"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logo_pizza"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="220dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FastFood"
+        android:textColor="@color/white"
+        android:layout_marginTop="-50dp"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/imgThemHinhAnh"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/add_avatar" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/custom_edt"
+                android:layout_margin="10dp"
+                android:id="@+id/edHoTen"
+                android:padding="10dp"
+                android:hint="  Nhập họ tên"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/custom_edt"
+                android:layout_margin="10dp"
+                android:id="@+id/edSDT"
+                android:padding="10dp"
+                android:hint="  Nhập số điện thoại"/>
+        </LinearLayout>
+    </LinearLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_edt"
+        android:layout_margin="10dp"
+        android:id="@+id/edDiaChi"
+        android:padding="10dp"
+        android:hint="Nhập địa chỉ"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:id="@+id/btnDangKy"
+        android:background="@drawable/custom_edt"
+        android:text="Đăng ký"/>
+</LinearLayout>
