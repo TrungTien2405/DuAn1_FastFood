@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("SDT", username);
                             intent.putExtra("HoTen", doc.get("HoTen").toString());
-                            intent.putExtra("Avatar", doc.get("Avatar").toString());
+                            intent.putExtra("HinhAnh", doc.get("HinhAnh").toString());
                             intent.putExtra("MaTK", doc.get("MaTK").toString());
                             intent.putExtra("SoDu", doc.get("SoDu").toString());
                             intent.putExtra("DiaChi", doc.get("DiaChi").toString());

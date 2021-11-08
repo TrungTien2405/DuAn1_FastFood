@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         holder.tvLoaiNH.setText(nhaHang.getMaLoaiNH());
         holder.tvDanhGiaTB.setText(nhaHang.getDanhGia()+"");
         holder.tvTenNH.setText(nhaHang.getTenNH());
-        holder.tvTenNH.setText(nhaHang.getTenNH());
-        holder.tvTenNH.setText(nhaHang.getTenNH());
+
+        Picasso.with(context).load(nhaHang.getHinhAnh()).into(holder.imvHinh);
     }
 
     @Override
