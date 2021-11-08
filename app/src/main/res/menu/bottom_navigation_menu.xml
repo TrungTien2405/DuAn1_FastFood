@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mn_main"
+        android:title="Trang chủ"
+        android:enabled="true"
+        android:icon="@drawable/ic_ngoisao" />
+    <item
+        android:id="@+id/mn_basket"
+        android:title="Giỏ hàng"
+        android:enabled="true"
+        android:icon="@drawable/ic_basket" />
+    <item
+        android:id="@+id/mn_setting"
+        android:title="Cài đặt"
+        android:enabled="true"
+        android:icon="@drawable/ic_user" />
+</menu>
