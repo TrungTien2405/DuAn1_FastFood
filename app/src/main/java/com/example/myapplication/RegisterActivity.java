@@ -20,6 +20,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -56,8 +57,9 @@ import java.util.concurrent.TimeUnit;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText edHoTen, edSoDT, edDiaChi, edMaOTP;
-    ImageButton imgThemHinhAnh, imgThoat;
-    Button btnDangKy, btnGuiOTP;
+    ImageButton imgThemHinhAnh;
+    ImageView imgTrove;
+    Button btnDangKy, btnXacThucOTP;
 
     // variable for FirebaseAuth class xác thực OTP
     private FirebaseAuth mAuth;
@@ -77,6 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
     String imageFileName ="";
 
     TaiKhoan taiKhoan;
+    int Quyen = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,19 +89,20 @@ public class RegisterActivity extends AppCompatActivity {
         edSoDT = findViewById(R.id.edSDT);
         edDiaChi = findViewById(R.id.edDiaChi);
         imgThemHinhAnh = findViewById(R.id.imgThemHinhAnh);
-//        imgThoat = findViewById(R.id.imThoat);
+        imgTrove = findViewById(R.id.imgTrove);
         btnDangKy = findViewById(R.id.btnDangKy);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-//        imgThoat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentThanhVien()).commit();
-//            }
-//        });
+        imgTrove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+               startActivity(intent);
+            }
+        });
 
         // Thêm ảnh đại diện
         imgThemHinhAnh.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Random random =  new Random();
                             int x = random.nextInt((1000-1+1)+1);
                             String maTK = "TK" + x;
-                            taiKhoan = new TaiKhoan(maTK, hoTen, soDT, soDT, diaChi, 2, "",1000000);
+                            taiKhoan = new TaiKhoan(maTK, hoTen, soDT, soDT, diaChi, 2, imageFileName,1000000);
 
                             db = FirebaseFirestore.getInstance();
 
@@ -150,16 +154,17 @@ public class RegisterActivity extends AppCompatActivity {
                                     if(task.isSuccessful()){
                                         QuerySnapshot snapshot = task.getResult();
                                         for(QueryDocumentSnapshot doc: snapshot){
-                                            //Log.d("=======> ", doc.get("MaTV").toString());
+                                            //Log.d("=======> ", doc.get("MaTK").toString());
                                             if(String.valueOf(taiKhoan.getMaTK()).equals(doc.get("MaTK").toString()) || taiKhoan.getSDT().equals(doc.get("SDT").toString())){
                                                 check = 1;
                                                 break;
                                             }
                                         }
                                         if(check == 0){
-                                            //Mở dialog nhập OTP
+                                            //Mở dialog xác thực OTP
                                             diaLogOpenOTP();
-                                        }else Toast.makeText(getApplicationContext(), "Mã tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                                        }else
+                                            Toast.makeText(getApplicationContext(), "Mã tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -182,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
         data.put("MatKhau", taiKhoan.getMatKhau());
         data.put("SoDu", taiKhoan.getSoDu());
         data.put("SDT", taiKhoan.getSDT());
-        data.put("Quyen", taiKhoan.getQuyen());
+        data.put("Quyen", Quyen);
         data.put("HinhAnh", taiKhoan.getHinhAnh());
 
         try {
@@ -215,8 +220,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Bitmap bitmap = (Bitmap) caigio.get("data");
                 imgThemHinhAnh.setImageBitmap(bitmap);
             }else{
-                Uri uri = data.getData();
-                imgThemHinhAnh.setImageURI(uri);
+                imgThemHinhAnh.setImageURI(contenUri);
             }
         }
     }
@@ -259,18 +263,18 @@ public class RegisterActivity extends AppCompatActivity {
         // Gửi mã OTP đến điện thoại
         sendVerificationCode(edSoDT.getText().toString());
 
-        dialogOTP = new Dialog(getApplicationContext());
+        dialogOTP = new Dialog(RegisterActivity.this);
         dialogOTP.setContentView(R.layout.dialog_otp_firebase);
 
         dialogOTP.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.6);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.2);
-        dialogOTP.getWindow().setLayout(width,height);
+        dialogOTP.getWindow().setLayout(width, height);
 
         edMaOTP = dialogOTP.findViewById(R.id.edMaOTP);
-        btnGuiOTP = dialogOTP.findViewById(R.id.btnXacNhanOTP);
+        btnXacThucOTP = dialogOTP.findViewById(R.id.btnXacThucOTP);
 
-        btnGuiOTP.setOnClickListener(new View.OnClickListener() {
+        btnXacThucOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 verifyCode(edMaOTP.getText().toString());
@@ -278,7 +282,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         dialogOTP.show();
-
     }
 
     // Gửi mã xác thực OTP
@@ -300,7 +303,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(getApplicationContext(), "PhoneAuthProvider "+e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this, "PhoneAuthProvider "+e.getMessage(), Toast.LENGTH_LONG).show();
         }
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
@@ -331,11 +334,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener((Activity) getApplicationContext(), new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Xác thực thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Xác thực thành công", Toast.LENGTH_SHORT).show();
                             // Load avatar lên firebase
                             uploadImageToFirebase(imageFileName, contenUri);
 
@@ -349,6 +352,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             //verification unsuccessful.. display an error message
                             String message = "Somthing is wrong, we will fix it soon...";
+                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 message = "Invalid code entered...";
                             }

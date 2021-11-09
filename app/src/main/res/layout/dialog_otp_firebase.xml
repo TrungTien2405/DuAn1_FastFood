@@ -2,7 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/mauchinh">
     <EditText
         android:id="@+id/edMaOTP"
         android:background="@drawable/custom_edt"
@@ -15,7 +16,7 @@
         android:inputType="textPersonName"
         android:hint="Nhập OTP"/>
     <Button
-        android:id="@+id/btnXacNhanOTP"
+        android:id="@+id/btnXacThucOTP"
         android:layout_marginHorizontal="20dp"
         android:background="@drawable/custom_edt"
         android:backgroundTint="@color/mauchinh"

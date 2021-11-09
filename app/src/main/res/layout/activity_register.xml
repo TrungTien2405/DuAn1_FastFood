@@ -8,10 +8,16 @@
     android:background="@color/mauchinh"
     android:orientation="vertical">
     <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_trove"
+        android:id="@+id/imgTrove"/>
+    <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/logo_pizza"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="220dp"/>
     <TextView
         android:layout_width="wrap_content"
@@ -46,7 +52,7 @@
                 android:layout_margin="10dp"
                 android:id="@+id/edHoTen"
                 android:padding="10dp"
-                android:hint="  Nhập họ tên"/>
+                android:hint="Nhập họ tên"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -54,7 +60,7 @@
                 android:layout_margin="10dp"
                 android:id="@+id/edSDT"
                 android:padding="10dp"
-                android:hint="  Nhập số điện thoại"/>
+                android:hint="Nhập số điện thoại"/>
         </LinearLayout>
     </LinearLayout>
     <EditText
