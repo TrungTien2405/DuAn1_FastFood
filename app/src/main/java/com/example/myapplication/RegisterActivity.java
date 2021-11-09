@@ -57,7 +57,7 @@ import java.util.concurrent.TimeUnit;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText edHoTen, edSoDT, edDiaChi, edMaOTP;
-    ImageButton imgThemHinhAnh;
+    ImageButton imgThemHinhAnh, imgCThemHinhAnh;
     ImageView imgTrove;
     Button btnDangKy, btnXacThucOTP;
 
@@ -89,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
         edSoDT = findViewById(R.id.edSDT);
         edDiaChi = findViewById(R.id.edDiaChi);
         imgThemHinhAnh = findViewById(R.id.imgThemHinhAnh);
+        imgCThemHinhAnh = findViewById(R.id.imgCThemHinhAnh);
         imgTrove = findViewById(R.id.imgTrove);
         btnDangKy = findViewById(R.id.btnDangKy);
 
@@ -106,6 +107,23 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Thêm ảnh đại diện
         imgThemHinhAnh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                Intent lib = new Intent(Intent.ACTION_GET_CONTENT);
+                lib.setType("image/*");
+
+                Intent chua = Intent.createChooser(cam, "Chọn");
+                chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
+
+                startActivityForResult(chua, 999);
+//                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(gallery, GALEERY_REQUEST_CODE);
+            }
+        });
+
+        imgCThemHinhAnh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

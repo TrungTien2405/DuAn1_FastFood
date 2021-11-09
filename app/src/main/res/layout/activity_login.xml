@@ -7,11 +7,21 @@
     tools:context=".LoginActivity"
     android:orientation="vertical"
     android:background="@color/mauchinh">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="290dp"
+        android:textSize="30dp"
+        android:id="@+id/tv_DangKy"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:text="Đăng ký"/>
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/logo_pizza"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="220dp"/>
     <TextView
         android:layout_width="wrap_content"
@@ -22,7 +32,7 @@
         android:textSize="50dp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginBottom="20dp"/>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,31 +78,14 @@
         android:textColor="@color/mauchinh"
         android:background="@drawable/custom_edt"
         android:text="Đăng nhập"/>
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="20dp"
-            android:textStyle="italic"
-            android:id="@+id/tv_DangKy"
-            android:textColor="@color/white"
-            android:textAlignment="center"
-            android:text="Đăng ký"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="180dp"
-            android:textSize="20dp"
-            android:textStyle="italic"
-            android:id="@+id/tv_QuenMatKhau"
-            android:textColor="@color/white"
-            android:textAlignment="center"
-            android:text="Quên mật khẩu?"/>
-    </LinearLayout>
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:textStyle="italic"
+        android:id="@+id/tv_QuenMatKhau"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:text="Quên mật khẩu?"/>
 </LinearLayout>
