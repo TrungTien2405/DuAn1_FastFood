@@ -1,6 +1,7 @@
 package com.example.myapplication.Fagment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
@@ -21,13 +23,16 @@ import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class NhaHangFragment extends Fragment {
@@ -38,6 +43,9 @@ public class NhaHangFragment extends Fragment {
 
     private RecyclerView rcv_nhahang;
     private RecyclerView rcv_loainhahang;
+
+    private TextView tvTenTK;
+    private TextInputLayout tipSoDuTK;
 
     //Firestore
     FirebaseFirestore db;
@@ -52,12 +60,7 @@ public class NhaHangFragment extends Fragment {
         //Lấy danh sách đánh giá xuống
         getAllDanhGia(getContext());
 
-        //Lấy danh sách loại nhà hàng xuống
-        getAllLoaiNhaHang(getContext());
 
-        getAllNhaHang(getContext());
-
-        Toast.makeText(getContext(), listNhaHang.size()+" "+listLoaiNhaHang.size(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -68,10 +71,31 @@ public class NhaHangFragment extends Fragment {
         rcv_nhahang =v.findViewById(R.id.rcv_restaurant);
         rcv_loainhahang =v.findViewById(R.id.rcv_categoryRes);
 
-
+        //Thêm thông tin phần tài khoản màn hình chính
+        anhxa(v);
         return v;
     }
 
+    private void anhxa(View v){
+        tvTenTK = v.findViewById(R.id.tv_tenTaiKhoan_NhaHang);
+        tipSoDuTK = v.findViewById(R.id.tip_soDuTK);
+
+        Intent intent = getActivity().getIntent();
+        String tentk = intent.getStringExtra("HoTen");
+        int soDu = Integer.parseInt(intent.getStringExtra("SoDu"));
+
+        tvTenTK.setText(tentk);
+        tipSoDuTK.getEditText().setText("Số dư    "+formatNumber(soDu)+" VND");
+    }
+
+    // Định dạng sang số tiền
+    private String formatNumber(int number){
+        // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
+        Locale localeEN = new Locale("en", "EN");
+        NumberFormat en = NumberFormat.getInstance(localeEN);
+
+        return en.format(number);
+    }
 
     //Xuất tất cả nhà nhà hàng lên list
     public void getAllNhaHang(Context context){
@@ -154,6 +178,9 @@ public class NhaHangFragment extends Fragment {
                             listDanhGia.add(danhGiaNH);
                         }
 
+                        //Lấy danh sách loại nhà hàng xuống
+                        getAllLoaiNhaHang(getContext());
+
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
@@ -190,6 +217,9 @@ public class NhaHangFragment extends Fragment {
                         LoaiNhaHangAdapter adapter  = new LoaiNhaHangAdapter(listLoaiNhaHang, getContext());
                         rcv_loainhahang.setLayoutManager(layoutManager);
                         rcv_loainhahang.setAdapter(adapter);
+
+                        //Xuat danh sach nha hang len recycleview
+                        getAllNhaHang(getContext());
 
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();

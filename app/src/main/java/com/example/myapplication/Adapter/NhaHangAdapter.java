@@ -1,9 +1,13 @@
 package com.example.myapplication.Adapter;
 
 import android.content.Context;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -43,7 +47,23 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         holder.tvDanhGiaTB.setText(nhaHang.getDanhGia()+"");
         holder.tvTenNH.setText(nhaHang.getTenNH());
 
-        Picasso.with(context).load(nhaHang.getHinhAnh()).into(holder.imvHinh);
+        if(nhaHang.getHinhAnh().isEmpty()){
+            holder.imvHinh.setImageResource(R.drawable.im_food);
+        }else{
+            Picasso.with(context).load(nhaHang.getHinhAnh()).into(holder.imvHinh);
+        }
+
+        //Nhấn nút yêu thích nhà hàng
+        holder.tgb_yeuThich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+
+                }else{
+
+                }
+            }
+        });
     }
 
     @Override

@@ -4,12 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="150dp"
-    android:layout_height="45dp">
+    android:layout_height="55dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="120dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="5dp"
+        android:id="@+id/view_itemLoaiNH"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/item_loainhahang"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +20,8 @@
             android:id="@+id/imv_itemLoaiNH"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginVertical="3dp"
+            android:layout_marginVertical="7dp"
+            android:layout_marginStart="4dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_sushi"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:textSize="17dp"
             android:text="sushi"
             app:layout_constraintStart_toEndOf="@+id/imv_itemLoaiNH"
