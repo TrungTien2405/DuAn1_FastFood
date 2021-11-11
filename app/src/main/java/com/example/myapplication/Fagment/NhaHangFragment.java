@@ -1,21 +1,29 @@
 package com.example.myapplication.Fagment;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,19 +33,31 @@ import com.example.myapplication.Adapter.NhaHangAdapter;
 import com.example.myapplication.Model.DanhGiaNH;
 import com.example.myapplication.Model.LoaiNhaHang;
 import com.example.myapplication.Model.NhaHang;
+import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class NhaHangFragment extends Fragment {
@@ -45,7 +65,9 @@ public class NhaHangFragment extends Fragment {
     private List<NhaHang> listNhaHangTheoLoai;
     private List<DanhGiaNH> listDanhGia;
     private List<LoaiNhaHang> listLoaiNhaHang;
+
     private NhaHang nhaHang;
+    private LoaiNhaHang loaiNhaHang;
 
     private RecyclerView rcv_nhahang;
     private RecyclerView rcv_loainhahang;
@@ -58,18 +80,25 @@ public class NhaHangFragment extends Fragment {
 
     public int viTriLoaiNH = 0 ;
 
+    //Dialog thêm loại nhà hàng
+    private ImageView imvHinhLoai;
+
     //Firestore
     FirebaseFirestore db;
+    //Image firebase
+    StorageReference storageReference;
+
+
+    //Load image
+    int GALEERY_REQUEST_CODE = 105;
+    Uri contenUri;
+    String imageFileName ="";
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
-
-        //Lấy danh sách đánh giá xuống
-        getAllDanhGia(getContext());
 
 
     }
@@ -84,6 +113,14 @@ public class NhaHangFragment extends Fragment {
 
         rcv_nhahang =v.findViewById(R.id.rcv_restaurant);
         rcv_loainhahang =v.findViewById(R.id.rcv_categoryRes);
+
+        //Gọi Firebase xuống
+        db = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        //Lấy danh sách đánh giá xuống
+        getAllDanhGia(getContext());
+
 
         rcv_loainhahang.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_loainhahang, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -293,54 +330,139 @@ public class NhaHangFragment extends Fragment {
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.6);
         dialogThemLoaiNH.getWindow().setLayout(width,height);
 
-//
-//        edt_dialogTenSach = dialog_suaSach.findViewById(R.id.edt_dialogTenSuaSach);
-//        edt_dialogGiaThueSach= dialog_suaSach.findViewById(R.id.edt_dialogGiaThueSuaSach);
-//        edt_dialogSLSach= dialog_suaSach.findViewById(R.id.edt_dialogSoLuongSuaSach);
-//        btn_dialogGuiSuaSach = dialog_suaSach.findViewById(R.id.btn_dialogGuiSuaSach);
-//        imgBtn_dialogAvatarSuaSach = dialog_suaSach.findViewById(R.id.imgBtn_dialogAvatarSuaSach);
-//
-//        // Thêm dữ liệu vào dialog sửa
-//        edt_dialogTenSach.setText(list.get(positon).getTenSach());
-//        edt_dialogSLSach.setText(list.get(positon).getSoLuong()+"");
-//        edt_dialogGiaThueSach.setText(list.get(positon).getGiaThue()+"");
-//
-//        sach = list.get(positon);
-//
-//        btn_dialogGuiSuaSach.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String tenSach = edt_dialogTenSach.getText().toString();
-//                String soluongSach = edt_dialogSLSach.getText().toString();
-//                String giaSach = edt_dialogGiaThueSach.getText().toString();
-//
-//                if(tenSach.isEmpty() || soluongSach.isEmpty() ||  giaSach.isEmpty()){
-//                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    list.get(positon).setTenSach(tenSach);
-//                    list.get(positon).setSoLuong(Integer.parseInt(soluongSach));
-//                    list.get(positon).setGiaThue(Integer.parseInt(giaSach));
-//
-//                    if(imageFileName.isEmpty()){
-//                        updateFirebase(list.get(positon));
-//                    }else uploadImageToFirebase(imageFileName, contenUri);
-//                }
-//
-//
-//            }
-//        });
-//
-//        // Chọn hình ảnh
-//        imgBtn_dialogAvatarSuaSach.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(gallery, GALEERY_REQUEST_CODE);
-//            }
-//        });
+        EditText edtTenLoai = dialogThemLoaiNH.findViewById(R.id.edt_dialogThemTenLoaiNH);
+        EditText edtMaLoai = dialogThemLoaiNH.findViewById(R.id.edt_dialogThemMaLoaiNH);
+        imvHinhLoai = dialogThemLoaiNH.findViewById(R.id.imv_dialogThemHinhLoaiNH);
+        TextView tvHuyThem = dialogThemLoaiNH.findViewById(R.id.tv_dialogHuyThemLoaiNH);
+        TextView tvXacNhan = dialogThemLoaiNH.findViewById(R.id.tv_dialogXacNhanThemLoaiNH);
+
+        imvHinhLoai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                Intent lib = new Intent(Intent.ACTION_GET_CONTENT);
+                lib.setType("image/*");
+
+                Intent chua = Intent.createChooser(cam, "Chọn");
+                chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
+
+                startActivityForResult(chua, 999);
+            }
+        });
+
+        tvXacNhan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String maLoai = edtMaLoai.getText().toString();
+                String tenLoai = edtTenLoai.getText().toString();
+
+                if(maLoai.isEmpty() || tenLoai.isEmpty()){
+                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                }else{
+                    loaiNhaHang = new LoaiNhaHang(maLoai, tenLoai, "");
+
+                    uploadImageToFirebase(imageFileName, contenUri);
+                }
+
+
+            }
+        });
+
+        // Chọn hình ảnh
+        imvHinhLoai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(gallery, GALEERY_REQUEST_CODE);
+            }
+        });
 
         dialogThemLoaiNH.show();
     }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALEERY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                contenUri = data.getData();
+                String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
+                imvHinhLoai.setImageURI(contenUri);
+            }
+        }
+
+        if (requestCode == 999 && resultCode == RESULT_OK){
+            contenUri = data.getData();
+            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
+            if (data.getExtras() != null){
+                Bundle caigio = data.getExtras();
+                Bitmap bitmap = (Bitmap) caigio.get("data");
+                imvHinhLoai.setImageBitmap(bitmap);
+            }else{
+                imvHinhLoai.setImageURI(contenUri);
+            }
+        }
+    }
+
+    private  String getFileExt(Uri uri){
+        ContentResolver c = getContext().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(uri));
+    }
+
+    private void uploadImageToFirebase(String name, Uri contentUri){
+        StorageReference image = storageReference.child("IM_LOAINHAHANG/"+name);
+        try {
+            image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
+                            // Thêm nhà hàng lên firebase
+                            loaiNhaHang.setHinhAnh(uri.toString());
+                            themLoaiNHToFireStore(loaiNhaHang);
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("==> Exception", e.getMessage());
+                }
+            });
+        }catch (Exception e){
+            loaiNhaHang.setHinhAnh("");
+            themLoaiNHToFireStore(loaiNhaHang);
+        }
+    }
+
+
+    private void themLoaiNHToFireStore(LoaiNhaHang loaiNhaHang){
+        final CollectionReference collectionReference = db.collection("LOAINHAHANG");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("MaLoaiNH", loaiNhaHang.getMaLoaiNH());
+        data.put("TenLoaiNH", loaiNhaHang.getTenLoaiNH());
+        data.put("HinhAnh", loaiNhaHang.getHinhAnh());
+
+        try {
+            collectionReference.document(loaiNhaHang.getMaLoaiNH() + "").set(data);
+            dialogThemLoaiNH.dismiss();
+            Toast.makeText(getContext(), "Thêm mã loại nhà hàng thành công", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Log.d("Error_addTKFirebase", e.getMessage());
+        }
+    }
+
 
 
 }

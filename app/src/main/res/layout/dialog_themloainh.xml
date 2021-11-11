@@ -36,10 +36,10 @@
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/view_avatar"
+                android:id="@+id/view_avatar1"
                 android:layout_width="140dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="25dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="35dp"
                 android:layout_marginStart="10dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
                 tools:ignore="MissingConstraints">
 
                 <ImageView
-                    android:id="@+id/imv_itemHinhRes"
+                    android:id="@+id/imv_dialogThemHinhLoaiNH"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -58,7 +58,7 @@
             </androidx.cardview.widget.CardView>
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/edt_dialogThemMaLoaiNH"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -72,7 +72,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/edt_dialogThemTenLoaiNH"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -83,7 +83,7 @@
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_dialogThemMaLoaiNH" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,6 +94,7 @@
         tools:layout_editor_absoluteX="-153dp">
 
         <TextView
+            android:id="@+id/tv_dialogXacNhanThemLoaiNH"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -106,7 +107,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tv_dialogHuyThemLoaiNH"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
