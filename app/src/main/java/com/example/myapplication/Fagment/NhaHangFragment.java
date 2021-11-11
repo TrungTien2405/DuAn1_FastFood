@@ -1,7 +1,10 @@
 package com.example.myapplication.Fagment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,9 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +42,7 @@ import java.util.Locale;
 
 public class NhaHangFragment extends Fragment {
     private List<NhaHang> listNhaHang;
+    private List<NhaHang> listNhaHangTheoLoai;
     private List<DanhGiaNH> listDanhGia;
     private List<LoaiNhaHang> listLoaiNhaHang;
     private NhaHang nhaHang;
@@ -46,6 +52,9 @@ public class NhaHangFragment extends Fragment {
 
     private TextView tvTenTK;
     private TextInputLayout tipSoDuTK;
+    private ImageView imvThemLoaiNH;
+
+    private Dialog dialogThemLoaiNH;
 
     public int viTriLoaiNH = 0 ;
 
@@ -70,6 +79,9 @@ public class NhaHangFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_nha_hang, container, false);
+        //Thêm thông tin phần tài khoản màn hình chính
+        anhxa(v);
+
         rcv_nhahang =v.findViewById(R.id.rcv_restaurant);
         rcv_loainhahang =v.findViewById(R.id.rcv_categoryRes);
 
@@ -77,8 +89,7 @@ public class NhaHangFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
 
-                Toast.makeText(getContext(), "Bạn click " + position, Toast.LENGTH_SHORT).show();
-
+                getAllNhaHangTheoLoai(listLoaiNhaHang.get(position).getTenLoaiNH());
             }
 
             @Override
@@ -87,14 +98,21 @@ public class NhaHangFragment extends Fragment {
             }
         }));
 
-        //Thêm thông tin phần tài khoản màn hình chính
-        anhxa(v);
+        //Nhấn nút thêm loại nhà hàng
+        imvThemLoaiNH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_themLoaiNH(0);
+            }
+        });
+
         return v;
     }
 
     private void anhxa(View v){
         tvTenTK = v.findViewById(R.id.tv_tenTaiKhoan_NhaHang);
         tipSoDuTK = v.findViewById(R.id.tip_soDuTK);
+        imvThemLoaiNH = v.findViewById(R.id.imv_addLoaiNhFragNH);
 
         Intent intent = getActivity().getIntent();
         String tentk = intent.getStringExtra("HoTen");
@@ -138,9 +156,13 @@ public class NhaHangFragment extends Fragment {
                             listNhaHang.add(nhaHang);
 
                         }
-                        NhaHangAdapter adapter  = new NhaHangAdapter(listNhaHang, getContext());
-                        rcv_nhahang.setLayoutManager(new LinearLayoutManager(getContext()));
-                        rcv_nhahang.setAdapter(adapter);
+//                        NhaHangAdapter adapter  = new NhaHangAdapter(listNhaHang, getContext());
+//                        rcv_nhahang.setLayoutManager(new LinearLayoutManager(getContext()));
+//                        rcv_nhahang.setAdapter(adapter);
+
+                          //Xuất danh sách nhà hàng được chọn theo loại
+
+                          getAllNhaHangTheoLoai(listLoaiNhaHang.get(0).getTenLoaiNH());
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
@@ -207,7 +229,7 @@ public class NhaHangFragment extends Fragment {
         });
     }
 
-    //Xuất tất cả đánh giá lên list
+    //Lấy danh sách nhà hàng
     public void getAllLoaiNhaHang(Context context){
         listLoaiNhaHang = new ArrayList<>();
 
@@ -247,8 +269,78 @@ public class NhaHangFragment extends Fragment {
         });
     }
 
-    public void textThu(int vt){
-        Toast.makeText(getContext(), "Vị trí: "+vt, Toast.LENGTH_SHORT).show();
+    //Xuất List nhà hàng theo loại nhà hàng chọn
+    private void getAllNhaHangTheoLoai(String maLoai){
+
+        listNhaHangTheoLoai = new ArrayList<>();
+        for(NhaHang nh: listNhaHang){
+            if(nh.getMaLoaiNH().equals(maLoai)){
+                listNhaHangTheoLoai.add(nh);
+            }
+        }
+        NhaHangAdapter adapter  = new NhaHangAdapter(listNhaHangTheoLoai, getContext());
+        rcv_nhahang.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcv_nhahang.setAdapter(adapter);
     }
+
+    //Dialog thêm loại nhà hàng
+    private void dialog_themLoaiNH(int positon){
+        dialogThemLoaiNH =  new Dialog(getContext());
+        dialogThemLoaiNH.setContentView(R.layout.dialog_themloainh);
+
+        dialogThemLoaiNH.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.9);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.6);
+        dialogThemLoaiNH.getWindow().setLayout(width,height);
+
+//
+//        edt_dialogTenSach = dialog_suaSach.findViewById(R.id.edt_dialogTenSuaSach);
+//        edt_dialogGiaThueSach= dialog_suaSach.findViewById(R.id.edt_dialogGiaThueSuaSach);
+//        edt_dialogSLSach= dialog_suaSach.findViewById(R.id.edt_dialogSoLuongSuaSach);
+//        btn_dialogGuiSuaSach = dialog_suaSach.findViewById(R.id.btn_dialogGuiSuaSach);
+//        imgBtn_dialogAvatarSuaSach = dialog_suaSach.findViewById(R.id.imgBtn_dialogAvatarSuaSach);
+//
+//        // Thêm dữ liệu vào dialog sửa
+//        edt_dialogTenSach.setText(list.get(positon).getTenSach());
+//        edt_dialogSLSach.setText(list.get(positon).getSoLuong()+"");
+//        edt_dialogGiaThueSach.setText(list.get(positon).getGiaThue()+"");
+//
+//        sach = list.get(positon);
+//
+//        btn_dialogGuiSuaSach.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String tenSach = edt_dialogTenSach.getText().toString();
+//                String soluongSach = edt_dialogSLSach.getText().toString();
+//                String giaSach = edt_dialogGiaThueSach.getText().toString();
+//
+//                if(tenSach.isEmpty() || soluongSach.isEmpty() ||  giaSach.isEmpty()){
+//                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    list.get(positon).setTenSach(tenSach);
+//                    list.get(positon).setSoLuong(Integer.parseInt(soluongSach));
+//                    list.get(positon).setGiaThue(Integer.parseInt(giaSach));
+//
+//                    if(imageFileName.isEmpty()){
+//                        updateFirebase(list.get(positon));
+//                    }else uploadImageToFirebase(imageFileName, contenUri);
+//                }
+//
+//
+//            }
+//        });
+//
+//        // Chọn hình ảnh
+//        imgBtn_dialogAvatarSuaSach.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(gallery, GALEERY_REQUEST_CODE);
+//            }
+//        });
+
+        dialogThemLoaiNH.show();
+    }
+
 
 }
