@@ -47,6 +47,8 @@ public class NhaHangFragment extends Fragment {
     private TextView tvTenTK;
     private TextInputLayout tipSoDuTK;
 
+    public int viTriLoaiNH = 0 ;
+
     //Firestore
     FirebaseFirestore db;
 
@@ -70,6 +72,20 @@ public class NhaHangFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_nha_hang, container, false);
         rcv_nhahang =v.findViewById(R.id.rcv_restaurant);
         rcv_loainhahang =v.findViewById(R.id.rcv_categoryRes);
+
+        rcv_loainhahang.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_loainhahang, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                Toast.makeText(getContext(), "Bạn click " + position, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
         //Thêm thông tin phần tài khoản màn hình chính
         anhxa(v);
@@ -229,6 +245,10 @@ public class NhaHangFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void textThu(int vt){
+        Toast.makeText(getContext(), "Vị trí: "+vt, Toast.LENGTH_SHORT).show();
     }
 
 }

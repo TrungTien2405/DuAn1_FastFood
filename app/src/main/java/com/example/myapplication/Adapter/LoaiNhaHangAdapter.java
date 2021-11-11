@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Fagment.NhaHangFragment;
 import com.example.myapplication.Model.LoaiNhaHang;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
@@ -45,10 +47,13 @@ public class LoaiNhaHangAdapter extends RecyclerView.Adapter<LoaiNhaHangAdapter.
             holder.imv_hinh.setImageResource(R.drawable.im_food);
         }else Picasso.with(context).load(loaiNhaHang.getHinhAnh()).into(holder.imv_hinh);
 
+
+
         holder.constrain.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 vitri = position;
+
                 notifyDataSetChanged();
             }
         });
