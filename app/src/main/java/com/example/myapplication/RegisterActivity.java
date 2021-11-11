@@ -57,7 +57,7 @@ import java.util.concurrent.TimeUnit;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText edHoTen, edSoDT, edDiaChi, edMaOTP;
-    ImageButton imgThemHinhAnh, imgCThemHinhAnh;
+    ImageButton imBtn_ThemHinhDK, imBtn_CThemHinhDK;
     ImageView imgTrove;
     Button btnDangKy, btnXacThucOTP;
 
@@ -85,11 +85,11 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        edHoTen = findViewById(R.id.edHoTen);
-        edSoDT = findViewById(R.id.edSDT);
-        edDiaChi = findViewById(R.id.edDiaChi);
-        imgThemHinhAnh = findViewById(R.id.imgThemHinhAnh);
-        imgCThemHinhAnh = findViewById(R.id.imgCThemHinhAnh);
+        edHoTen = findViewById(R.id.ed_HoTen);
+        edSoDT = findViewById(R.id.ed_SDT);
+        edDiaChi = findViewById(R.id.ed_DiaChi);
+        imBtn_ThemHinhDK = findViewById(R.id.imBtn_ThemHinhDK);
+        imBtn_CThemHinhDK = findViewById(R.id.imBtn_CThemHinhDK);
         imgTrove = findViewById(R.id.imgTrove);
         btnDangKy = findViewById(R.id.btnDangKy);
 
@@ -106,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         // Thêm ảnh đại diện
-        imgThemHinhAnh.setOnClickListener(new View.OnClickListener() {
+        imBtn_ThemHinhDK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -123,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        imgCThemHinhAnh.setOnClickListener(new View.OnClickListener() {
+        imBtn_CThemHinhDK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -236,9 +236,9 @@ public class RegisterActivity extends AppCompatActivity {
             if (data.getExtras() != null){
                 Bundle caigio = data.getExtras();
                 Bitmap bitmap = (Bitmap) caigio.get("data");
-                imgThemHinhAnh.setImageBitmap(bitmap);
+                imBtn_ThemHinhDK.setImageBitmap(bitmap);
             }else{
-                imgThemHinhAnh.setImageURI(contenUri);
+                imBtn_CThemHinhDK.setImageURI(contenUri);
             }
         }
     }

@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageButton
-                android:id="@+id/imgThemHinhAnh"
+                android:id="@+id/imBtn_ThemHinhDK"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
@@ -46,7 +46,7 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/add_avatar" />
             <ImageButton
-                android:id="@+id/imgCThemHinhAnh"
+                android:id="@+id/imBtn_CThemHinhDK"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="-40dp"
@@ -64,7 +64,7 @@
                 android:layout_height="50dp"
                 android:background="@drawable/custom_edt"
                 android:layout_margin="10dp"
-                android:id="@+id/edHoTen"
+                android:id="@+id/ed_HoTen"
                 android:padding="10dp"
                 android:hint="Nhập họ tên"/>
             <EditText
@@ -72,7 +72,7 @@
                 android:layout_height="50dp"
                 android:background="@drawable/custom_edt"
                 android:layout_margin="10dp"
-                android:id="@+id/edSDT"
+                android:id="@+id/ed_SDT"
                 android:padding="10dp"
                 android:hint="Nhập số điện thoại"/>
         </LinearLayout>
@@ -82,7 +82,7 @@
         android:layout_height="50dp"
         android:background="@drawable/custom_edt"
         android:layout_margin="10dp"
-        android:id="@+id/edDiaChi"
+        android:id="@+id/ed_DiaChi"
         android:padding="10dp"
         android:hint="Nhập địa chỉ"/>
     <Button
