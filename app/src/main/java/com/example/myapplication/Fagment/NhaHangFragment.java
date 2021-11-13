@@ -95,6 +95,7 @@ public class NhaHangFragment extends Fragment {
 
     private Dialog dialogThemLoaiNH;
     private Dialog dialogThemNH;
+    private Dialog dialogSuaNH;
 
     public int viTriLoaiNH = 0 ;
 
@@ -415,7 +416,14 @@ public class NhaHangFragment extends Fragment {
                 listNhaHangTheoLoai.add(nh);
             }
         }
-        NhaHangAdapter adapter  = new NhaHangAdapter(listNhaHangTheoLoai, getContext());
+
+        // Lấy danh sách mã loại nhà hàng để đẩy lên spinner
+        listMaLoaiNH = new ArrayList<>();
+        for(LoaiNhaHang lnh: listLoaiNhaHang){
+            listMaLoaiNH.add(lnh.getMaLoaiNH());
+        }
+
+        NhaHangAdapter adapter  = new NhaHangAdapter(listNhaHangTheoLoai, getContext(), this);
         rcv_nhahang.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv_nhahang.setAdapter(adapter);
     }
@@ -545,7 +553,7 @@ public class NhaHangFragment extends Fragment {
         dialogThemNH.show();
     }
 
-
+    // Xử lí sự kiện load hình lên ImaveView
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
@@ -730,11 +738,11 @@ public class NhaHangFragment extends Fragment {
 
     private void getMaLoaiLoaiNHToSpiner(){
 
-        listMaLoaiNH = new ArrayList<>();
-
-        for(LoaiNhaHang lnh: listLoaiNhaHang){
-            listMaLoaiNH.add(lnh.getMaLoaiNH());
-        }
+//        listMaLoaiNH = new ArrayList<>();
+//
+//        for(LoaiNhaHang lnh: listLoaiNhaHang){
+//            listMaLoaiNH.add(lnh.getMaLoaiNH());
+//        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, listMaLoaiNH);
@@ -747,7 +755,7 @@ public class NhaHangFragment extends Fragment {
 
 
 
-    //////////////// Spinner mã loại nhà hàng
+    //////////////// Spinner mã tài khoản
 
     private void getMaLoaiTKToSpiner(){
 
@@ -783,6 +791,72 @@ public class NhaHangFragment extends Fragment {
             }
         });
 
+    }
+
+
+    //Dialog sửa nhà hàng
+
+    //Dialog sưa nhà hàng
+    public void dialog_suaNH(int positon){
+        dialogSuaNH =  new Dialog(getContext());
+        dialogSuaNH.setContentView(R.layout.dialog_suanhahang);
+
+        dialogSuaNH.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        int width = (int)(getContext().getResources().getDisplayMetrics().widthPixels*0.9);
+        int height = (int)(getContext().getResources().getDisplayMetrics().heightPixels*0.8);
+        dialogSuaNH.getWindow().setLayout(width,height);
+
+        EditText edtMaNH = dialogSuaNH.findViewById(R.id.ed_dialogMaNHThemNH);
+        EditText edtPhiChuyenNh = dialogSuaNH.findViewById(R.id.ed_dialogPhiVCThemNH);
+        EditText edtTenNH = dialogSuaNH.findViewById(R.id.ed_dialogTenNHThemNH);
+        EditText edtThoiGian = dialogSuaNH.findViewById(R.id.ed_dialogThoiGianGiaoThemNH);
+        spMaLoaiNH = dialogSuaNH.findViewById(R.id.sp_dialogMaLoaiNHThemNH);
+        spMaTK = dialogSuaNH.findViewById(R.id.sp_dialogMaTKThemNH);
+        imvHinh = dialogSuaNH.findViewById(R.id.imv_dialogHinhThemNH);
+        TextView tvHuyThem = dialogSuaNH.findViewById(R.id.tv_dialogHuyThemNH);
+        TextView tvXacNhan = dialogSuaNH.findViewById(R.id.tv_dialogXacNhanThemNH);
+
+//        //Lấy danh sách mã loại nhà hàng lên spinner
+//        getMaLoaiLoaiNHToSpiner();
+//        //Lấy danh sách mã tài khoản lê spinner
+//        getMaLoaiTKToSpiner();
+//
+//        imvHinh.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//                Intent lib = new Intent(Intent.ACTION_GET_CONTENT);
+//                lib.setType("image/*");
+//
+//                Intent chua = Intent.createChooser(cam, "Chọn");
+//                chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
+//
+//                startActivityForResult(chua, 888);
+//                //Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                //startActivityForResult(gallery, GALEERY_REQUEST_CODE);
+//            }
+//        });
+//
+//        tvXacNhan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String maNH = edtMaNH.getText().toString();
+//                String tenNH = edtTenNH.getText().toString();
+//                String thoiGian = edtThoiGian.getText().toString();
+//                int phiVanChuyen = Integer.parseInt(edtPhiChuyenNh.getText().toString());
+//
+//                if(maNH.isEmpty() || tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen == 0){
+//                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    //Thêm đánh giá và thêm nhà hàng lên Firebase
+//                    themDanhGiaNHToFireStore(maNH, tenNH, thoiGian, phiVanChuyen);
+//
+//                }
+//            }
+//        });
+
+        dialogSuaNH.show();
     }
 
 }
