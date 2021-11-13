@@ -9,8 +9,10 @@ public class NhaHang {
     private int PhiVanChuyen;
     private String HinhAnh;
     private Double DanhGia;
+    private String MaDG;
+    private String MaYT;
 
-    public NhaHang(String maNH, String maLoaiNH, String maTK, String tenNH, String thoiGian, int phiVanChuyen, String hinhAnh, Double danhGia) {
+    public NhaHang(String maNH, String maLoaiNH, String maTK, String tenNH, String thoiGian, int phiVanChuyen, String hinhAnh, Double danhGia, String maDG, String maYT) {
         MaNH = maNH;
         MaLoaiNH = maLoaiNH;
         MaTK = maTK;
@@ -19,6 +21,8 @@ public class NhaHang {
         PhiVanChuyen = phiVanChuyen;
         HinhAnh = hinhAnh;
         DanhGia = danhGia;
+        MaDG = maDG;
+        MaYT = maYT;
     }
 
     public String getMaNH() {
@@ -83,5 +87,21 @@ public class NhaHang {
 
     public void setDanhGia(Double danhGia) {
         DanhGia = danhGia;
+    }
+
+    public String getMaDG() {
+        return MaDG;
+    }
+
+    public void setMaDG(String maDG) {
+        MaDG = maDG;
+    }
+
+    public String getMaYT() {
+        return MaYT;
+    }
+
+    public void setMaYT(String maYT) {
+        MaYT = maYT;
     }
 }

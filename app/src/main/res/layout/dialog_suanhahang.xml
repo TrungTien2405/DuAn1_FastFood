@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bogocdialog">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:background="@drawable/layout_topdialog"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SỬA NHÀ HÀNG"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:fontFamily="@font/merriweather_bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="370dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view_avatar2"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="120dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/imv_dialogHinhThemNH"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/im1"
+                tools:layout_editor_absoluteX="29dp" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <EditText
+            android:id="@+id/ed_dialogTenNHSuaNH"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edt"
+            android:ems="10"
+            android:hint="Tên nhà hàng"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/view_avatar2" />
+
+        <EditText
+            android:id="@+id/ed_dialogThoiGianGiaoSuaNH"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edt"
+            android:ems="10"
+            android:hint="Thời gian giao hàng"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/ed_dialogTenNHSuaNH" />
+
+        <EditText
+            android:id="@+id/ed_dialogPhiVCSuaNH"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edt"
+            android:ems="10"
+            android:hint="Phí vận chuyển"
+            android:inputType="number"
+            android:paddingLeft="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/ed_dialogThoiGianGiaoSuaNH" />
+
+        <Spinner
+            android:id="@+id/sp_dialogMaLoaiNHSuaNH"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/custom_edt"
+            android:paddingLeft="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/sp_dialogMaTKSuaNH"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:background="@drawable/custom_edt"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sp_dialogMaLoaiNHSuaNH" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/sp_dialogMaLoaiNHSuaNH"
+            app:layout_constraintTop_toTopOf="@+id/sp_dialogMaLoaiNHSuaNH"
+            app:srcCompat="@drawable/ic_updown" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/sp_dialogMaTKSuaNH"
+            app:layout_constraintTop_toTopOf="@+id/sp_dialogMaTKSuaNH"
+            app:srcCompat="@drawable/ic_updown" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/layout_bottomdialog"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+        tools:layout_editor_absoluteX="-153dp">
+
+        <TextView
+            android:id="@+id/tv_dialogXacNhanSuaNH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="52dp"
+            android:fontFamily="@font/merriweather_bold"
+            android:text="Xác nhận"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_dialogHuySuaNH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/merriweather_bold"
+            android:text="Hủy bỏ"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
