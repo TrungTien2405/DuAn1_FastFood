@@ -85,7 +85,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/sv_nhaHang"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginHorizontal="15dp"
@@ -93,8 +93,9 @@
         android:background="@drawable/custom_search"
         android:iconifiedByDefault="false"
         android:queryHint="Search food for..."
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        tools:layout_editor_absoluteX="14dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
         android:id="@+id/textView5"
@@ -105,7 +106,7 @@
         android:text="Categories:"
         android:textSize="21dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/sv_nhaHang" />
 
     <TextView
         android:id="@+id/textView"
@@ -147,7 +148,7 @@
         android:layout_marginEnd="15dp"
         android:src="@drawable/ic_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/sv_nhaHang" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbtn_themNhaHang"
