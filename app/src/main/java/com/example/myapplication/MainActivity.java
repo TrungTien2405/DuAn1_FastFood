@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.myapplication.Fagment.CaiDatFragment;
 import com.example.myapplication.Fagment.GioHangFragment;
 import com.example.myapplication.Fagment.NhaHangFragment;
+import com.example.myapplication.Fagment.QLTaiKhoanFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.mn_main:
                     fragment =new NhaHangFragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.mn_users:
+                    fragment = new QLTaiKhoanFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.mn_basket:
