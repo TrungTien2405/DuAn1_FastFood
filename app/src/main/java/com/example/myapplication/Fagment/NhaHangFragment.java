@@ -134,8 +134,6 @@ public class NhaHangFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
     }
 
     @Override
@@ -184,6 +182,7 @@ public class NhaHangFragment extends Fragment {
                 deleteNhaHangFireBase(position);
             }
         }));
+
         //Nhấn nút thêm loại nhà hàng
         imvThemLoaiNH.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,57 +228,6 @@ public class NhaHangFragment extends Fragment {
         NumberFormat en = NumberFormat.getInstance(localeEN);
 
         return en.format(number);
-    }
-
-    // Delete nhà hàng
-
-    private void deleteNhaHangFireBase(int positon){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Thông báo")
-                .setMessage("Bạn chắn chắn muốn xóa nhà hàng không?")
-                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        try {
-                            // Delete bảng nhà hàng
-                            db.collection("NHAHANG").document(listNhaHangTheoLoai.get(positon).getMaNH() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    getAllNhaHangTheoLoai(viTriLoaiNH);
-                                    Toast.makeText(getContext(), "Xóa nhà hàng thành công", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            //Delete bảng dánh giá nhà hàng có mã nhà hàng vừa xóa
-                            db.collection("DANHGIANH").document(listNhaHangTheoLoai.get(positon).getMaDG() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                }
-                            });
-
-                            //Delete bảng YEUTHICH có cùng mã nhà hàng vừa xóa
-                            db.collection("YEUTHICH").document(listNhaHangTheoLoai.get(positon).getMaYT() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                }
-                            });
-                        }catch (Exception e){
-                            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        builder.show();
     }
 
     //Xuất tất cả nhà nhà hàng lên list
@@ -574,207 +522,16 @@ public class NhaHangFragment extends Fragment {
             }
         });
 
+        tvHuyThem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogThemNH.dismiss();
+            }
+        });
+
         dialogThemNH.show();
     }
 
-    // Xử lí sự kiện load hình lên ImaveView
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-
-        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == GALEERY_REQUEST_CODE) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                contenUri = data.getData();
-//                String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//                imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
-//                imvHinhLoai.setImageURI(contenUri);
-//            }
-//        }
-
-
-        //Xử lí thêm ảnh lên imageview ảnh loại nhà hàng
-        if (requestCode == 999 && resultCode == RESULT_OK){
-            contenUri = data.getData();
-            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
-            if (data.getExtras() != null){
-                Bundle caigio = data.getExtras();
-                Bitmap bitmap = (Bitmap) caigio.get("data");
-                imvHinhLoai.setImageBitmap(bitmap);
-            }else{
-                imvHinhLoai.setImageURI(contenUri);
-            }
-        }
-
-        //Xử lí thêm ảnh lên imageview ảnh dialog thêm  nhà hàng
-        if (requestCode == 888 && resultCode == RESULT_OK){
-            contenUri = data.getData();
-            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
-            if (data.getExtras() != null){
-                Bundle caigio = data.getExtras();
-                Bitmap bitmap = (Bitmap) caigio.get("data");
-                imvHinh.setImageBitmap(bitmap);
-            }else{
-                imvHinh.setImageURI(contenUri);
-            }
-        }
-
-        //Xử lí thêm ảnh lên imageview ảnh  dialog sửa thông tin nhà hàng
-        if (requestCode == 777 && resultCode == RESULT_OK){
-            contenUri = data.getData();
-            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
-            if (data.getExtras() != null){
-                Bundle caigio = data.getExtras();
-                Bitmap bitmap = (Bitmap) caigio.get("data");
-                imvHinhSuaNH.setImageBitmap(bitmap);
-            }else{
-                imvHinhSuaNH.setImageURI(contenUri);
-            }
-        }
-
-
-    }
-
-    private  String getFileExt(Uri uri){
-        ContentResolver c = getContext().getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(c.getType(uri));
-    }
-
-
-    //Load hình lên folder hình ảnh của  nhà hàng
-    private void uploadImageNHToFirebase(String name, Uri contentUri, int congViec){
-        StorageReference image = storageReference.child("IM_NHAHANG/"+name);
-        try {
-            image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
-                            // Thêm nhà hàng lên firebase
-                            nhaHang.setHinhAnh(uri.toString());
-                            if(congViec == 0) {
-                                themNHToFireStore(loaiNhaHang);
-                            }else{
-                                updateFirebase(nhaHang);
-                            }
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("==> Exception", e.getMessage());
-                }
-            });
-        }catch (Exception e){
-            nhaHang.setHinhAnh("");
-            themNHToFireStore(loaiNhaHang);
-        }
-    }
-
-    //Load hình lên folder hình ảnh của loại nhà hàng
-    private void uploadImageToFirebase(String name, Uri contentUri){
-        StorageReference image = storageReference.child("IM_LOAINHAHANG/"+name);
-        try {
-            image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
-                            // Thêm nhà hàng lên firebase
-                            loaiNhaHang.setHinhAnh(uri.toString());
-                            themLoaiNHToFireStore(loaiNhaHang);
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("==> Exception", e.getMessage());
-                }
-            });
-        }catch (Exception e){
-            loaiNhaHang.setHinhAnh("");
-            themLoaiNHToFireStore(loaiNhaHang);
-        }
-    }
-
-    //Đẩy nhà hàng lên Firestore
-    private void themLoaiNHToFireStore(LoaiNhaHang loaiNhaHang){
-        final CollectionReference collectionReference = db.collection("LOAINHAHANG");
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("MaLoaiNH", loaiNhaHang.getMaLoaiNH());
-        data.put("TenLoaiNH", loaiNhaHang.getTenLoaiNH());
-        data.put("HinhAnh", loaiNhaHang.getHinhAnh());
-
-        try {
-            collectionReference.document(loaiNhaHang.getMaLoaiNH() + "").set(data);
-            dialogThemLoaiNH.dismiss();
-            Toast.makeText(getContext(), "Thêm loại nhà hàng thành công", Toast.LENGTH_SHORT).show();
-            getAllLoaiNhaHang(getContext());
-        }catch (Exception e){
-            Log.d("Error_addTKFirebase", e.getMessage());
-        }
-    }
-
-    // Thêm bảng đánh giá khi thêm nhà hàng mới
-    private void themDanhGiaNHToFireStore(String maNH, String tenNH, String thoiGian, int phiVanChuyen){
-        final CollectionReference collectionReference = db.collection("DANHGIANH");
-
-        Random random =  new Random();
-        int x = random.nextInt((10000-1+1)+1);
-        String MaDG = "DG" + x;
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("MaDanhGia", MaDG);
-        data.put("MaNH", maNH);
-        data.put("TongDG", 0);
-        data.put("LuotDG", 0);
-
-
-        try {
-            collectionReference.document(MaDG).set(data);
-
-            nhaHang = new NhaHang(maNH, spMaLoaiNH.getSelectedItem().toString(), spMaTK.getSelectedItem().toString(), tenNH, thoiGian, phiVanChuyen, imageFileName, 0.0, MaDG, "");
-            uploadImageNHToFirebase(imageFileName, contenUri, 0); // Số 0 là thêm nhà hàng, số 1 là sửa nhà hàng
-        }catch (Exception e){
-            Log.d("Error_addTKFirebase", e.getMessage());
-        }
-
-    }
-
-    // Thêm object nhà hàng lên Firebase
-    private void themNHToFireStore(LoaiNhaHang loaiNhaHang){
-        final CollectionReference collectionReference = db.collection("NHAHANG");
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("MaLoaiNH", nhaHang.getMaLoaiNH());
-        data.put("MaTK", nhaHang.getMaTK());
-        data.put("HinhAnh", nhaHang.getHinhAnh());
-        data.put("MaNH", nhaHang.getMaNH());
-        data.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
-        data.put("ThoiGian", nhaHang.getThoiGian());
-        data.put("TenNH", nhaHang.getTenNH());
-
-
-        try {
-            collectionReference.document(nhaHang.getMaNH() + "").set(data);
-            dialogThemNH.dismiss();
-            Toast.makeText(getContext(), "Thêm mã nhà hàng thành công", Toast.LENGTH_SHORT).show();
-            getAllNhaHang(getContext());
-        }catch (Exception e){
-            Log.d("Error_addTKFirebase", e.getMessage());
-        }
-    }
 
     //////////////// Spinner mã loại nhà hàng
 
@@ -931,30 +688,6 @@ public class NhaHangFragment extends Fragment {
         dialogSuaNH.show();
     }
 
-    // Cập nhập thông tin bảng nhà hàng lên Firebase
-    private void updateFirebase(NhaHang nhaHang){
-        final CollectionReference reference = db.collection("NHAHANG");
-        try {
-            Map map = new HashMap<String, Object>();
-            map.put("MaNH", nhaHang.getMaNH());
-            map.put("MaLoaiNH", nhaHang.getMaLoaiNH());
-            map.put("MaTK", nhaHang.getMaTK());
-            map.put("TenNH", nhaHang.getTenNH());
-            map.put("ThoiGian", nhaHang.getThoiGian());
-            map.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
-            map.put("HinhAnh", nhaHang.getHinhAnh());
-            map.put("MaDG", nhaHang.getMaDG());
-            map.put("MaYT", nhaHang.getMaYT());
-            reference.document(nhaHang.getMaNH() + "").set(map, SetOptions.merge());
-
-            dialogSuaNH.dismiss();
-            //Cập nhật lại listView
-            getAllNhaHang(getContext());
-        }catch (Exception e){
-            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
     // Nhấn yêu thích nhà hàng
     public void press_favorite(int position){
         Random random =  new Random();
@@ -975,31 +708,17 @@ public class NhaHangFragment extends Fragment {
                 .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                getAllNhaHangTheoLoai(viTriLoaiNH);
+                //Cập nhật lại mã yêu thích trong bảng nhà hàng lên Firesotore
+                db.collection("NHAHANG").document(listNhaHangTheoLoai.get(position).getMaNH())
+                        .update(
+                                "MaYT" , ""
+                        );
+
+                //getAllNhaHangTheoLoai(viTriLoaiNH);
+
+                getAllDanhGia(getContext());
             }
         });
-    }
-
-    // Thêm object nhà hàng lên Firebase
-    private void themYeuThichNHToFireStore(YeuThich yt){
-        final CollectionReference collectionReference = db.collection("YEUTHICH");
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("MaNH", yt.getMaNH());
-        data.put("MaTK", yt.getMaTK());
-        data.put("MaYT", yt.getMaYT());
-
-        try {
-            collectionReference.document(yt.getMaYT() + "").set(data);
-
-            //Cập nhật lại mã yêu thích trong bảng nhà hàng lên Firesotore
-            db.collection("NHAHANG").document(yt.getMaNH())
-                    .update(
-                            "MaYT" , yt.getMaYT()
-                    );
-        }catch (Exception e){
-            Log.d("Error_addTKFirebase", e.getMessage());
-        }
     }
 
     //Tìm kiếm nhà hàng
@@ -1036,5 +755,314 @@ public class NhaHangFragment extends Fragment {
         rcv_nhahang.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv_nhahang.setAdapter(adapter);
     }
+
+
+
+    // Xử lí sự kiện load hình lên ImaveView
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == GALEERY_REQUEST_CODE) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                contenUri = data.getData();
+//                String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//                imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
+//                imvHinhLoai.setImageURI(contenUri);
+//            }
+//        }
+
+
+        //Xử lí thêm ảnh lên imageview ảnh loại nhà hàng
+        if (requestCode == 999 && resultCode == RESULT_OK){
+            contenUri = data.getData();
+            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
+            if (data.getExtras() != null){
+                Bundle caigio = data.getExtras();
+                Bitmap bitmap = (Bitmap) caigio.get("data");
+                imvHinhLoai.setImageBitmap(bitmap);
+            }else{
+                imvHinhLoai.setImageURI(contenUri);
+            }
+        }
+
+        //Xử lí thêm ảnh lên imageview ảnh dialog thêm  nhà hàng
+        if (requestCode == 888 && resultCode == RESULT_OK){
+            contenUri = data.getData();
+            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
+            if (data.getExtras() != null){
+                Bundle caigio = data.getExtras();
+                Bitmap bitmap = (Bitmap) caigio.get("data");
+                imvHinh.setImageBitmap(bitmap);
+            }else{
+                imvHinh.setImageURI(contenUri);
+            }
+        }
+
+        //Xử lí thêm ảnh lên imageview ảnh  dialog sửa thông tin nhà hàng
+        if (requestCode == 777 && resultCode == RESULT_OK){
+            contenUri = data.getData();
+            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
+            if (data.getExtras() != null){
+                Bundle caigio = data.getExtras();
+                Bitmap bitmap = (Bitmap) caigio.get("data");
+                imvHinhSuaNH.setImageBitmap(bitmap);
+            }else{
+                imvHinhSuaNH.setImageURI(contenUri);
+            }
+        }
+
+
+    }
+
+    private  String getFileExt(Uri uri){
+        ContentResolver c = getContext().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(uri));
+    }
+
+
+    //Load hình lên folder hình ảnh của  nhà hàng
+    private void uploadImageNHToFirebase(String name, Uri contentUri, int congViec){
+        StorageReference image = storageReference.child("IM_NHAHANG/"+name);
+        try {
+            image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
+                            // Thêm nhà hàng lên firebase
+                            nhaHang.setHinhAnh(uri.toString());
+                            if(congViec == 0) {
+                                themNHToFireStore(loaiNhaHang);
+                            }else{
+                                updateFirebase(nhaHang);
+                            }
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("==> Exception", e.getMessage());
+                }
+            });
+        }catch (Exception e){
+            nhaHang.setHinhAnh("");
+            themNHToFireStore(loaiNhaHang);
+        }
+    }
+
+    //Load hình lên folder hình ảnh của loại nhà hàng
+    private void uploadImageToFirebase(String name, Uri contentUri){
+        StorageReference image = storageReference.child("IM_LOAINHAHANG/"+name);
+        try {
+            image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
+                            // Thêm nhà hàng lên firebase
+                            loaiNhaHang.setHinhAnh(uri.toString());
+                            themLoaiNHToFireStore(loaiNhaHang);
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("==> Exception", e.getMessage());
+                }
+            });
+        }catch (Exception e){
+            loaiNhaHang.setHinhAnh("");
+            themLoaiNHToFireStore(loaiNhaHang);
+        }
+    }
+
+
+    // Cập nhập thông tin bảng nhà hàng lên Firebase
+    private void updateFirebase(NhaHang nhaHang){
+        final CollectionReference reference = db.collection("NHAHANG");
+        try {
+            Map map = new HashMap<String, Object>();
+            map.put("MaNH", nhaHang.getMaNH());
+            map.put("MaLoaiNH", nhaHang.getMaLoaiNH());
+            map.put("MaTK", nhaHang.getMaTK());
+            map.put("TenNH", nhaHang.getTenNH());
+            map.put("ThoiGian", nhaHang.getThoiGian());
+            map.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
+            map.put("HinhAnh", nhaHang.getHinhAnh());
+            map.put("MaDG", nhaHang.getMaDG());
+            map.put("MaYT", nhaHang.getMaYT());
+            reference.document(nhaHang.getMaNH() + "").set(map, SetOptions.merge());
+
+            dialogSuaNH.dismiss();
+            //Cập nhật lại listView
+            getAllNhaHang(getContext());
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    //Đẩy nhà hàng lên Firestore
+    private void themLoaiNHToFireStore(LoaiNhaHang loaiNhaHang){
+        final CollectionReference collectionReference = db.collection("LOAINHAHANG");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("MaLoaiNH", loaiNhaHang.getMaLoaiNH());
+        data.put("TenLoaiNH", loaiNhaHang.getTenLoaiNH());
+        data.put("HinhAnh", loaiNhaHang.getHinhAnh());
+
+        try {
+            collectionReference.document(loaiNhaHang.getMaLoaiNH() + "").set(data);
+            dialogThemLoaiNH.dismiss();
+            Toast.makeText(getContext(), "Thêm loại nhà hàng thành công", Toast.LENGTH_SHORT).show();
+            getAllLoaiNhaHang(getContext());
+        }catch (Exception e){
+            Log.d("Error_addTKFirebase", e.getMessage());
+        }
+    }
+
+    // Thêm bảng đánh giá khi thêm nhà hàng mới
+    private void themDanhGiaNHToFireStore(String maNH, String tenNH, String thoiGian, int phiVanChuyen){
+        final CollectionReference collectionReference = db.collection("DANHGIANH");
+
+        Random random =  new Random();
+        int x = random.nextInt((10000-1+1)+1);
+        String MaDG = "DG" + x;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("MaDanhGia", MaDG);
+        data.put("MaNH", maNH);
+        data.put("TongDG", 0);
+        data.put("LuotDG", 0);
+
+
+        try {
+            collectionReference.document(MaDG).set(data);
+
+            nhaHang = new NhaHang(maNH, spMaLoaiNH.getSelectedItem().toString(), spMaTK.getSelectedItem().toString(), tenNH, thoiGian, phiVanChuyen, imageFileName, 0.0, MaDG, "");
+            uploadImageNHToFirebase(imageFileName, contenUri, 0); // Số 0 là thêm nhà hàng, số 1 là sửa nhà hàng
+        }catch (Exception e){
+            Log.d("Error_addTKFirebase", e.getMessage());
+        }
+
+    }
+
+    // Thêm object nhà hàng lên Firebase
+    private void themNHToFireStore(LoaiNhaHang loaiNhaHang){
+        final CollectionReference collectionReference = db.collection("NHAHANG");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("MaLoaiNH", nhaHang.getMaLoaiNH());
+        data.put("MaTK", nhaHang.getMaTK());
+        data.put("HinhAnh", nhaHang.getHinhAnh());
+        data.put("MaNH", nhaHang.getMaNH());
+        data.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
+        data.put("ThoiGian", nhaHang.getThoiGian());
+        data.put("TenNH", nhaHang.getTenNH());
+
+
+        try {
+            collectionReference.document(nhaHang.getMaNH() + "").set(data);
+            dialogThemNH.dismiss();
+            Toast.makeText(getContext(), "Thêm mã nhà hàng thành công", Toast.LENGTH_SHORT).show();
+            getAllNhaHang(getContext());
+        }catch (Exception e){
+            Log.d("Error_addTKFirebase", e.getMessage());
+        }
+    }
+
+
+    // Thêm object nhà hàng lên Firebase
+    private void themYeuThichNHToFireStore(YeuThich yt){
+        final CollectionReference collectionReference = db.collection("YEUTHICH");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("MaNH", yt.getMaNH());
+        data.put("MaTK", yt.getMaTK());
+        data.put("MaYT", yt.getMaYT());
+
+        try {
+            collectionReference.document(yt.getMaYT() + "").set(data);
+
+            //Cập nhật lại mã yêu thích trong bảng nhà hàng lên Firesotore
+            db.collection("NHAHANG").document(yt.getMaNH())
+                    .update(
+                            "MaYT" , yt.getMaYT()
+                    ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    getAllDanhGia(getContext());
+                }
+            });
+        }catch (Exception e){
+            Log.d("Error_addTKFirebase", e.getMessage());
+        }
+    }
+
+
+    // Delete nhà hàng
+
+    private void deleteNhaHangFireBase(int positon){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Thông báo")
+                .setMessage("Bạn chắn chắn muốn xóa nhà hàng không?")
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+                            // Delete bảng nhà hàng
+                            db.collection("NHAHANG").document(listNhaHangTheoLoai.get(positon).getMaNH() + "")
+                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    getAllNhaHangTheoLoai(viTriLoaiNH);
+                                    Toast.makeText(getContext(), "Xóa nhà hàng thành công", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            //Delete bảng dánh giá nhà hàng có mã nhà hàng vừa xóa
+                            db.collection("DANHGIANH").document(listNhaHangTheoLoai.get(positon).getMaDG() + "")
+                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            });
+
+                            //Delete bảng YEUTHICH có cùng mã nhà hàng vừa xóa
+                            db.collection("YEUTHICH").document(listNhaHangTheoLoai.get(positon).getMaYT() + "")
+                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            });
+                        }catch (Exception e){
+                            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.show();
+    }
+
+
 
 }
