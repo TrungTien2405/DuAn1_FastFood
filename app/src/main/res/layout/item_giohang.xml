@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/custom_edt">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <CheckBox
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
+            android:id="@+id/chk_XoaItemGH"/>
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/img_HinhGH"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_TenMonGH"
+            android:gravity="right"
+            android:layout_marginRight="10dp"
+            android:text="Chicken"
+            android:textSize="20dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_TenMonThemGH"
+            android:gravity="right"
+            android:layout_marginRight="10dp"
+            android:text="Tên món thêm"
+            android:textSize="20dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_GiaGH"
+            android:gravity="right"
+            android:layout_marginRight="10dp"
+            android:text="5 $"
+            android:textSize="20dp" />
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_soluong_giohang"
+            android:orientation="horizontal"
+            android:layout_marginLeft="100dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_tru"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/img_TruSoLuongGH"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="30dp"
+                android:id="@+id/tv_SoLuongGH"
+                android:textSize="30dp"
+                android:textColor="#D77367"
+                android:text="1"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cong"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:id="@+id/img_CongSoLuongGH"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

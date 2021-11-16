@@ -57,8 +57,8 @@ import java.util.concurrent.TimeUnit;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText edHoTen, edSoDT, edDiaChi, edMaOTP;
-    ImageButton imBtn_ThemHinhDK, imBtn_CThemHinhDK;
-    ImageView imgTrove;
+    ImageButton imBtn_ThemHinhDK;
+    ImageView imgTrove, imgHinhDK;
     Button btnDangKy, btnXacThucOTP;
 
     // variable for FirebaseAuth class xác thực OTP
@@ -89,8 +89,8 @@ public class RegisterActivity extends AppCompatActivity {
         edSoDT = findViewById(R.id.ed_SDT);
         edDiaChi = findViewById(R.id.ed_DiaChi);
         imBtn_ThemHinhDK = findViewById(R.id.imBtn_ThemHinhDK);
-        imBtn_CThemHinhDK = findViewById(R.id.imBtn_CThemHinhDK);
         imgTrove = findViewById(R.id.imgTrove);
+        imgHinhDK = findViewById(R.id.imgHinhDK);
         btnDangKy = findViewById(R.id.btnDangKy);
 
         db = FirebaseFirestore.getInstance();
@@ -123,22 +123,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        imBtn_CThemHinhDK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                Intent lib = new Intent(Intent.ACTION_GET_CONTENT);
-                lib.setType("image/*");
-
-                Intent chua = Intent.createChooser(cam, "Chọn");
-                chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
-
-                startActivityForResult(chua, 999);
-//                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(gallery, GALEERY_REQUEST_CODE);
-            }
-        });
 
         btnDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,9 +220,9 @@ public class RegisterActivity extends AppCompatActivity {
             if (data.getExtras() != null){
                 Bundle caigio = data.getExtras();
                 Bitmap bitmap = (Bitmap) caigio.get("data");
-                imBtn_ThemHinhDK.setImageBitmap(bitmap);
+                imgHinhDK.setImageBitmap(bitmap);
             }else{
-                imBtn_CThemHinhDK.setImageURI(contenUri);
+                imgHinhDK.setImageURI(contenUri);
             }
         }
     }
