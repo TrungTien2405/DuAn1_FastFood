@@ -47,7 +47,7 @@
             tools:ignore="MissingConstraints">
 
             <ImageView
-                android:id="@+id/imv_dialogHinhThemNH"
+                android:id="@+id/imv_dialogHinhSuaNH"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"

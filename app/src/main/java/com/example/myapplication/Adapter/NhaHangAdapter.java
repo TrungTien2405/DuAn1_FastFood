@@ -72,13 +72,11 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         NhaHang nhaHang =list.get(position);
 
         holder.tvTenNH.setText(nhaHang.getTenNH());
-        holder.tvLoaiNH.setText(nhaHang.getMaLoaiNH());
+        holder.tvLoaiNH.setText(fragment.getTenLoaiNhaHang(nhaHang.getMaLoaiNH()));
         holder.tvDanhGiaTB.setText(nhaHang.getDanhGia()+"");
         holder.tvTenNH.setText(nhaHang.getTenNH());
 
-        if(list.get(position).getMaLoaiNH().equals("Yêu thích")){
-            holder.tgb_yeuThich.setChecked(true);
-        }
+        if(!nhaHang.getMaYT().isEmpty()) holder.tgb_yeuThich.setChecked(true);
 
         if(nhaHang.getHinhAnh().isEmpty()){
             holder.imvHinh.setImageResource(R.drawable.im_food);
@@ -91,9 +89,9 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-
+                    fragment.press_favorite(position);
                 }else{
-
+                    fragment.unpress_favorite(position);
                 }
             }
         });
@@ -103,7 +101,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             @Override
             public void onClick(View v) {
                 //Gọi Firebase xuống
-                fragment.dialog_suaNH(0);
+                fragment.dialog_suaNH(position);
             }
         });
     }
