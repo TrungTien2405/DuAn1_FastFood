@@ -12,11 +12,11 @@
             android:layout_width="30dp"
             android:layout_height="20dp"
             android:layout_margin="5dp"
-            android:id="@+id/chk_XoaItemGH"/>
+            android:id="@+id/chk_ItemChonGH"/>
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:id="@+id/img_HinhGH"/>
+            android:id="@+id/imv_itemHinhGH"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_TenMonGH"
+            android:id="@+id/tv_itemTenMonGH"
             android:gravity="right"
             android:layout_marginRight="10dp"
             android:text="Chicken"
@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_TenMonThemGH"
+            android:id="@+id/tv_itemTenMonThemGH"
             android:gravity="right"
             android:layout_marginRight="10dp"
             android:text="Tên món thêm"
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_GiaGH"
+            android:id="@+id/tv_itemGiaGH"
             android:gravity="right"
             android:layout_marginRight="10dp"
             android:text="5 $"
@@ -59,13 +59,13 @@
                 android:src="@drawable/ic_tru"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/img_TruSoLuongGH"/>
+                android:id="@+id/img_itemTruSoLuongGH"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="30dp"
-                android:id="@+id/tv_SoLuongGH"
+                android:id="@+id/tv_itemSoLuongGH"
                 android:textSize="30dp"
                 android:textColor="#D77367"
                 android:text="1"/>
@@ -75,7 +75,7 @@
                 android:src="@drawable/ic_cong"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="30dp"
-                android:id="@+id/img_CongSoLuongGH"/>
+                android:id="@+id/img_itemCongSoLuongGH"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

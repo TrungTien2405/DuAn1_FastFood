@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.example.myapplication.Adapter.GioHangAdapter;
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Model.GioHang;
+import com.example.myapplication.Model.GioHangCT;
+import com.example.myapplication.Model.MonAnNH;
 import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,8 +41,13 @@ import java.util.List;
 public class GioHangFragment extends Fragment {
     private RecyclerView rcv_GioHang;
 
+    private List<MonAnNH> listMonAn;
     private List<GioHang> listGioHang;
+    private List<GioHangCT> listGioHangCT;
+
     private GioHang gioHang;
+    private MonAnNH monAnNH;
+    private GioHangCT gioHangCT;
 
     FirebaseAuth mAuth;
     //Firestore
@@ -75,7 +82,7 @@ public class GioHangFragment extends Fragment {
         getAllGioHang(getContext());
     }
 
-        public void getAllGioHang(Context context){
+    public void getAllGioHang(Context context){
         listGioHang = new ArrayList<>();
 
         final CollectionReference reference = db.collection("GIOHANG");
@@ -88,23 +95,12 @@ public class GioHangFragment extends Fragment {
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot) {
                             String maGH = doc.get("MaGH").toString();
-                            String maMA = doc.get("MaMA").toString();
                             String maTK = doc.get("MaTK").toString();
-//                          String tenMonAn = doc.get("TenNH").toString();
-                            String tenMonThem = doc.get("TeMonThem").toString();
-                            int soLuong = Integer.parseInt(doc.get("SoLuong").toString());
-                            int tongTien = Integer.parseInt(doc.get("TongTien").toString());
-//                          String HinhAnh = doc.get("HinhAnh").toString();
 
-                            gioHang = new GioHang(maGH, maMA, maTK, soLuong, tenMonThem, tongTien);
+
+                            gioHang = new GioHang(maGH, maTK);
                             listGioHang.add(gioHang);
                         }
-                            GioHangAdapter adapter  = new GioHangAdapter(listGioHang, getContext());
-                            rcv_GioHang.setLayoutManager(new LinearLayoutManager(getContext()));
-                            rcv_GioHang.setAdapter(adapter);
-
-                            //Xuat danh sach gio hang len recycleview
-//                          getAllGioHang(getContext());
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
@@ -115,4 +111,87 @@ public class GioHangFragment extends Fragment {
         });
     }
 
+
+    public void getAllMonAn(Context context){
+        listMonAn = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("MONANNH");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String maMA = doc.get("MaGH").toString();
+                            String maNH = doc.get("MaNH").toString();
+                            String tenMon = doc.get("TenMon").toString();
+                            String maMenuNH = doc.get("MaMenuNH").toString();
+                            String chiTiet = doc.get("ChiTiet").toString();
+                            int gia = Integer.parseInt(doc.get("Gia").toString());
+                            String hinhAnh = doc.get("HinhAnh").toString();
+
+
+                            monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, gia, hinhAnh);
+                            listMonAn.add(monAnNH);
+                        }
+
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+    public void getAllGioHangCT(Context context){
+        listMonAn = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("GIOHANGCT");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String maMA = doc.get("MaMA").toString();
+                            String maGHCT = doc.get("MaGHCT").toString();
+                            String maGH = doc.get("MaGH").toString();
+                            int soLuong = Integer.parseInt(doc.get("soLuong").toString());
+                            String tenMonThem = doc.get("TenMonThem").toString();
+                            String thoiGian = doc.get("ThoiGian").toString();
+                            int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+                            String hinhAnh = doc.get("HinhAnh").toString();
+
+
+                            gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0,"",tenMonThem, thoiGian, trangThai, hinhAnh);
+                        }
+
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
