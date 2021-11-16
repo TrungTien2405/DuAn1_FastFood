@@ -38,6 +38,7 @@ import com.example.myapplication.Model.DanhGiaNH;
 import com.example.myapplication.Model.LoaiNhaHang;
 import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.Model.TaiKhoan;
+import com.example.myapplication.Model.YeuThich;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,10 +51,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,9 +93,14 @@ public class NhaHangFragment extends Fragment {
     private ImageView imvThemLoaiNH;
     private FloatingActionButton flBtnThemNH;
 
-    //Dialog
+    //Dialog spinner thêm nhà hàng
     private Spinner spMaTK;
     private Spinner spMaLoaiNH;
+
+    //Dialog spinner sửa nhà hàng
+    private Spinner spMaTKSuaNH;
+    private Spinner spMaLoaiNHSuaNH;
+    private ImageView imvHinhSuaNH;
 
     private Dialog dialogThemLoaiNH;
     private Dialog dialogThemNH;
@@ -290,7 +299,9 @@ public class NhaHangFragment extends Fragment {
                             String MaDG = doc.get("MaDG").toString();
                             String MaYT = doc.get("MaYT").toString();
 
-                            nhaHang = new NhaHang(MaNH, getTenLoaiNhaHang(MaLoaiNH), MaTK, TenNH, ThoiGian, PhiVanChuyen, HinhAnh, tinhDanhGiaTB(MaNH), MaDG, MaYT);
+                            Double danhGia = tinhDanhGiaTB(MaNH);
+                            Log.d("====> ", danhGia+"");
+                            nhaHang = new NhaHang(MaNH, getTenLoaiNhaHang(MaLoaiNH), MaTK, TenNH, ThoiGian, PhiVanChuyen, HinhAnh, danhGia, MaDG, MaYT);
                             listNhaHang.add(nhaHang);
 
                         }
@@ -315,8 +326,12 @@ public class NhaHangFragment extends Fragment {
     //Tính lượt sao của nhà hàng
     private Double tinhDanhGiaTB(String maNH){
         for (DanhGiaNH dg: listDanhGia){
-            if(maNH.equals(dg.getMaNH()))
-                return (Double.valueOf(dg.getTongDG() / dg.getLuotDG()));
+            if(maNH.equals(dg.getMaNH())) {
+                Double kq = (Double.valueOf(dg.getTongDG()) / Double.valueOf(dg.getLuotDG()));
+
+
+                return Math.round(kq*100)/100.00;
+            }
         }
         return 0.0;
     }
@@ -332,7 +347,7 @@ public class NhaHangFragment extends Fragment {
 
 
 
-    //Xuất tất cả đánh giá lên list
+    //Xuất tất cả đánh giá
     public void getAllDanhGia(Context context){
         listDanhGia = new ArrayList<>();
 
@@ -511,9 +526,9 @@ public class NhaHangFragment extends Fragment {
         TextView tvXacNhan = dialogThemNH.findViewById(R.id.tv_dialogXacNhanThemNH);
 
         //Lấy danh sách mã loại nhà hàng lên spinner
-        getMaLoaiLoaiNHToSpiner();
+        getMaLoaiLoaiNHToSpiner(0);
         //Lấy danh sách mã tài khoản lê spinner
-        getMaLoaiTKToSpiner();
+        getMaLoaiTKToSpiner(0);
 
         imvHinh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -583,7 +598,7 @@ public class NhaHangFragment extends Fragment {
             }
         }
 
-        //Xử lí thêm ảnh lên imageview ảnh  nhà hàng
+        //Xử lí thêm ảnh lên imageview ảnh dialog thêm  nhà hàng
         if (requestCode == 888 && resultCode == RESULT_OK){
             contenUri = data.getData();
             String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -594,6 +609,20 @@ public class NhaHangFragment extends Fragment {
                 imvHinh.setImageBitmap(bitmap);
             }else{
                 imvHinh.setImageURI(contenUri);
+            }
+        }
+
+        //Xử lí thêm ảnh lên imageview ảnh  dialog sửa thông tin nhà hàng
+        if (requestCode == 777 && resultCode == RESULT_OK){
+            contenUri = data.getData();
+            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
+            if (data.getExtras() != null){
+                Bundle caigio = data.getExtras();
+                Bitmap bitmap = (Bitmap) caigio.get("data");
+                imvHinhSuaNH.setImageBitmap(bitmap);
+            }else{
+                imvHinhSuaNH.setImageURI(contenUri);
             }
         }
 
@@ -608,7 +637,7 @@ public class NhaHangFragment extends Fragment {
 
 
     //Load hình lên folder hình ảnh của  nhà hàng
-    private void uploadImageNHToFirebase(String name, Uri contentUri){
+    private void uploadImageNHToFirebase(String name, Uri contentUri, int congViec){
         StorageReference image = storageReference.child("IM_NHAHANG/"+name);
         try {
             image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -620,7 +649,11 @@ public class NhaHangFragment extends Fragment {
                             //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
                             // Thêm nhà hàng lên firebase
                             nhaHang.setHinhAnh(uri.toString());
-                            themNHToFireStore(loaiNhaHang);
+                            if(congViec == 0) {
+                                themNHToFireStore(loaiNhaHang);
+                            }else{
+                                updateFirebase(nhaHang);
+                            }
                         }
                     });
                 }
@@ -703,7 +736,7 @@ public class NhaHangFragment extends Fragment {
             collectionReference.document(MaDG).set(data);
 
             nhaHang = new NhaHang(maNH, spMaLoaiNH.getSelectedItem().toString(), spMaTK.getSelectedItem().toString(), tenNH, thoiGian, phiVanChuyen, imageFileName, 0.0, MaDG, "");
-            uploadImageNHToFirebase(imageFileName, contenUri);
+            uploadImageNHToFirebase(imageFileName, contenUri, 0); // Số 0 là thêm nhà hàng, số 1 là sửa nhà hàng
         }catch (Exception e){
             Log.d("Error_addTKFirebase", e.getMessage());
         }
@@ -736,7 +769,7 @@ public class NhaHangFragment extends Fragment {
 
     //////////////// Spinner mã loại nhà hàng
 
-    private void getMaLoaiLoaiNHToSpiner(){
+    private void getMaLoaiLoaiNHToSpiner(int chucNang){
 
 //        listMaLoaiNH = new ArrayList<>();
 //
@@ -750,14 +783,19 @@ public class NhaHangFragment extends Fragment {
         // Layout for All ROWs of Spinner.  (Optional for ArrayAdapter).
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spMaLoaiNH.setAdapter(adapter);
+        if(chucNang == 0){
+            spMaLoaiNH.setAdapter(adapter);
+        }else{
+            spMaLoaiNHSuaNH.setAdapter(adapter);
+        }
+
     }
 
 
 
     //////////////// Spinner mã tài khoản
 
-    private void getMaLoaiTKToSpiner(){
+    private void getMaLoaiTKToSpiner(int chucNang){
 
         listMaTK = new ArrayList<>();
 
@@ -781,7 +819,11 @@ public class NhaHangFragment extends Fragment {
                         // Layout for All ROWs of Spinner.  (Optional for ArrayAdapter).
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                        spMaTK.setAdapter(adapter);
+                        if(chucNang == 0) {
+                            spMaTK.setAdapter(adapter);
+                        }else{
+                            spMaTKSuaNH.setAdapter(adapter);
+                        }
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
@@ -795,8 +837,6 @@ public class NhaHangFragment extends Fragment {
 
 
     //Dialog sửa nhà hàng
-
-    //Dialog sưa nhà hàng
     public void dialog_suaNH(int positon){
         dialogSuaNH =  new Dialog(getContext());
         dialogSuaNH.setContentView(R.layout.dialog_suanhahang);
@@ -806,57 +846,141 @@ public class NhaHangFragment extends Fragment {
         int height = (int)(getContext().getResources().getDisplayMetrics().heightPixels*0.8);
         dialogSuaNH.getWindow().setLayout(width,height);
 
-        EditText edtMaNH = dialogSuaNH.findViewById(R.id.ed_dialogMaNHThemNH);
-        EditText edtPhiChuyenNh = dialogSuaNH.findViewById(R.id.ed_dialogPhiVCThemNH);
-        EditText edtTenNH = dialogSuaNH.findViewById(R.id.ed_dialogTenNHThemNH);
-        EditText edtThoiGian = dialogSuaNH.findViewById(R.id.ed_dialogThoiGianGiaoThemNH);
-        spMaLoaiNH = dialogSuaNH.findViewById(R.id.sp_dialogMaLoaiNHThemNH);
-        spMaTK = dialogSuaNH.findViewById(R.id.sp_dialogMaTKThemNH);
-        imvHinh = dialogSuaNH.findViewById(R.id.imv_dialogHinhThemNH);
-        TextView tvHuyThem = dialogSuaNH.findViewById(R.id.tv_dialogHuyThemNH);
-        TextView tvXacNhan = dialogSuaNH.findViewById(R.id.tv_dialogXacNhanThemNH);
+        EditText edtPhiChuyenNh = dialogSuaNH.findViewById(R.id.ed_dialogPhiVCSuaNH);
+        EditText edtTenNH = dialogSuaNH.findViewById(R.id.ed_dialogTenNHSuaNH);
+        EditText edtThoiGian = dialogSuaNH.findViewById(R.id.ed_dialogThoiGianGiaoSuaNH);
+        spMaLoaiNHSuaNH = dialogSuaNH.findViewById(R.id.sp_dialogMaLoaiNHSuaNH);
+        spMaTKSuaNH = dialogSuaNH.findViewById(R.id.sp_dialogMaTKSuaNH);
+        imvHinhSuaNH = dialogSuaNH.findViewById(R.id.imv_dialogHinhSuaNH);
+        TextView tvHuyThem = dialogSuaNH.findViewById(R.id.tv_dialogHuySuaNH);
+        TextView tvXacNhan = dialogSuaNH.findViewById(R.id.tv_dialogXacNhanSuaNH);
+        imvHinhSuaNH = dialogSuaNH.findViewById(R.id.imv_dialogHinhSuaNH);
 
-//        //Lấy danh sách mã loại nhà hàng lên spinner
-//        getMaLoaiLoaiNHToSpiner();
-//        //Lấy danh sách mã tài khoản lê spinner
-//        getMaLoaiTKToSpiner();
-//
-//        imvHinh.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//                Intent lib = new Intent(Intent.ACTION_GET_CONTENT);
-//                lib.setType("image/*");
-//
-//                Intent chua = Intent.createChooser(cam, "Chọn");
-//                chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
-//
-//                startActivityForResult(chua, 888);
-//                //Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                //startActivityForResult(gallery, GALEERY_REQUEST_CODE);
-//            }
-//        });
-//
-//        tvXacNhan.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String maNH = edtMaNH.getText().toString();
-//                String tenNH = edtTenNH.getText().toString();
-//                String thoiGian = edtThoiGian.getText().toString();
-//                int phiVanChuyen = Integer.parseInt(edtPhiChuyenNh.getText().toString());
-//
-//                if(maNH.isEmpty() || tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen == 0){
-//                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    //Thêm đánh giá và thêm nhà hàng lên Firebase
-//                    themDanhGiaNHToFireStore(maNH, tenNH, thoiGian, phiVanChuyen);
-//
-//                }
-//            }
-//        });
+        //Lấy danh sách mã loại nhà hàng lên spinner
+        getMaLoaiLoaiNHToSpiner(1);
+        //Lấy danh sách mã tài khoản lê spinner
+        getMaLoaiTKToSpiner(1);
+
+        // Đẩy thông tin lên dialog sửa nhà hàng
+        edtPhiChuyenNh.setText(listNhaHangTheoLoai.get(positon).getPhiVanChuyen()+"");
+        edtTenNH.setText(listNhaHangTheoLoai.get(positon).getTenNH());
+        edtThoiGian.setText(listNhaHangTheoLoai.get(positon).getThoiGian());
+        if(nhaHang.getHinhAnh().isEmpty()){
+            imvHinhSuaNH.setImageResource(R.drawable.im_food);
+        }else{
+            Picasso.with(getContext()).load(listNhaHangTheoLoai.get(positon).getHinhAnh()).into(imvHinhSuaNH);
+        }
+
+        tvHuyThem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSuaNH.dismiss();
+            }
+        });
+
+        imvHinhSuaNH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                Intent lib = new Intent(Intent.ACTION_GET_CONTENT);
+                lib.setType("image/*");
+
+                Intent chua = Intent.createChooser(cam, "Chọn");
+                chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
+
+                startActivityForResult(chua, 777);
+                //Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                //startActivityForResult(gallery, GALEERY_REQUEST_CODE);
+            }
+        });
+
+        tvXacNhan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tenNH = edtTenNH.getText().toString();
+                String thoiGian = edtThoiGian.getText().toString();
+                int phiVanChuyen = Integer.parseInt(edtPhiChuyenNh.getText().toString());
+
+                if(tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen == 0){
+                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Thêm đánh giá và thêm nhà hàng lên Firebase
+                    String maNH = listNhaHangTheoLoai.get(positon).getMaNH();
+                    String maDG = listNhaHangTheoLoai.get(positon).getMaDG();
+                    String maYT = listNhaHangTheoLoai.get(positon).getMaYT();
+                    Double danhGia = listNhaHangTheoLoai.get(positon).getDanhGia();
+
+                    nhaHang  = new NhaHang(maNH, spMaLoaiNHSuaNH.getSelectedItem().toString(), spMaTKSuaNH.getSelectedItem().toString(), tenNH, thoiGian, phiVanChuyen, "", danhGia, maDG, maYT);
+                    //Đẩy hình ảnh lên firebase sau đó cập nhật tất cả dũ liệu lên Firebase
+                    uploadImageNHToFirebase(imageFileName, contenUri, 1); // Số 0 là thêm nhà hàng, số 1 là sửa nhà hàng
+
+                }
+            }
+        });
 
         dialogSuaNH.show();
+    }
+
+    // Cập nhập thông tin bảng nhà hàng lên Firebase
+    private void updateFirebase(NhaHang nhaHang){
+        final CollectionReference reference = db.collection("NHAHANG");
+        try {
+            Map map = new HashMap<String, Object>();
+            map.put("MaNH", nhaHang.getMaNH());
+            map.put("MaLoaiNH", nhaHang.getMaLoaiNH());
+            map.put("MaTK", nhaHang.getMaTK());
+            map.put("TenNH", nhaHang.getTenNH());
+            map.put("ThoiGian", nhaHang.getThoiGian());
+            map.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
+            map.put("HinhAnh", nhaHang.getHinhAnh());
+            map.put("MaDG", nhaHang.getMaDG());
+            map.put("MaYT", nhaHang.getMaYT());
+            reference.document(nhaHang.getMaNH() + "").set(map, SetOptions.merge());
+
+            dialogSuaNH.dismiss();
+            //Cập nhật lại listView
+            getAllNhaHang(getContext());
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void press_favorite(int position){
+        Random random =  new Random();
+        int x = random.nextInt((10000-1+1)+1);
+        String maYT = "YT" + x;
+
+        Intent intent = getActivity().getIntent();
+        String maTK = intent.getStringExtra("MaTK");
+
+        String maNH = listNhaHangTheoLoai.get(position).getMaNH();
+
+        themYeuThichNHToFireStore(new YeuThich(maNH, maTK, maYT));
+    }
+
+
+    // Thêm object nhà hàng lên Firebase
+    private void themYeuThichNHToFireStore(YeuThich yt){
+        final CollectionReference collectionReference = db.collection("YEUTHICH");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("MaNH", yt.getMaNH());
+        data.put("MaTK", yt.getMaTK());
+        data.put("MaYT", yt.getMaYT());
+
+        try {
+            collectionReference.document(yt.getMaYT() + "").set(data);
+
+            //Cập nhật lại mã yêu thích trong bảng nhà hàng lên Firesotore
+            db.collection("NHAHANG").document(yt.getMaNH())
+                    .update(
+                            "MaYT" , yt.getMaYT(),
+                            "MaLoaiNH", "LNH01"
+                    );
+        }catch (Exception e){
+            Log.d("Error_addTKFirebase", e.getMessage());
+        }
     }
 
 }

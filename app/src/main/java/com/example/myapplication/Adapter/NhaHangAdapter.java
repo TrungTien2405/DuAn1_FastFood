@@ -91,7 +91,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-
+                    fragment.press_favorite(position);
                 }else{
 
                 }
@@ -103,7 +103,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             @Override
             public void onClick(View v) {
                 //Gọi Firebase xuống
-                fragment.dialog_suaNH(0);
+                fragment.dialog_suaNH(position);
             }
         });
     }
