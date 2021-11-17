@@ -105,6 +105,15 @@ public class GioHangFragment extends Fragment {
         rcv_GioHang = v.findViewById(R.id.rcv_GioHang);
     }
 
+    //Tính tổng tiền trong giỏ hàng
+    public void tinhTongTien(){
+        TongTienGH = 0;
+        for(GioHangCT gh: listGioHangCT){
+            if(gh.getTrangThaiCheckbox())  TongTienGH += gh.getSoLuong() * gh.getGiaMA();
+        }
+        tvTongTienGH.setText(formatNumber(TongTienGH));
+    }
+
     //Tính tổng giá các món ăn trong giỏ hàng, khi nhấn chọn
     public void checkedGioHang(int positon, int giaMon){
         TongTienGH += giaMon;

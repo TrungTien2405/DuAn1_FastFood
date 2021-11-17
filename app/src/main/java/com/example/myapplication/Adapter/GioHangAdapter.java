@@ -63,6 +63,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                     fragment.checkedGioHang(position, gioHangCT.getGiaMA() * gioHangCT.getSoLuong());
                 }else{
                     fragment.uncheckedGioHang(position, gioHangCT.getGiaMA() * gioHangCT.getSoLuong());
+                    fragment.tinhTongTien();
                 }
             }
         });

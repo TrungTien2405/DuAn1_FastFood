@@ -34,6 +34,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.NhaHangAdapter;
+import com.example.myapplication.LoginActivity;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.Model.DanhGiaNH;
 import com.example.myapplication.Model.LoaiNhaHang;
 import com.example.myapplication.Model.NhaHang;
@@ -134,6 +136,7 @@ public class NhaHangFragment extends Fragment {
     String imageFileName ="";
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,7 +187,14 @@ public class NhaHangFragment extends Fragment {
         rcv_nhahang.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_nhahang, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+//                mIsendDatelistener.sendData(listNhaHangTheoLoai.get(position).getMaNH());
 
+                Bundle bundle = new Bundle();
+                bundle.putString("MaNH", listNhaHangTheoLoai.get(position).getMaNH());
+                MonAnFragment monAnFragment = new MonAnFragment();
+                monAnFragment.setArguments(bundle);
+
+                getFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, monAnFragment).commit();
             }
 
             @Override
