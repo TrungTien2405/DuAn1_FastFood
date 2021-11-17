@@ -75,6 +75,7 @@ public class NhaHangFragment extends Fragment {
     private List<DanhGiaNH> listDanhGia;
     private List<LoaiNhaHang> listLoaiNhaHang;
     private List<NhaHang> listNHSearch ;
+    private List<YeuThich> listYeuThich;
 
     //List cho spinner
     private List<String> listMaLoaiNH;
@@ -115,13 +116,16 @@ public class NhaHangFragment extends Fragment {
     //Dialog Hình thêm nhà hàng
     private ImageView imvHinh;
 
+    public String _maTK;
+
+
 
     // variable for FirebaseAuth class xác thực OTP
     private FirebaseAuth mAuth;
     //Firestore
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     //Image firebase
-    StorageReference storageReference;
+    private StorageReference storageReference;
 
 
     //Load image
@@ -144,6 +148,9 @@ public class NhaHangFragment extends Fragment {
         //Thêm thông tin phần tài khoản màn hình chính
         anhxa(v);
 
+        Intent intent = getActivity().getIntent();
+        _maTK = intent.getStringExtra("MaTK");
+
         rcv_nhahang =v.findViewById(R.id.rcv_restaurant);
         rcv_loainhahang =v.findViewById(R.id.rcv_categoryRes);
 
@@ -151,9 +158,12 @@ public class NhaHangFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
+
+        // Lấy danh yêu thích
+        getAllYeuThich(getContext());
+
         //Lấy danh sách đánh giá xuống
         getAllDanhGia(getContext());
-
 
         //Loại nhà hàng
         rcv_loainhahang.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_loainhahang, new RecyclerTouchListener.ClickListener() {
@@ -203,6 +213,25 @@ public class NhaHangFragment extends Fragment {
         search();
 
         return v;
+    }
+
+    public String getMaTK(){
+        return _maTK;
+    }
+
+    //Kiểm tra những nhà hàng mà tài khoản yêu thích
+    public Boolean check_favorite(String _maYT){
+        try {
+            for(YeuThich yt: listYeuThich){
+                if(yt.getMaYT().equals(_maYT)){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            return false;
+        }
+
+        return false;
     }
 
     private void anhxa(View v){
@@ -269,7 +298,8 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Lỗi get nhà hàng: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====> ", "Lỗi get nhà hàng: " + e.getMessage());
                 }
             }
         });
@@ -375,29 +405,80 @@ public class NhaHangFragment extends Fragment {
         });
     }
 
+    // Lấy danh sách yeu thích
+
+    //Lấy danh sách nhà hàng
+    public void getAllYeuThich(Context context){
+        listLoaiNhaHang = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("YEUTHICH");
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot){
+                            String maNH = doc.get("MaNH").toString();
+                            String maTK = doc.get("MaTK").toString();
+                            String maYT = doc.get("MaYT").toString();
+
+                            if (maTK.equals(_maTK)) {
+                                YeuThich yt = new YeuThich(maNH, maTK, maYT);
+                                listYeuThich.add(yt);
+                            }
+                        }
+
+                        LinearLayoutManager layoutManager
+                                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+                        LoaiNhaHangAdapter adapter  = new LoaiNhaHangAdapter(listLoaiNhaHang, getContext());
+                        rcv_loainhahang.setLayoutManager(layoutManager);
+                        rcv_loainhahang.setAdapter(adapter);
+
+                        //Xuat danh sach nha hang len recycleview
+                        getAllNhaHang(getContext());
+
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     //Xuất List nhà hàng theo loại nhà hàng chọn
     private void getAllNhaHangTheoLoai(int position){
-        //Xuất list lên recycleView nhà hàng
-        listNhaHangTheoLoai = new ArrayList<>();
+        try {
+            //Xuất list lên recycleView nhà hàng
+            listNhaHangTheoLoai = new ArrayList<>();
 
-        String maLoai = listLoaiNhaHang.get(position).getMaLoaiNH();
-        for(NhaHang nh: listNhaHang){
-            if(position == 0 && !nh.getMaYT().isEmpty()){
-                listNhaHangTheoLoai.add(nh);
-            }else if(nh.getMaLoaiNH().equals(maLoai) && position != 0){
-                listNhaHangTheoLoai.add(nh);
+            String maLoai = listLoaiNhaHang.get(position).getMaLoaiNH();
+            for (NhaHang nh : listNhaHang) {
+                if (position == 0 && check_favorite(nh.getMaYT())) {
+                    //Lấy yêu thích của tài khoản
+                    listNhaHangTheoLoai.add(nh);
+                } else if (nh.getMaLoaiNH().equals(maLoai) && position != 0) {
+                    listNhaHangTheoLoai.add(nh);
+                }
             }
+
+            // Lấy danh sách mã loại nhà hàng để đẩy lên spinner
+            listMaLoaiNH = new ArrayList<>();
+            for (LoaiNhaHang lnh : listLoaiNhaHang) {
+                listMaLoaiNH.add(lnh.getMaLoaiNH());
+            }
+
+            NhaHangAdapter adapter = new NhaHangAdapter(listNhaHangTheoLoai, getContext(), this);
+            rcv_nhahang.setLayoutManager(new LinearLayoutManager(getContext()));
+            rcv_nhahang.setAdapter(adapter);
+        }catch (Exception e){
+            //Toast.makeText(getContext(), "Error adapter nha hang: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("===> ", "Error adapter nha hang: " + e.getMessage());
         }
 
-        // Lấy danh sách mã loại nhà hàng để đẩy lên spinner
-        listMaLoaiNH = new ArrayList<>();
-        for(LoaiNhaHang lnh: listLoaiNhaHang){
-            listMaLoaiNH.add(lnh.getMaLoaiNH());
-        }
-
-        NhaHangAdapter adapter  = new NhaHangAdapter(listNhaHangTheoLoai, getContext(), this);
-        rcv_nhahang.setLayoutManager(new LinearLayoutManager(getContext()));
-        rcv_nhahang.setAdapter(adapter);
     }
 
     //Dialog thêm loại nhà hàng
