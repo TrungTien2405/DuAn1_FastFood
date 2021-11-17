@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.Adapter.GioHangAdapter;
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
+import com.example.myapplication.Adapter.NhaHangAdapter;
+import com.example.myapplication.Model.DanhGiaNH;
 import com.example.myapplication.Model.GioHang;
 import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.MonAnNH;
@@ -49,11 +52,9 @@ public class GioHangFragment extends Fragment {
     private MonAnNH monAnNH;
     private GioHangCT gioHangCT;
 
-    FirebaseAuth mAuth;
     //Firestore
-    FirebaseFirestore db;
-    //Image firebase
-    StorageReference storageReference;
+    private FirebaseFirestore db;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,20 +71,28 @@ public class GioHangFragment extends Fragment {
 
         //Gọi Firebase xuống
         db = FirebaseFirestore.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-//        getAllGioHang(getContext());
+
+        getAllGioHang(getContext());
+        getAllMonAn(getContext());
 
         return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getAllGioHang(getContext());
+
+        //Lấy list dữ liệu xuống
+        //getAllGioHang(getContext());
+//        getAllGioHangCT(getContext());
+        //getAllMonAn(getContext());
+
     }
 
     public void getAllGioHang(Context context){
         listGioHang = new ArrayList<>();
+
+        Intent intent = getActivity().getIntent();
+        String _maTK = intent.getStringExtra("MaTK");
 
         final CollectionReference reference = db.collection("GIOHANG");
 
@@ -97,9 +106,14 @@ public class GioHangFragment extends Fragment {
                             String maGH = doc.get("MaGH").toString();
                             String maTK = doc.get("MaTK").toString();
 
+                            if(maTK.equals(_maTK)) {
+                                gioHang = new GioHang(maGH, maTK);
+                                listGioHang.add(gioHang);
 
-                            gioHang = new GioHang(maGH, maTK);
-                            listGioHang.add(gioHang);
+                                // Lấy list giỏ hàng chi tiết
+                                getAllGioHangCT(getContext(), maGH);
+                                break;
+                            }
                         }
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -124,7 +138,7 @@ public class GioHangFragment extends Fragment {
                     if(task.isSuccessful()){
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot) {
-                            String maMA = doc.get("MaGH").toString();
+                            String maMA = doc.get("MaMA").toString();
                             String maNH = doc.get("MaNH").toString();
                             String tenMon = doc.get("TenMon").toString();
                             String maMenuNH = doc.get("MaMenuNH").toString();
@@ -148,8 +162,8 @@ public class GioHangFragment extends Fragment {
     }
 
 
-    public void getAllGioHangCT(Context context){
-        listMonAn = new ArrayList<>();
+    public void getAllGioHangCT(Context context, String _maGH){
+        listGioHangCT = new ArrayList<>();
 
         final CollectionReference reference = db.collection("GIOHANGCT");
 
@@ -163,24 +177,57 @@ public class GioHangFragment extends Fragment {
                             String maMA = doc.get("MaMA").toString();
                             String maGHCT = doc.get("MaGHCT").toString();
                             String maGH = doc.get("MaGH").toString();
-                            int soLuong = Integer.parseInt(doc.get("soLuong").toString());
+                            int soLuong = Integer.parseInt(doc.get("SoLuong").toString());
                             String tenMonThem = doc.get("TenMonThem").toString();
                             String thoiGian = doc.get("ThoiGian").toString();
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
-                            String hinhAnh = doc.get("HinhAnh").toString();
 
-
-                            gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0,"",tenMonThem, thoiGian, trangThai, hinhAnh);
+                            if(_maGH.equals(maGH)) {
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "");
+                                listGioHangCT.add(gioHangCT);
+                            }
                         }
+
+                        // Thêm đầy đủ thông tin vào giỏ hàng chi tiét
+                        getAllDetail_gioHang();
 
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", e.getMessage());
                 }
             }
         });
+    }
+
+    private void adapter_gioHang(){
+        GioHangAdapter adapter  = new GioHangAdapter(listGioHangCT, getContext(), this);
+        rcv_GioHang.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcv_GioHang.setAdapter(adapter);
+    }
+
+    //Cập nhật đầy đủ thông tin giỏ hàng lên listGioHangCT;
+    private void getAllDetail_gioHang(){
+        for(int i=0; i<listGioHangCT.size(); i++){
+            addDetail_gioHang(listGioHangCT.get(i).getMaMA(), i);
+        }
+
+        adapter_gioHang();
+    }
+
+    private void addDetail_gioHang(String maMA, int positon){
+        for(MonAnNH ma: listMonAn){
+            if(maMA.equals(ma.getMaMA())){
+                listGioHangCT.get(positon).setTenMA(ma.getTenMon());
+                listGioHangCT.get(positon).setGiaMA(ma.getGia());
+                listGioHangCT.get(positon).setHinhAnh(ma.getHinhAnh());
+
+                Intent intent = getActivity().getIntent();
+                listGioHangCT.get(positon).setMaTK(intent.getStringExtra("MaTK"));
+            }
+        }
     }
 
 

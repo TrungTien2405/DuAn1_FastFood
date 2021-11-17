@@ -76,7 +76,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         holder.tvDanhGiaTB.setText(nhaHang.getDanhGia()+"");
         holder.tvTenNH.setText(nhaHang.getTenNH());
 
-        if(!nhaHang.getMaYT().isEmpty()) holder.tgb_yeuThich.setChecked(true);
+        if(!nhaHang.getMaYT().isEmpty() && fragment.check_favorite(nhaHang.getMaYT())) holder.tgb_yeuThich.setChecked(true);
 
         if(nhaHang.getHinhAnh().isEmpty()){
             holder.imvHinh.setImageResource(R.drawable.im_food);

@@ -13,18 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Fagment.GioHangFragment;
 import com.example.myapplication.Model.GioHang;
+import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHolder> {
-    public List<GioHang> list;
+    public List<GioHangCT> list;
     public Context context;
     private GioHangFragment fragment;
 
 
-    public GioHangAdapter(List<GioHang> list, Context context, GioHangFragment fragment) {
+    public GioHangAdapter(List<GioHangCT> list, Context context, GioHangFragment fragment) {
         this.list = list;
         this.context = context;
         this.fragment = fragment;
@@ -39,16 +40,16 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        GioHang gioHang = list.get(position);
+        GioHangCT gioHangCT = list.get(position);
 
-        holder.tv_TenMonThem.setText(gioHang.getTenMonThem());
-        holder.tv_SoLuong.setText(gioHang.getSoLuong()+"");
-        holder.tv_giaGH.setText((gioHang.getGiaMA() * gioHang.getSoLuong()) +"");
-        holder.tv_tenMon.setText(gioHang.getTenMA());
+        holder.tv_TenMonThem.setText(gioHangCT.getTenMonThem());
+        holder.tv_SoLuong.setText(gioHangCT.getSoLuong()+"");
+        holder.tv_giaGH.setText((gioHangCT.getGiaMA() * gioHangCT.getSoLuong()) +"");
+        holder.tv_tenMon.setText(gioHangCT.getTenMA());
 
-        if(gioHang.getHinhAnh().isEmpty()){
+        if(gioHangCT.getHinhAnh().isEmpty()){
             holder.imv_hinh.setImageResource(R.drawable.im_food);
-        }else Picasso.with(context).load(gioHang.getHinhAnh()).into(holder.imv_hinh);
+        }else Picasso.with(context).load(gioHangCT.getHinhAnh()).into(holder.imv_hinh);
 
     }
 
@@ -65,7 +66,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            imv_hinh = itemView.findViewById(R.id.imv_itemLoaiNH);
+            imv_hinh = itemView.findViewById(R.id.imv_itemHinhGH);
 //            tv_TenMonGH = itemView.findViewById(R.id.tv_TenMonGH);
             tv_TenMonThem = itemView.findViewById(R.id.tv_itemTenMonThemGH);
             tv_tenMon = itemView.findViewById(R.id.tv_itemTenMonGH);
