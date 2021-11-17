@@ -57,8 +57,10 @@ import java.util.concurrent.TimeUnit;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText edHoTen, edSoDT, edDiaChi, edMaOTP;
+
     ImageButton imBtn_ThemHinhDK;
     ImageView imgTrove, imgHinhDK;
+
     Button btnDangKy, btnXacThucOTP;
 
     // variable for FirebaseAuth class xác thực OTP
@@ -107,6 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Thêm ảnh đại diện
         imBtn_ThemHinhDK.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -122,7 +125,6 @@ public class RegisterActivity extends AppCompatActivity {
 //                startActivityForResult(gallery, GALEERY_REQUEST_CODE);
             }
         });
-
 
         btnDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
