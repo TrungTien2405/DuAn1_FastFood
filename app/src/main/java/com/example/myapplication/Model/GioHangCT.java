@@ -12,8 +12,9 @@ public class GioHangCT {
     private String ThoiGian;
     private int TrangThai;
     private String HinhAnh;
+    private Boolean TrangThaiCheckbox;
 
-    public GioHangCT(String maGH, String maGHCT, String maMA, String maTK, int soLuong, int giaMA, String tenMA, String tenMonThem, String thoiGian, int trangThai, String hinhAnh) {
+    public GioHangCT(String maGH, String maGHCT, String maMA, String maTK, int soLuong, int giaMA, String tenMA, String tenMonThem, String thoiGian, int trangThai, String hinhAnh, Boolean trangThaiCheckbox) {
         MaGH = maGH;
         MaGHCT = maGHCT;
         MaMA = maMA;
@@ -25,6 +26,7 @@ public class GioHangCT {
         ThoiGian = thoiGian;
         TrangThai = trangThai;
         HinhAnh = hinhAnh;
+        TrangThaiCheckbox = trangThaiCheckbox;
     }
 
     public String getMaGH() {
@@ -113,5 +115,13 @@ public class GioHangCT {
 
     public void setHinhAnh(String hinhAnh) {
         HinhAnh = hinhAnh;
+    }
+
+    public Boolean getTrangThaiCheckbox() {
+        return TrangThaiCheckbox;
+    }
+
+    public void setTrangThaiCheckbox(Boolean trangThaiCheckbox) {
+        TrangThaiCheckbox = trangThaiCheckbox;
     }
 }

@@ -406,10 +406,8 @@ public class NhaHangFragment extends Fragment {
     }
 
     // Lấy danh sách yeu thích
-
-    //Lấy danh sách nhà hàng
     public void getAllYeuThich(Context context){
-        listLoaiNhaHang = new ArrayList<>();
+        listYeuThich = new ArrayList<>();
 
         final CollectionReference reference = db.collection("YEUTHICH");
         reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -428,16 +426,6 @@ public class NhaHangFragment extends Fragment {
                                 listYeuThich.add(yt);
                             }
                         }
-
-                        LinearLayoutManager layoutManager
-                                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-
-                        LoaiNhaHangAdapter adapter  = new LoaiNhaHangAdapter(listLoaiNhaHang, getContext());
-                        rcv_loainhahang.setLayoutManager(layoutManager);
-                        rcv_loainhahang.setAdapter(adapter);
-
-                        //Xuat danh sach nha hang len recycleview
-                        getAllNhaHang(getContext());
 
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -795,8 +783,10 @@ public class NhaHangFragment extends Fragment {
                                 "MaYT" , ""
                         );
 
-                //getAllNhaHangTheoLoai(viTriLoaiNH);
+                // Lấy danh yêu thích
+                getAllYeuThich(getContext());
 
+                //Lấy danh sách đánh giá xuống
                 getAllDanhGia(getContext());
             }
         });
@@ -1084,6 +1074,10 @@ public class NhaHangFragment extends Fragment {
                     ).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                    // Lấy danh yêu thích
+                    getAllYeuThich(getContext());
+
+                    //Lấy danh sách đánh giá xuống
                     getAllDanhGia(getContext());
                 }
             });
