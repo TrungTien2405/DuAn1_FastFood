@@ -85,7 +85,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_$"
+                android:id="@+id/tv_fgg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -102,7 +102,7 @@
                 android:layout_marginLeft="2dp"
                 android:fontFamily="@font/vollkorn_variablefont_wght"
                 app:layout_constraintBottom_toBottomOf="@+id/constraintLayout5"
-                app:layout_constraintStart_toEndOf="@+id/tv_$"
+                app:layout_constraintStart_toEndOf="@+id/imv_icCar"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout5"
                 tools:layout_editor_absoluteX="78dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
