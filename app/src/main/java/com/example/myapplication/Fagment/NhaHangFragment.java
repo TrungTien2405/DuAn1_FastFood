@@ -34,6 +34,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.NhaHangAdapter;
+import com.example.myapplication.LoginActivity;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.Model.DanhGiaNH;
 import com.example.myapplication.Model.LoaiNhaHang;
 import com.example.myapplication.Model.NhaHang;
@@ -134,6 +136,7 @@ public class NhaHangFragment extends Fragment {
     String imageFileName ="";
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,7 +187,14 @@ public class NhaHangFragment extends Fragment {
         rcv_nhahang.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_nhahang, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+//                mIsendDatelistener.sendData(listNhaHangTheoLoai.get(position).getMaNH());
 
+                Bundle bundle = new Bundle();
+                bundle.putString("MaNH", listNhaHangTheoLoai.get(position).getMaNH());
+                MonAnFragment monAnFragment = new MonAnFragment();
+                monAnFragment.setArguments(bundle);
+
+                getFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, monAnFragment).commit();
             }
 
             @Override
@@ -406,10 +416,8 @@ public class NhaHangFragment extends Fragment {
     }
 
     // Lấy danh sách yeu thích
-
-    //Lấy danh sách nhà hàng
     public void getAllYeuThich(Context context){
-        listLoaiNhaHang = new ArrayList<>();
+        listYeuThich = new ArrayList<>();
 
         final CollectionReference reference = db.collection("YEUTHICH");
         reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -428,16 +436,6 @@ public class NhaHangFragment extends Fragment {
                                 listYeuThich.add(yt);
                             }
                         }
-
-                        LinearLayoutManager layoutManager
-                                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-
-                        LoaiNhaHangAdapter adapter  = new LoaiNhaHangAdapter(listLoaiNhaHang, getContext());
-                        rcv_loainhahang.setLayoutManager(layoutManager);
-                        rcv_loainhahang.setAdapter(adapter);
-
-                        //Xuat danh sach nha hang len recycleview
-                        getAllNhaHang(getContext());
 
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -795,8 +793,10 @@ public class NhaHangFragment extends Fragment {
                                 "MaYT" , ""
                         );
 
-                //getAllNhaHangTheoLoai(viTriLoaiNH);
+                // Lấy danh yêu thích
+                getAllYeuThich(getContext());
 
+                //Lấy danh sách đánh giá xuống
                 getAllDanhGia(getContext());
             }
         });
@@ -1084,6 +1084,10 @@ public class NhaHangFragment extends Fragment {
                     ).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                    // Lấy danh yêu thích
+                    getAllYeuThich(getContext());
+
+                    //Lấy danh sách đánh giá xuống
                     getAllDanhGia(getContext());
                 }
             });

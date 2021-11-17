@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +18,9 @@ import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHolder> {
     public List<GioHangCT> list;
@@ -44,13 +47,60 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
 
         holder.tv_TenMonThem.setText(gioHangCT.getTenMonThem());
         holder.tv_SoLuong.setText(gioHangCT.getSoLuong()+"");
-        holder.tv_giaGH.setText((gioHangCT.getGiaMA() * gioHangCT.getSoLuong()) +"");
+        holder.tv_giaGH.setText((formatNumber( gioHangCT.getGiaMA() * gioHangCT.getSoLuong())) +"");
         holder.tv_tenMon.setText(gioHangCT.getTenMA());
 
         if(gioHangCT.getHinhAnh().isEmpty()){
             holder.imv_hinh.setImageResource(R.drawable.im_food);
         }else Picasso.with(context).load(gioHangCT.getHinhAnh()).into(holder.imv_hinh);
 
+
+        //Nhấn Checkbox chọn món ăn, tăng tổng giá món ăn
+        holder.chk_chonItemGH.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    fragment.checkedGioHang(position, gioHangCT.getGiaMA() * gioHangCT.getSoLuong());
+                }else{
+                    fragment.uncheckedGioHang(position, gioHangCT.getGiaMA() * gioHangCT.getSoLuong());
+                    fragment.tinhTongTien();
+                }
+            }
+        });
+
+        //Nhấn tăng số lượng món ăn
+        holder.imv_CongSoLuong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int soLuong = gioHangCT.getSoLuong() + 1;
+
+                holder.tv_SoLuong.setText(soLuong+"");
+                holder.tv_giaGH.setText((formatNumber(soLuong * gioHangCT.getGiaMA())));
+                fragment.updateSoLuongGH(gioHangCT.getMaGHCT(), soLuong, position);
+
+                if(holder.chk_chonItemGH.isChecked()){
+                    fragment.TongTienGH += gioHangCT.getGiaMA();
+                    fragment.tvTongTienGH.setText(formatNumber(fragment.TongTienGH));
+                }
+            }
+        });
+
+        //Nhấn giảm số lượng món ăn
+        holder.imv_TruSoLuong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int soLuong = gioHangCT.getSoLuong() - 1;
+
+                holder.tv_SoLuong.setText(soLuong+"");
+                holder.tv_giaGH.setText((formatNumber( soLuong * gioHangCT.getGiaMA())));
+                fragment.updateSoLuongGH(gioHangCT.getMaGHCT(), soLuong, position);
+
+                if(holder.chk_chonItemGH.isChecked()){
+                    fragment.TongTienGH -= gioHangCT.getGiaMA();
+                    fragment.tvTongTienGH.setText(formatNumber(fragment.TongTienGH));
+                }
+            }
+        });
     }
 
     @Override
@@ -76,5 +126,20 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
             imv_TruSoLuong = itemView.findViewById(R.id.img_itemTruSoLuongGH);
             chk_chonItemGH = itemView.findViewById(R.id.chk_ItemChonGH);
         }
+    }
+
+    // Định dạng sang số tiền
+    private String formatNumber(int number){
+        // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
+        Locale localeEN = new Locale("en", "EN");
+        NumberFormat en = NumberFormat.getInstance(localeEN);
+
+        return en.format(number);
+    }
+
+    public void updateData(List<GioHangCT> viewModels) {
+        list.clear();
+        list.addAll(viewModels);
+        notifyDataSetChanged();
     }
 }

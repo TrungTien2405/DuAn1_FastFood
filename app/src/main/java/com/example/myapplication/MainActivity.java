@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.Fagment.CaiDatFragment;
 import com.example.myapplication.Fagment.GioHangFragment;
+import com.example.myapplication.Fagment.MonAnFragment;
 import com.example.myapplication.Fagment.NhaHangFragment;
 import com.example.myapplication.Fagment.QLTaiKhoanFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +29,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     public DrawerLayout drawerLayout;
     public BottomNavigationView bottomNavigation;
 
@@ -86,4 +87,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+
 }
