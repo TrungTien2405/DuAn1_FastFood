@@ -31,6 +31,7 @@ public class MonAnFragment extends Fragment {
         Toast.makeText(getContext(), maNH, Toast.LENGTH_SHORT).show();
 
         return inflater.inflate(R.layout.fragment_mon_an, container, false);
+
     }
 
 }
