@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                     QuerySnapshot snapshot = task.getResult();
                     for(QueryDocumentSnapshot doc: snapshot){
                         if(username.equals(doc.get("SDT")) && password.equals(doc.get("MatKhau"))){
+
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("SDT", username);
                             intent.putExtra("HoTen", doc.get("HoTen").toString());
