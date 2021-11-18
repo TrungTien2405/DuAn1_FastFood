@@ -187,14 +187,6 @@ public class NhaHangFragment extends Fragment {
         rcv_nhahang.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_nhahang, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-//                mIsendDatelistener.sendData(listNhaHangTheoLoai.get(position).getMaNH());
-
-                Bundle bundle = new Bundle();
-                bundle.putString("MaNH", listNhaHangTheoLoai.get(position).getMaNH());
-                MonAnFragment monAnFragment = new MonAnFragment();
-                monAnFragment.setArguments(bundle);
-
-                getFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, monAnFragment).commit();
             }
 
             @Override
@@ -229,11 +221,21 @@ public class NhaHangFragment extends Fragment {
         return _maTK;
     }
 
+    public void chuyenDenFragmentMonAN(String _maNH){
+        Bundle bundle = new Bundle();
+        bundle.putString("MaNH", _maNH);
+        MonAnFragment monAnFragment = new MonAnFragment();
+        monAnFragment.setArguments(bundle);
+
+        getFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, monAnFragment).commit();
+    }
+
     //Kiểm tra những nhà hàng mà tài khoản yêu thích
-    public Boolean check_favorite(String _maYT){
+    public Boolean check_favorite(String _maNH, int position){
         try {
             for(YeuThich yt: listYeuThich){
-                if(yt.getMaYT().equals(_maYT)){
+                if(yt.getMaNH().equals(_maNH)){
+                    listNhaHang.get(position).setMaYT(yt.getMaYT());
                     return true;
                 }
             }
@@ -243,6 +245,7 @@ public class NhaHangFragment extends Fragment {
 
         return false;
     }
+
 
     private void anhxa(View v){
         tvTenTK = v.findViewById(R.id.tv_tenTaiKhoan_NhaHang);
@@ -290,10 +293,9 @@ public class NhaHangFragment extends Fragment {
                             int PhiVanChuyen = Integer.parseInt(doc.get("PhiVanChuyen").toString());
                             String HinhAnh = doc.get("HinhAnh").toString();
                             String MaDG = doc.get("MaDG").toString();
-                            String MaYT = doc.get("MaYT").toString();
 
                             Double danhGia = tinhDanhGiaTB(MaNH);
-                            nhaHang = new NhaHang(MaNH, MaLoaiNH, MaTK, TenNH, ThoiGian, PhiVanChuyen, HinhAnh, danhGia, MaDG, MaYT);
+                            nhaHang = new NhaHang(MaNH, MaLoaiNH, MaTK, TenNH, ThoiGian, PhiVanChuyen, HinhAnh, danhGia, MaDG, "");
                             listNhaHang.add(nhaHang);
 
                         }
@@ -454,12 +456,12 @@ public class NhaHangFragment extends Fragment {
             listNhaHangTheoLoai = new ArrayList<>();
 
             String maLoai = listLoaiNhaHang.get(position).getMaLoaiNH();
-            for (NhaHang nh : listNhaHang) {
-                if (position == 0 && check_favorite(nh.getMaYT())) {
+            for (int i=0; i<listNhaHang.size(); i++) {
+                if (position == 0 && check_favorite(listNhaHang.get(i).getMaNH(), i)) {
                     //Lấy yêu thích của tài khoản
-                    listNhaHangTheoLoai.add(nh);
-                } else if (nh.getMaLoaiNH().equals(maLoai) && position != 0) {
-                    listNhaHangTheoLoai.add(nh);
+                    listNhaHangTheoLoai.add(listNhaHang.get(i));
+                } else if (listNhaHang.get(i).getMaLoaiNH().equals(maLoai) && position != 0) {
+                    listNhaHangTheoLoai.add(listNhaHang.get(i));
                 }
             }
 
@@ -787,11 +789,6 @@ public class NhaHangFragment extends Fragment {
                 .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                //Cập nhật lại mã yêu thích trong bảng nhà hàng lên Firesotore
-                db.collection("NHAHANG").document(listNhaHangTheoLoai.get(position).getMaNH())
-                        .update(
-                                "MaYT" , ""
-                        );
 
                 // Lấy danh yêu thích
                 getAllYeuThich(getContext());
@@ -1077,20 +1074,11 @@ public class NhaHangFragment extends Fragment {
         try {
             collectionReference.document(yt.getMaYT() + "").set(data);
 
-            //Cập nhật lại mã yêu thích trong bảng nhà hàng lên Firesotore
-            db.collection("NHAHANG").document(yt.getMaNH())
-                    .update(
-                            "MaYT" , yt.getMaYT()
-                    ).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    // Lấy danh yêu thích
-                    getAllYeuThich(getContext());
+            // Lấy danh yêu thích
+            getAllYeuThich(getContext());
 
-                    //Lấy danh sách đánh giá xuống
-                    getAllDanhGia(getContext());
-                }
-            });
+            //Lấy danh sách đánh giá xuống
+            getAllDanhGia(getContext());
         }catch (Exception e){
             Log.d("Error_addTKFirebase", e.getMessage());
         }
