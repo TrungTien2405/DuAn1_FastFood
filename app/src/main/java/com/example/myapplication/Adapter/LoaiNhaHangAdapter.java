@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.Fagment.NhaHangFragment;
 import com.example.myapplication.Model.LoaiNhaHang;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
