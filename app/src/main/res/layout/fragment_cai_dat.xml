@@ -15,9 +15,10 @@
         android:layout_height="166dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="10dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/layout_contrain_thongtincanhan"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="10dp">
+        tools:layout_editor_absoluteX="9dp">
 
 
         <androidx.cardview.widget.CardView
@@ -49,11 +50,11 @@
 
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_SoDuCD"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:background="@drawable/custom_edt"
                 android:paddingLeft="10dp"
-                android:id="@+id/tv_SoDuCD"
                 android:text="Số dư: 23.000.000 VND"
                 android:textSize="15dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -155,11 +156,22 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <ImageButton
-        android:id="@+id/imgbtn_DoiMKCD"
+        android:id="@+id/imgbtn_SPDaMuaCD"
         android:layout_width="30dp"
         android:layout_height="35dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="172dp"
+        android:background="@null"
+        android:src="@drawable/ic_doimatkhau"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <ImageButton
+        android:id="@+id/imgbtn_DoiMKCD"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="224dp"
         android:background="@null"
         android:src="@drawable/ic_doanhthu"
         app:layout_constraintStart_toStartOf="parent"
@@ -170,14 +182,14 @@
         android:layout_width="30dp"
         android:layout_height="35dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="268dp"
         android:background="@null"
         android:src="@drawable/ic_chunhahang"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
-        android:id="@+id/tv_ThongTinUngDung"
+        android:id="@+id/tv_ThongTinUngDungCD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -187,7 +199,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
-        android:id="@+id/tv_HoTro"
+        android:id="@+id/tv_HoTroCD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -197,7 +209,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tv_DoiMKCD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -207,21 +219,21 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
-        android:id="@+id/tv_DoanhThu"
+        android:id="@+id/tv_DoanhThuCD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="232dp"
         android:text="Doanh thu"
         app:layout_constraintStart_toEndOf="@+id/imgbtn_DoiMKCD"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
-        android:id="@+id/tv_ThemChuNhaHang"
+        android:id="@+id/tv_ThemChuNhaHangCD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="276dp"
         android:text="Thêm chủ nhà hàng"
         app:layout_constraintStart_toEndOf="@+id/imgbtn_ThemChuNhaHangCD"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -231,14 +243,24 @@
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="100dp"
         android:background="@drawable/custom_button"
         android:text="Đăng xuất"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.65"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ThemChuNhaHang" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_ThemChuNhaHangCD" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="180dp"
+        android:text="Sản phẩm đã mua"
+        app:layout_constraintStart_toEndOf="@+id/imgbtn_SPDaMuaCD"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

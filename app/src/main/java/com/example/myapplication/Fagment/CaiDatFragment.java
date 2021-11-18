@@ -15,13 +15,13 @@ import com.example.myapplication.R;
 
 
 public class CaiDatFragment extends Fragment {
-    TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu;
+    TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
+//    getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new ThongTinUDFragment).commit();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -30,7 +30,17 @@ public class CaiDatFragment extends Fragment {
         tvSDT=v.findViewById(R.id.tv_SDTKHCD);
         tvDiaChi=v.findViewById(R.id.tv_DiaChiKHCD);
         tvSoDu=v.findViewById(R.id.tv_SoDuCD);
+        tvThongTinUD=v.findViewById(R.id.tv_ThongTinUngDungCD);
+        tvHoTro=v.findViewById(R.id.tv_HoTroCD);
         getDataIntent();
+
+        tvThongTinUD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new ThongTinUDFragment()).commit();
+            }
+        });
+
         return v;
 
     }
@@ -45,4 +55,5 @@ public class CaiDatFragment extends Fragment {
         String soDu=intent.getStringExtra("SoDu");
         tvSoDu.setText(soDu);
     }
+
 }
