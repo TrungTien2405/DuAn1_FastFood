@@ -198,7 +198,6 @@ public class GioHangFragment extends Fragment {
                             int gia = Integer.parseInt(doc.get("Gia").toString());
                             String hinhAnh = doc.get("HinhAnh").toString();
 
-
                             monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, gia, hinhAnh);
                             listMonAn.add(monAnNH);
                         }
