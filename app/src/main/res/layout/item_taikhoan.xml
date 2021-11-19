@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_margin="5dp"
+    android:layout_margin="10dp"
     android:background="@drawable/custom_item_taikhoan">
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="25dp"
-        android:id="@+id/tvItemHinhTK"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/imgv_ItemHinhTK"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,8 +22,9 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:layout_marginLeft="252dp"
-            android:background="@drawable/layout_chinhsua"
+            android:layout_gravity="right"
+            android:background="@drawable/custom_btn_xoatk"
+            android:textColor="@color/white"
             android:text="Xóa"
             android:fontFamily="@font/vollkorn_variablefont_wght"
             android:id="@+id/tvXoaItemTK"/>
@@ -29,26 +32,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:fontFamily="@font/merriweather_bold"
+            android:fontFamily="@font/asap_medium"
+            android:textColor="@color/white"
             android:text="Nguyễn Trung Tiến"
             android:id="@+id/tvItemHoTenTK"
             android:layout_marginLeft="5dp"
-            android:textSize="24dp"/>
+            android:textSize="22dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvItemSoDTTK"
-            android:fontFamily="@font/merriweather_bold"
+            android:fontFamily="@font/asap_medium"
+            android:textColor="@color/white"
             android:layout_marginLeft="5dp"
             android:layout_margin="5dp"
-            android:textSize="18dp"/>
+            android:textSize="16dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/merriweather_bold"
+            android:fontFamily="@font/asap_medium"
+            android:textColor="@color/white"
             android:layout_marginLeft="5dp"
             android:layout_margin="5dp"
             android:id="@+id/tvItemDiaChiTK"
-            android:textSize="18dp"/>
+            android:textSize="16dp"/>
     </LinearLayout>
 </LinearLayout>
