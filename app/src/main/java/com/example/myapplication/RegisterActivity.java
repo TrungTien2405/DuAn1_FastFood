@@ -180,6 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    //Thêm tài khoản vào firestore
     private void themTaiKhoanToFireStore(TaiKhoan taiKhoan){
         final CollectionReference collectionReference = db.collection("TAIKHOAN");
 

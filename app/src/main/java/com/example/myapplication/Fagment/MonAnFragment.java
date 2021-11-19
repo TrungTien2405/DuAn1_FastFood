@@ -67,6 +67,9 @@ public class MonAnFragment extends Fragment {
     public void getAllMonAn(Context context){
         listMonAn = new ArrayList<>();
 
+        Intent intent = getActivity().getIntent();
+        String _maNH = intent.getStringExtra("MaNH");
+
         final CollectionReference reference = db.collection("MONANNH");
 
         reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
