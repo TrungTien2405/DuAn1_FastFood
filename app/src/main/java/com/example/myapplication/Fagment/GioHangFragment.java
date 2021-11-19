@@ -139,6 +139,28 @@ public class GioHangFragment extends Fragment {
 
         return en.format(number);
     }
+
+
+    // Duyệt danh sách kiểm tra xem item nào có chọn Checkbox thì xóa nó
+    public void clickThanhToan(){
+        int duyet = 0;
+        for(GioHangCT gh: listGioHangCT){
+            if(gh.getTrangThaiCheckbox()) {
+
+                gh.setTrangThai(1);
+
+                //Cập nhật thông tin
+                db.collection("GIOHANGCT").document(gh.getMaGHCT())
+                        .update(
+                                "TrangThai", 1
+                        );
+            }
+        }
+
+        if(duyet == 0) Toast.makeText(getContext(), "Bạn chưa chọn checkbox nào!!", Toast.LENGTH_SHORT).show();
+    }
+
+
     //Lấy danh sách giỏ hàng từ Firebase xuống
     public void getAllGioHang(Context context){
         listGioHang = new ArrayList<>();
