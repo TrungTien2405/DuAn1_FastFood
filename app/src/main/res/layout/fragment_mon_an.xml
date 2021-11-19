@@ -30,7 +30,7 @@
         android:id="@+id/imv_toGioHang"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_giohang"
+        android:src="@drawable/ic_giohangs"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"
         app:layout_constraintEnd_toEndOf="@+id/imv_HinhNenMA"
         app:layout_constraintHorizontal_bias="0.948"

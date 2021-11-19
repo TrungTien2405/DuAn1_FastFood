@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="5dp"
+    android:background="@drawable/custom_item_taikhoan">
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="25dp"
+        android:id="@+id/tvItemHinhTK"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginLeft="252dp"
+            android:background="@drawable/layout_chinhsua"
+            android:text="Xóa"
+            android:fontFamily="@font/vollkorn_variablefont_wght"
+            android:id="@+id/tvXoaItemTK"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/merriweather_bold"
+            android:text="Nguyễn Trung Tiến"
+            android:id="@+id/tvItemHoTenTK"
+            android:layout_marginLeft="5dp"
+            android:textSize="24dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvItemSoDTTK"
+            android:fontFamily="@font/merriweather_bold"
+            android:layout_marginLeft="5dp"
+            android:layout_margin="5dp"
+            android:textSize="18dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/merriweather_bold"
+            android:layout_marginLeft="5dp"
+            android:layout_margin="5dp"
+            android:id="@+id/tvItemDiaChiTK"
+            android:textSize="18dp"/>
+    </LinearLayout>
+</LinearLayout>
