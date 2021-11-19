@@ -13,7 +13,7 @@
         app:tabGravity="fill"
         app:tabMode="fixed"
         android:id="@+id/tabLayout"
-        android:background="@drawable/custom_tablayout">
+        android:background="@color/mauchinh">
     </com.google.android.material.tabs.TabLayout>
     <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
