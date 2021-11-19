@@ -84,6 +84,14 @@ public class LichSuMuaFragment extends Fragment {
             }
         });
 
+        imvTroVe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new CaiDatFragment()).commit();
+
+            }
+        });
+
         // Inflate the layout for this fragment
         return v;
     }
