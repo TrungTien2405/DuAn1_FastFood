@@ -233,7 +233,7 @@ public class GioHangFragment extends Fragment {
                             String thoiGian = doc.get("ThoiGian").toString();
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
 
-                            if(_maGH.equals(maGH)) {
+                            if(_maGH.equals(maGH) && trangThai==0) {
                                 gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
                                 listGioHangCT.add(gioHangCT);
                             }
