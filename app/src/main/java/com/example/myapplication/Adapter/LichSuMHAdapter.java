@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,6 +61,15 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
             holder.imvHinhMA.setImageResource(R.drawable.im_food);
         }else Picasso.with(context).load(gioHangCT.getHinhAnh()).into(holder.imvHinhMA);
 
+        holder.chkChon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    fragment.checkedGioHang(position);
+                }else fragment.checkedGioHang(position);
+            }
+        });
+
     }
 
     @Override
@@ -69,6 +80,7 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
     public class MyViewholder extends RecyclerView.ViewHolder {
         TextView tvTenND, tvDiaChi, tvSDT, tvGia, tvTenNH, tvTenMA;
         ImageView imvHinhMA;
+        CheckBox chkChon;
 
         public MyViewholder(@NonNull View itemView) {
             super(itemView);
@@ -79,7 +91,7 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
             tvTenND = itemView.findViewById(R.id.tv_itemTenNguoiLS);
             tvSDT = itemView.findViewById(R.id.tv_itemSDTLS);
             imvHinhMA = itemView.findViewById(R.id.imv_itemHinhLS);
-
+            chkChon = itemView.findViewById(R.id.chk_itemLSMH);
         }
     }
 

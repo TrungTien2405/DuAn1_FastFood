@@ -77,6 +77,13 @@ public class LichSuMuaFragment extends Fragment {
         getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống
         getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firebase xuống
 
+        tvXoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickXoa();
+            }
+        });
+
         // Inflate the layout for this fragment
         return v;
     }
@@ -96,6 +103,18 @@ public class LichSuMuaFragment extends Fragment {
 
         return en.format(number);
     }
+
+    //Tính tổng giá các món ăn trong giỏ hàng, khi nhấn chọn
+    public void checkedGioHang(int positon){
+        listGioHangCT.get(positon).setTrangThaiCheckbox(true); // lưu lại các món ăn đã nhấn chọn
+    }
+
+    //Tính hiệu giá các món ăn trong giỏ hàng, khi nhấn chọn
+    public void uncheckedGioHang(int positon){
+        listGioHangCT.get(positon).setTrangThaiCheckbox(false); // lưu lại các món ăn đã nhấn chọn
+    }
+
+
     //Lấy danh sách giỏ hàng từ Firebase xuống
     public void getAllGioHang(Context context){
         listGioHang = new ArrayList<>();
@@ -248,6 +267,7 @@ public class LichSuMuaFragment extends Fragment {
         }
     }
 
+    // Duyệt danh sách kiểm tra xem item nào có chọn Checkbox thì xóa nó
     public void clickXoa(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -258,11 +278,15 @@ public class LichSuMuaFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         try {
+                            int duyet = 0;
                             for(GioHangCT gh: listGioHangCT){
-                                if(gh.getTrangThaiCheckbox()){
-                                    deleteGioHangGioHangCTFirestore(gh.getMaGH(), gh.getMaGHCT());
+                                if(gh.getTrangThaiCheckbox()) {
+                                    deleteGioHangCTFirestore(gh.getMaGHCT());
+                                    duyet = 1;
                                 }
                             }
+
+                            if(duyet == 0) Toast.makeText(getContext(), "Bạn chưa chọn checkbox nào!!", Toast.LENGTH_SHORT).show();
                         }catch (Exception e){
                             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -279,9 +303,7 @@ public class LichSuMuaFragment extends Fragment {
     }
 
     // Xóa món ăn trong giỏ hàng
-    public void deleteGioHangGioHangCTFirestore(String _maGH, String _maGHCT){
-        db.collection("GIOHANG").document(_maGH)
-                .delete();
+    private void deleteGioHangCTFirestore(String _maGHCT){
 
         db.collection("GIOHANGCT").document(_maGHCT)
                 .delete();
