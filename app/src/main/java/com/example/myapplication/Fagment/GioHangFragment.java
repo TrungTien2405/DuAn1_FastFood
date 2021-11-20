@@ -55,11 +55,13 @@ public class GioHangFragment extends Fragment {
 
     private List<MonAnNH> listMonAn;
     private List<GioHang> listGioHang;
-    public List<GioHangCT> listGioHangCT;
+    private List<GioHangCT> listGioHangCT;
 
     private GioHang gioHang;
     private MonAnNH monAnNH;
     private GioHangCT gioHangCT;
+
+    private int soDuTK; //Số tiền của người đăng nhập
 
     //Số tiền được tính tổng từ các món ăn đã chọn checkbox trong giỏ hàng
     public int TongTienGH = 0;
@@ -86,12 +88,21 @@ public class GioHangFragment extends Fragment {
 
         getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống
         getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firebase xuống
+        getSoDuND(getContext()); // Lấy số tiền của người dùng
 
         //Nhấn xóa
         tvXoaGH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickXoa();
+            }
+        });
+
+        //Nhấn nút thanh toán
+        btnThanhToanGH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickThanhToan();
             }
         });
 
@@ -141,23 +152,81 @@ public class GioHangFragment extends Fragment {
     }
 
 
-    // Duyệt danh sách kiểm tra xem item nào có chọn Checkbox thì xóa nó
+    // Duyệt danh sách kiểm tra xem item nào có chọn Checkbox thì chọn thanh toán
     public void clickThanhToan(){
         int duyet = 0;
+        Intent intent = getActivity().getIntent();
+        String maTK = intent.getStringExtra("MaTK");
+
         for(GioHangCT gh: listGioHangCT){
             if(gh.getTrangThaiCheckbox()) {
+                duyet = 1; //xác nhận đã có checkbox chọn
 
-                gh.setTrangThai(1);
+                int _soDuTK = soDuTK - (gh.getGiaMA() * gh.getSoLuong());
+                if(_soDuTK>=0) {
+                    soDuTK = _soDuTK;
+                    gh.setTrangThai(1);
 
-                //Cập nhật thông tin
-                db.collection("GIOHANGCT").document(gh.getMaGHCT())
-                        .update(
-                                "TrangThai", 1
-                        );
+                    //Cập nhật thông tin
+                    db.collection("GIOHANGCT").document(gh.getMaGHCT())
+                            .update(
+                                    "TrangThai", 1
+                            );
+
+                    //Cập nhật thông tin
+                    db.collection("TAIKHOAN").document(maTK)
+                            .update(
+                                    "SoDu", soDuTK
+                            );
+                }else{
+                    Toast.makeText(getContext(), "Số dư tài khoản của bạn không đủ", Toast.LENGTH_SHORT).show();
+                }
             }
+
+
         }
 
-        if(duyet == 0) Toast.makeText(getContext(), "Bạn chưa chọn checkbox nào!!", Toast.LENGTH_SHORT).show();
+        //cập nhật lại list
+        getAllGioHang(getContext());
+        if(duyet == 0){
+            Toast.makeText(getContext(), "Bạn chưa chọn checkbox nào!!", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getContext(), "Bạn đã mua hàng thành công", Toast.LENGTH_SHORT).show();
+            tvTongTienGH.setText("0");
+        }
+    }
+
+
+    //Lấy danh sách giỏ hàng từ Firebase xuống
+    public void getSoDuND(Context context){
+        Intent intent = getActivity().getIntent();
+        String _maTK = intent.getStringExtra("MaTK");
+
+        final CollectionReference reference = db.collection("TAIKHOAN");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String soDu = doc.get("SoDu").toString();
+                            String maTK = doc.get("MaTK").toString();
+
+                            if(maTK.equals(_maTK)) {
+                                soDuTK  = Integer.parseInt(soDu);
+                                return;
+                            }
+                        }
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 

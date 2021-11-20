@@ -74,7 +74,12 @@ public class MainActivity extends AppCompatActivity{
                     return true;
 
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, fragment).commit();
+
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                    .replace(R.id.nav_FrameFragment, fragment)
+                    .addToBackStack(null)
+                    .commit();
             return false;
         }
 

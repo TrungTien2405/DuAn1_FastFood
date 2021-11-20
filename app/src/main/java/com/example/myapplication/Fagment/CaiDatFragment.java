@@ -38,15 +38,24 @@ public class CaiDatFragment extends Fragment {
         tvThongTinUD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new ThongTinUDFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new ThongTinUDFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
         tvLSMua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new LichSuMuaFragment()).commit();
 
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new LichSuMuaFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

@@ -2,6 +2,7 @@ package com.example.myapplication.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,32 +44,36 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewholder holder, int position) {
-        GioHangCT gioHangCT = list.get(position);
+        try {
+            GioHangCT gioHangCT = list.get(position);
 
-        Intent intent = fragment.getActivity().getIntent();
-        String hoTen = intent.getStringExtra("HoTen");
-        String diaChi = intent.getStringExtra("DiaChi");
-        String sdt = intent.getStringExtra("SDT");
+            Intent intent = fragment.getActivity().getIntent();
+            String hoTen = intent.getStringExtra("HoTen");
+            String diaChi = intent.getStringExtra("DiaChi");
+            String sdt = intent.getStringExtra("SDT");
 
-        holder.tvTenND.setText(hoTen);
-        holder.tvSDT.setText(sdt);
-        holder.tvDiaChi.setText(diaChi);
-        holder.tvTenMA.setText(gioHangCT.getTenMA());
-        holder.tvTenNH.setText("");
-        holder.tvGia.setText(formatNumber(gioHangCT.getGiaMA())+" VND");
+            holder.tvTenND.setText(hoTen);
+            holder.tvSDT.setText(sdt);
+            holder.tvDiaChi.setText(diaChi);
+            holder.tvTenMA.setText(gioHangCT.getTenMA());
+            holder.tvTenNH.setText("");
+            holder.tvGia.setText(formatNumber(gioHangCT.getGiaMA()) + " VND");
 
-        if(gioHangCT.getHinhAnh().isEmpty()){
-            holder.imvHinhMA.setImageResource(R.drawable.im_food);
-        }else Picasso.with(context).load(gioHangCT.getHinhAnh()).into(holder.imvHinhMA);
+            if (gioHangCT.getHinhAnh().isEmpty()) {
+                holder.imvHinhMA.setImageResource(R.drawable.im_food);
+            } else Picasso.with(context).load(gioHangCT.getHinhAnh()).into(holder.imvHinhMA);
 
-        holder.chkChon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    fragment.checkedGioHang(position);
-                }else fragment.checkedGioHang(position);
-            }
-        });
+            holder.chkChon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        fragment.checkedGioHang(position);
+                    } else fragment.checkedGioHang(position);
+                }
+            });
+        }catch (Exception e){
+            Log.d("===>", e.getMessage());
+        }
 
     }
 
