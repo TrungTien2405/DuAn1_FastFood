@@ -25,9 +25,13 @@ import java.util.logging.LogManager;
 
 
 public class CaiDatFragment extends Fragment {
-    TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro;
+
+
     Button btnDangXuat;
     private FirebaseAuth auth;
+
+    TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro, tvLSMua;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +49,12 @@ public class CaiDatFragment extends Fragment {
         tvSoDu=v.findViewById(R.id.tv_SoDuCD);
         tvThongTinUD=v.findViewById(R.id.tv_ThongTinUngDungCD);
         tvHoTro=v.findViewById(R.id.tv_HoTroCD);
+
         btnDangXuat=v.findViewById(R.id.btn_DangXuatCD);
-        getDataIntent();
+
+        tvLSMua=v.findViewById(R.id.tv_lsMuaHangCD);
+
+//        getDataIntent();
 
 
         tvThongTinUD.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +63,7 @@ public class CaiDatFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new ThongTinUDFragment()).commit();
             }
         });
+
 
         tvHoTro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +76,12 @@ public class CaiDatFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 signOut();
+
+        tvLSMua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new LichSuMuaFragment()).commit();
+
             }
         });
 

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,57 +15,46 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.Adapter.GioHangAdapter;
-import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
-import com.example.myapplication.Adapter.NhaHangAdapter;
-import com.example.myapplication.Model.DanhGiaNH;
+import com.example.myapplication.Adapter.LichSuMHAdapter;
 import com.example.myapplication.Model.GioHang;
 import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.MonAnNH;
-import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class GioHangFragment extends Fragment {
-    private RecyclerView rcv_GioHang; // hiện thôn tin các món ăn trong giỏ hàng
-    public TextView tvTongTienGH; // Hiện thông tin tổng tiền từ các món khách hàng đã chọn
-    private TextView tvXoaGH; // Hiện thông tin tổng tiền từ các món khách hàng đã chọn
-    private Button btnThanhToanGH; // Nhấn thanh toán giỏ hàng
+public class LichSuMuaFragment extends Fragment {
+
+    private RecyclerView rcv_lsMua;
+    private TextView tvXoa;
+    private ImageView imvTroVe;
 
     private List<MonAnNH> listMonAn;
     private List<GioHang> listGioHang;
     public List<GioHangCT> listGioHangCT;
+    public List<String> listTenNH;
 
     private GioHang gioHang;
     private MonAnNH monAnNH;
     private GioHangCT gioHangCT;
 
-    //Số tiền được tính tổng từ các món ăn đã chọn checkbox trong giỏ hàng
-    public int TongTienGH = 0;
-
     //Firestore
     private FirebaseFirestore db;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,57 +65,33 @@ public class GioHangFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_gio_hang, container, false);
-        anhxa(view);
+        View v = inflater.inflate(R.layout.fragment_lich_su_mua, container, false);
+
+        anhxa(v);
 
         //Gọi Firebase xuống
         db = FirebaseFirestore.getInstance();
 
+        listTenNH = new ArrayList<>();
+
         getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống
         getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firebase xuống
 
-        //Nhấn xóa
-        tvXoaGH.setOnClickListener(new View.OnClickListener() {
+        tvXoa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickXoa();
             }
         });
 
-        return view;
+        // Inflate the layout for this fragment
+        return v;
     }
 
     private void anhxa(View v){
-        tvTongTienGH = v.findViewById(R.id.tv_tongTienGH);
-        tvXoaGH = v.findViewById(R.id.tv_xoaGioHang);
-        btnThanhToanGH = v.findViewById(R.id.btn_thanhToanGH);
-        rcv_GioHang = v.findViewById(R.id.rcv_GioHang);
-    }
-
-    //Tính tổng tiền trong giỏ hàng
-    public void tinhTongTien(){
-        TongTienGH = 0;
-        for(GioHangCT gh: listGioHangCT){
-            if(gh.getTrangThaiCheckbox())  TongTienGH += gh.getSoLuong() * gh.getGiaMA();
-        }
-        tvTongTienGH.setText(formatNumber(TongTienGH));
-    }
-
-    //Tính tổng giá các món ăn trong giỏ hàng, khi nhấn chọn
-    public void checkedGioHang(int positon, int giaMon){
-        TongTienGH += giaMon;
-        tvTongTienGH.setText(formatNumber(TongTienGH)); // Hiển thị giá tiền trên TextView
-
-        listGioHangCT.get(positon).setTrangThaiCheckbox(true); // lưu lại các món ăn đã nhấn chọn
-    }
-
-    //Tính hiệu giá các món ăn trong giỏ hàng, khi nhấn chọn
-    public void uncheckedGioHang(int positon, int giaMon){
-        TongTienGH -= giaMon;
-        tvTongTienGH.setText(formatNumber(TongTienGH)); // Hiển thị giá tiền trên TextView
-
-        listGioHangCT.get(positon).setTrangThaiCheckbox(false); // lưu lại các món ăn đã nhấn chọn
+        rcv_lsMua = v.findViewById(R.id.rcv_lichSuMH);
+        tvXoa = v.findViewById(R.id.tv_xoaLichSu);
+        imvTroVe = v.findViewById(R.id.imv_TroveTrongLSMH);
     }
 
 
@@ -139,6 +103,18 @@ public class GioHangFragment extends Fragment {
 
         return en.format(number);
     }
+
+    //Tính tổng giá các món ăn trong giỏ hàng, khi nhấn chọn
+    public void checkedGioHang(int positon){
+        listGioHangCT.get(positon).setTrangThaiCheckbox(true); // lưu lại các món ăn đã nhấn chọn
+    }
+
+    //Tính hiệu giá các món ăn trong giỏ hàng, khi nhấn chọn
+    public void uncheckedGioHang(int positon){
+        listGioHangCT.get(positon).setTrangThaiCheckbox(false); // lưu lại các món ăn đã nhấn chọn
+    }
+
+
     //Lấy danh sách giỏ hàng từ Firebase xuống
     public void getAllGioHang(Context context){
         listGioHang = new ArrayList<>();
@@ -233,9 +209,12 @@ public class GioHangFragment extends Fragment {
                             String thoiGian = doc.get("ThoiGian").toString();
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
 
-                            if(_maGH.equals(maGH) && trangThai==0) {
+                            if(_maGH.equals(maGH) && trangThai==1) {
                                 gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
                                 listGioHangCT.add(gioHangCT);
+
+                                //Lấy tên nhà hàng từ database ra
+                                //findMaNH(getContext(), maMA);
                             }
                         }
 
@@ -253,11 +232,12 @@ public class GioHangFragment extends Fragment {
         });
     }
 
+
     //Set Adapter giỏ hàng
     private void adapter_gioHang(){
-        GioHangAdapter adapter  = new GioHangAdapter(listGioHangCT, getContext(), this);
-        rcv_GioHang.setLayoutManager(new LinearLayoutManager(getContext()));
-        rcv_GioHang.setAdapter(adapter);
+        LichSuMHAdapter adapter  = new LichSuMHAdapter(listGioHangCT, getContext(), this);
+        rcv_lsMua.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcv_lsMua.setAdapter(adapter);
     }
 
     //Cập nhật đầy đủ thông tin giỏ hàng lên listGioHangCT;
@@ -287,6 +267,7 @@ public class GioHangFragment extends Fragment {
         }
     }
 
+    // Duyệt danh sách kiểm tra xem item nào có chọn Checkbox thì xóa nó
     public void clickXoa(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -297,11 +278,15 @@ public class GioHangFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         try {
+                            int duyet = 0;
                             for(GioHangCT gh: listGioHangCT){
-                                if(gh.getTrangThaiCheckbox()){
-                                    deleteGioHangGioHangCTFirestore(gh.getMaGH(), gh.getMaGHCT());
+                                if(gh.getTrangThaiCheckbox()) {
+                                    deleteGioHangCTFirestore(gh.getMaGHCT());
+                                    duyet = 1;
                                 }
                             }
+
+                            if(duyet == 0) Toast.makeText(getContext(), "Bạn chưa chọn checkbox nào!!", Toast.LENGTH_SHORT).show();
                         }catch (Exception e){
                             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -318,9 +303,7 @@ public class GioHangFragment extends Fragment {
     }
 
     // Xóa món ăn trong giỏ hàng
-    public void deleteGioHangGioHangCTFirestore(String _maGH, String _maGHCT){
-        db.collection("GIOHANG").document(_maGH)
-                .delete();
+    private void deleteGioHangCTFirestore(String _maGHCT){
 
         db.collection("GIOHANGCT").document(_maGHCT)
                 .delete();
@@ -329,28 +312,6 @@ public class GioHangFragment extends Fragment {
     }
 
 
-    public void updateSoLuongGH(String _maGHCT, int _soLuong, int position){
-        db.collection("GIOHANGCT").document(_maGHCT)
-                .update(
-                        "SoLuong" , _soLuong
-                ).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                listGioHangCT.get(position).setSoLuong(_soLuong); //update số lượng trong list giỏ hàng chi tiết
-//                listGioHangCT.get(position).setGiaMA(_soLuong * listGioHangCT.get(position).getGiaMA());
 
-            }
-        });
 
-    }
 }
-
-
-
-
-
-
-
-
-
-

@@ -252,12 +252,12 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_ThemChuNhaHangCD" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tv_lsMuaHangCD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="180dp"
-        android:text="Sản phẩm đã mua"
+        android:text="Lịch sửa mua hàng"
         app:layout_constraintStart_toEndOf="@+id/imgbtn_SPDaMuaCD"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 

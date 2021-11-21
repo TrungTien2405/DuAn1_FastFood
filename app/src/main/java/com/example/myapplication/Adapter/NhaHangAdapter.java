@@ -76,7 +76,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         holder.tvDanhGiaTB.setText(nhaHang.getDanhGia()+"");
         holder.tvTenNH.setText(nhaHang.getTenNH());
 
-        if(!nhaHang.getMaYT().isEmpty() && fragment.check_favorite(nhaHang.getMaYT())) holder.tgb_yeuThich.setChecked(true);
+        if(!nhaHang.getMaYT().isEmpty() && !nhaHang.getMaYT().isEmpty()) holder.tgb_yeuThich.setChecked(true);
 
         if(nhaHang.getHinhAnh().isEmpty()){
             holder.imvHinh.setImageResource(R.drawable.im_food);
@@ -102,6 +102,14 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             public void onClick(View v) {
                 //Gọi Firebase xuống
                 fragment.dialog_suaNH(position);
+            }
+        });
+
+        //Chuyển đến món ăn của nhà hàng khi click
+        holder.imvHinh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.chuyenDenFragmentMonAN(nhaHang.getMaNH());
             }
         });
     }
