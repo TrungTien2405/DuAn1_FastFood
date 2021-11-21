@@ -77,9 +77,11 @@ public class CaiDatFragment extends Fragment {
         });
 
         btnDangXuat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
+                                           @Override
+                                           public void onClick(View v) {
+                                               signOut();
+                                           }
+                                       });
 
         tvLSMua.setOnClickListener(new View.OnClickListener() {
             @Override
