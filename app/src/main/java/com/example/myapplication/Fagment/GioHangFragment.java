@@ -36,13 +36,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -158,19 +161,20 @@ public class GioHangFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         String maTK = intent.getStringExtra("MaTK");
 
-        for(GioHangCT gh: listGioHangCT){
-            if(gh.getTrangThaiCheckbox()) {
+        for(int i=0; i<listGioHangCT.size(); i++){
+            if(listGioHangCT.get(i).getTrangThaiCheckbox()) {
                 duyet = 1; //xác nhận đã có checkbox chọn
 
-                int _soDuTK = soDuTK - (gh.getGiaMA() * gh.getSoLuong());
-                if(_soDuTK>=0) {
+                int _soDuTK = soDuTK - (listGioHangCT.get(i).getGiaMA() * listGioHangCT.get(i).getSoLuong());
+                if(_soDuTK>=0) { //kiểm tra tài khoản người dùng có lớn hơn 0 không
                     soDuTK = _soDuTK;
-                    gh.setTrangThai(1);
+                    listGioHangCT.get(i).setTrangThai(1);
 
                     //Cập nhật thông tin
-                    db.collection("GIOHANGCT").document(gh.getMaGHCT())
+                    db.collection("GIOHANGCT").document(listGioHangCT.get(i).getMaGHCT())
                             .update(
-                                    "TrangThai", 1
+                                    "TrangThai", 1,
+                                    "ThoiGian", FieldValue.serverTimestamp()
                             );
 
                     //Cập nhật thông tin
@@ -178,6 +182,10 @@ public class GioHangFragment extends Fragment {
                             .update(
                                     "SoDu", soDuTK
                             );
+
+                    //Xóa đơn hàng mới mua trong listGioHangChiTiet
+                    listGioHangCT.remove(i);
+                    i--;
                 }else{
                     Toast.makeText(getContext(), "Số dư tài khoản của bạn không đủ", Toast.LENGTH_SHORT).show();
                 }
@@ -187,7 +195,9 @@ public class GioHangFragment extends Fragment {
         }
 
         //cập nhật lại list
-        getAllGioHang(getContext());
+        //getAllGioHang(getContext());
+        adapter_gioHang();
+
         if(duyet == 0){
             Toast.makeText(getContext(), "Bạn chưa chọn checkbox nào!!", Toast.LENGTH_SHORT).show();
         }else {
@@ -262,7 +272,7 @@ public class GioHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getAllGioHang: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -337,7 +347,7 @@ public class GioHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.d("=====>", e.getMessage());
                 }
             }
