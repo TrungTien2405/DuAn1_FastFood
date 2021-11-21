@@ -54,7 +54,7 @@ public class CaiDatFragment extends Fragment {
 
         tvLSMua=v.findViewById(R.id.tv_lsMuaHangCD);
 
-//        getDataIntent();
+        getDataIntent();
 
 
         tvThongTinUD.setOnClickListener(new View.OnClickListener() {
