@@ -109,7 +109,8 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         holder.imvHinh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment.chuyenDenFragmentMonAN(nhaHang.getMaNH());
+                fragment.chuyenDenFragmentMonAN(nhaHang.getMaNH(), nhaHang.getTenNH(), nhaHang.getHinhAnh(),
+                        nhaHang.getPhiVanChuyen(), nhaHang.getThoiGian(), nhaHang.getDanhGia());
             }
         });
     }

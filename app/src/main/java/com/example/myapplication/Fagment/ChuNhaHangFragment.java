@@ -14,8 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.myapplication.Adapter.ChuNhaHangAdapter;
-import com.example.myapplication.Model.MonAnNH;
+import com.example.myapplication.Adapter.TaiKhoanAdapter;
 import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,6 +68,8 @@ public class ChuNhaHangFragment extends Fragment {
 
         return view;
     }
+
+    //Lấy dữ liệu từ firestore
     public void getAllChuNhaHang(Context context) {
         listTKChuNhaHang = new ArrayList<>();
 
@@ -81,7 +82,6 @@ public class ChuNhaHangFragment extends Fragment {
                     if (task.isSuccessful()) {
                         QuerySnapshot snapshot = task.getResult();
                         for (QueryDocumentSnapshot doc : snapshot) {
-                            int quyen = Integer.parseInt(doc.get("Quyen").toString());
                             String maTK = doc.get("MaTK").toString();
                             String hoTen = doc.get("HoTen").toString();
                             String diaChi = doc.get("DiaChi").toString();
@@ -89,13 +89,14 @@ public class ChuNhaHangFragment extends Fragment {
                             String soDT = doc.get("SDT").toString();
                             int soDu = Integer.parseInt(doc.get("SoDu").toString());
                             String matKhau = doc.get("MatKhau").toString();
+                            int quyen = Integer.parseInt(doc.get("Quyen").toString());
 
                             if (quyen == 1) {
                                 taiKhoan = new TaiKhoan(maTK, hoTen, matKhau, soDT, diaChi, quyen, hinhAnh, soDu);
                                 listTKChuNhaHang.add(taiKhoan);
                             }
                         }
-                        ChuNhaHangAdapter adapter = new ChuNhaHangAdapter(listTKChuNhaHang, getContext());
+                        TaiKhoanAdapter adapter = new TaiKhoanAdapter(listTKChuNhaHang, getContext());
                         rcv_ChuNhaHang.setLayoutManager(new LinearLayoutManager(getContext()));
                         rcv_ChuNhaHang.setAdapter(adapter);
                     } else {
