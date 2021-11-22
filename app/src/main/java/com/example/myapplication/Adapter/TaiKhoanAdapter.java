@@ -16,20 +16,20 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ChuNhaHangAdapter extends RecyclerView.Adapter<ChuNhaHangAdapter.MyViewHolder> {
+public class TaiKhoanAdapter extends RecyclerView.Adapter<TaiKhoanAdapter.MyViewHolder> {
      List<TaiKhoan> list;
      Context context;
 
-    public ChuNhaHangAdapter(List<TaiKhoan> list, Context context) {
+    public TaiKhoanAdapter(List<TaiKhoan> list, Context context) {
         this.list = list;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ChuNhaHangAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TaiKhoanAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_taikhoan, parent, false);
-        return new ChuNhaHangAdapter.MyViewHolder(view);
+        return new TaiKhoanAdapter.MyViewHolder(view);
     }
 
     @Override

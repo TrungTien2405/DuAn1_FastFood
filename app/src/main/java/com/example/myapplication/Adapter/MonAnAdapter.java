@@ -18,7 +18,9 @@ import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class MonAnAdapter extends BaseAdapter{
     public List<MonAnNH> list;
@@ -47,7 +49,7 @@ public class MonAnAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        MonAnNH monAnNH =list.get(position);
+        MonAnNH monAnNH = list.get(position);
         if(convertView == null){
             holder = new MonAnAdapter.ViewHolder();
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -67,7 +69,7 @@ public class MonAnAdapter extends BaseAdapter{
         }
         holder.tv_TenMonAn.setText(monAnNH.getTenMon());
         holder.tv_ChiTietMA.setText(monAnNH.getChiTiet());
-        holder.tv_GiaMA.setText(monAnNH.getGia());
+        holder.tv_GiaMA.setText(formatNumber(monAnNH.getGia())+" VND");
 
         if(monAnNH.getHinhAnh().isEmpty()){
             holder.imv_hinhMonAn.setImageResource(R.drawable.im_food);
@@ -88,5 +90,12 @@ public class MonAnAdapter extends BaseAdapter{
         ImageView imv_hinhMonAn, imv_ChonMA;
         TextView tv_ChinhSuaMA, tv_TenMonAn, tv_ChiTietMA, tv_GiaMA;
         ConstraintLayout constrain;
+    }
+    private String formatNumber(int number){
+        // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
+        Locale localeEN = new Locale("en", "EN");
+        NumberFormat en = NumberFormat.getInstance(localeEN);
+
+        return en.format(number);
     }
 }

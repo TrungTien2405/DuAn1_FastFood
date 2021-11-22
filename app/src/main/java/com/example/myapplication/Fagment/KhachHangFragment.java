@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.myapplication.Adapter.ChuNhaHangAdapter;
+import com.example.myapplication.Adapter.TaiKhoanAdapter;
 import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -92,7 +92,7 @@ public class KhachHangFragment extends Fragment {
                                 listTKKhachHang.add(taiKhoan);
                             }
                         }
-                        ChuNhaHangAdapter adapter = new ChuNhaHangAdapter(listTKKhachHang, getContext());
+                        TaiKhoanAdapter adapter = new TaiKhoanAdapter(listTKKhachHang, getContext());
                         rcv_KhachHang.setLayoutManager(new LinearLayoutManager(getContext()));
                         rcv_KhachHang.setAdapter(adapter);
                     } else {

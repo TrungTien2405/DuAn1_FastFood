@@ -14,7 +14,6 @@
         android:src="@drawable/im_food"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/imv_TroVe"
         android:layout_width="50dp"
@@ -40,7 +39,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout8"
-        android:layout_width="300dp"
+        android:layout_width="360dp"
         android:layout_height="100dp"
         android:layout_marginTop="128dp"
         android:background="@drawable/custom_edt"
@@ -65,7 +64,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout5"
-            android:layout_width="80dp"
+            android:layout_width="110dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
@@ -83,24 +82,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_fgg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:fontFamily="@font/vollkorn_variablefont_wght"
-                android:text="$"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imv_icCar"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tv_PhiVanChuyenMA"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textAlignment="center"
                 android:layout_marginLeft="2dp"
-                android:fontFamily="@font/vollkorn_variablefont_wght"
+                android:fontFamily="@font/asap_medium"
                 app:layout_constraintBottom_toBottomOf="@+id/constraintLayout5"
                 app:layout_constraintStart_toEndOf="@+id/imv_icCar"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout5"
@@ -109,7 +98,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout6"
-            android:layout_width="90dp"
+            android:layout_width="110dp"
             android:layout_height="40dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/custom_search"
@@ -128,34 +117,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tv_ThoiGianMA"
-                android:layout_width="40dp"
+                android:layout_width="70dp"
+                android:textSize="12dp"
+                android:textAlignment="center"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:fontFamily="@font/vollkorn_variablefont_wght"
+                android:fontFamily="@font/asap_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imv_icDongHo"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_m"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:fontFamily="@font/vollkorn_variablefont_wght"
-                android:text="m"
-                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout6"
-                app:layout_constraintStart_toEndOf="@+id/tv_ThoiGianMA"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout6"
-                tools:layout_editor_absoluteX="78dp" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout7"
-            android:layout_width="80dp"
+            android:layout_width="110dp"
             android:layout_height="40dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="5dp"
@@ -177,9 +154,12 @@
 
             <TextView
                 android:id="@+id/tv_DanhGiaMA"
-                android:layout_width="35dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:textSize="12dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/asap_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imv_icSao"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -310,10 +290,13 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <GridView
+     <GridView
         android:id="@+id/gv_MonAn"
         android:layout_width="match_parent"
         android:layout_height="400dp"
+         android:layout_margin="10dp"
+         android:verticalSpacing="20dp"
+         android:horizontalSpacing="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -322,7 +305,7 @@
         app:layout_constraintVertical_bias="0.0"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fbtn_themNhaHang"
+        android:id="@+id/flBtnThemMA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
