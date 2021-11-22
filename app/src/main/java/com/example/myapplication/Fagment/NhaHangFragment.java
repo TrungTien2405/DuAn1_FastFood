@@ -222,9 +222,14 @@ public class NhaHangFragment extends Fragment {
         return _maTK;
     }
 
-    public void chuyenDenFragmentMonAN(String _maNH){
+    public void chuyenDenFragmentMonAN(String _maNH, String _tenNH, String _hinhNH, int _phiVanChuyen, String _thoiGian, Double _danhGia){
         Bundle bundle = new Bundle();
         bundle.putString("MaNH", _maNH);
+        bundle.putString("TenNH", _tenNH);
+        bundle.putString("HinhAnh", _hinhNH);
+        bundle.putInt("PhiVanChuyen", _phiVanChuyen);
+        bundle.putString("ThoiGian", _thoiGian);
+        bundle.putDouble("DanhGia", _danhGia);
         MonAnFragment monAnFragment = new MonAnFragment();
         monAnFragment.setArguments(bundle);
 
@@ -236,6 +241,7 @@ public class NhaHangFragment extends Fragment {
                 .addToBackStack(null)
                 .commit();
     }
+
 
     //Kiểm tra những nhà hàng mà tài khoản yêu thích
     public Boolean check_favorite(String _maNH, int position){
@@ -260,7 +266,6 @@ public class NhaHangFragment extends Fragment {
         imvThemLoaiNH = v.findViewById(R.id.imv_addLoaiNhFragNH);
         flBtnThemNH = v.findViewById(R.id.fbtn_themNhaHang);
         svNhaHang  = v.findViewById(R.id.sv_nhaHang);
-
 
         Intent intent = getActivity().getIntent();
         String tentk = intent.getStringExtra("HoTen");
@@ -330,7 +335,6 @@ public class NhaHangFragment extends Fragment {
         for (DanhGiaNH dg: listDanhGia){
             if(maNH.equals(dg.getMaNH())) {
                 Double kq = (Double.valueOf(dg.getTongDG()) / Double.valueOf(dg.getLuotDG()));
-
 
                 return Math.round(kq*100)/100.00;
             }
