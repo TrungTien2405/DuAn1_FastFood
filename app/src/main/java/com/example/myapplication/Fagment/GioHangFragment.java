@@ -56,10 +56,12 @@ public class GioHangFragment extends Fragment {
     private TextView tvXoaGH; // Hiện thông tin tổng tiền từ các món khách hàng đã chọn
     private Button btnThanhToanGH; // Nhấn thanh toán giỏ hàng
 
+    //List chứa danh sách
     private List<MonAnNH> listMonAn;
     private List<GioHang> listGioHang;
     private List<GioHangCT> listGioHangCT;
 
+    //Model
     private GioHang gioHang;
     private MonAnNH monAnNH;
     private GioHangCT gioHangCT;

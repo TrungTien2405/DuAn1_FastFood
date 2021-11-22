@@ -378,7 +378,7 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Error getAllDanhGia: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -418,7 +418,7 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getLoaiNhaHang "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -450,7 +450,7 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getAllYeuThich"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -682,7 +682,7 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getMaLoaiToSpinner"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -994,7 +994,7 @@ public class NhaHangFragment extends Fragment {
             //Cập nhật lại listView
             getAllNhaHang(getContext());
         }catch (Exception e){
-            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Error update Firebase: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

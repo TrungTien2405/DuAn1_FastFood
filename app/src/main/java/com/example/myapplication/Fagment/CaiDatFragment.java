@@ -30,7 +30,7 @@ public class CaiDatFragment extends Fragment {
     Button btnDangXuat;
     private FirebaseAuth auth;
 
-    TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro, tvLSMua;
+    TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro, tvLSMua, tvDoanhThu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +49,7 @@ public class CaiDatFragment extends Fragment {
         tvSoDu=v.findViewById(R.id.tv_SoDuCD);
         tvThongTinUD=v.findViewById(R.id.tv_ThongTinUngDungCD);
         tvHoTro=v.findViewById(R.id.tv_HoTroCD);
+        tvDoanhThu = v.findViewById(R.id.tv_DoanhThuCD);
 
         btnDangXuat=v.findViewById(R.id.btn_DangXuatCD);
 
@@ -91,6 +92,18 @@ public class CaiDatFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
                         .replace(R.id.nav_FrameFragment, new LichSuMuaFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+        
+        //Chuyển qua fragment doanh thu
+        tvDoanhThu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new DoanhThuNHFragment())
                         .addToBackStack(null)
                         .commit();
             }
