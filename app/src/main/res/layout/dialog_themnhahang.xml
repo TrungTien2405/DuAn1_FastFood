@@ -37,9 +37,9 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/view_avatar2"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:layout_marginTop="35dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="45dp"
             android:layout_marginStart="10dp"
             app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/im1"
+                app:srcCompat="@drawable/ic_addimage"
                 tools:layout_editor_absoluteX="29dp" />
 
 

@@ -479,7 +479,7 @@ public class NhaHangFragment extends Fragment {
             // Lấy danh sách mã loại nhà hàng để đẩy lên spinner
             listMaLoaiNH = new ArrayList<>();
             for (LoaiNhaHang lnh : listLoaiNhaHang) {
-                listMaLoaiNH.add(lnh.getMaLoaiNH());
+                if(!lnh.getMaLoaiNH().equals("LNH01")) listMaLoaiNH.add(lnh.getMaLoaiNH());
             }
 
             NhaHangAdapter adapter = new NhaHangAdapter(listNhaHangTheoLoai, getContext(), this);
@@ -602,17 +602,18 @@ public class NhaHangFragment extends Fragment {
             public void onClick(View v) {
                 String tenNH = edtTenNH.getText().toString();
                 String thoiGian = edtThoiGian.getText().toString();
-                int phiVanChuyen = Integer.parseInt(edtPhiChuyenNh.getText().toString());
+                String phiVanChuyen = edtPhiChuyenNh.getText().toString();
 
-                if(tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen == 0){
+                if(tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen.isEmpty()){
                     Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else{
                     Random random =  new Random();
                     int x = random.nextInt((10000-1+1)+1);
                     String maNH = "NH" + x;
 
+                    int ship = Integer.parseInt(phiVanChuyen);
                     //Thêm đánh giá và thêm nhà hàng lên Firebase
-                    themDanhGiaNHToFireStore(maNH, tenNH, thoiGian, phiVanChuyen);
+                    themDanhGiaNHToFireStore(maNH, tenNH, thoiGian, ship);
 
                 }
             }
@@ -1064,6 +1065,7 @@ public class NhaHangFragment extends Fragment {
         data.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
         data.put("ThoiGian", nhaHang.getThoiGian());
         data.put("TenNH", nhaHang.getTenNH());
+        data.put("MaDG", nhaHang.getMaDG());
 
 
         try {
