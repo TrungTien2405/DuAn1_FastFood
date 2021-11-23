@@ -503,7 +503,6 @@ public class NhaHangFragment extends Fragment {
         dialogThemLoaiNH.getWindow().setLayout(width,height);
 
         EditText edtTenLoai = dialogThemLoaiNH.findViewById(R.id.edt_dialogThemTenLoaiNH);
-        EditText edtMaLoai = dialogThemLoaiNH.findViewById(R.id.edt_dialogThemMaLoaiNH);
         imvHinhLoai = dialogThemLoaiNH.findViewById(R.id.imv_dialogThemHinhLoaiNH);
         TextView tvHuyThem = dialogThemLoaiNH.findViewById(R.id.tv_dialogHuyThemLoaiNH);
         TextView tvXacNhan = dialogThemLoaiNH.findViewById(R.id.tv_dialogXacNhanThemLoaiNH);
@@ -528,12 +527,15 @@ public class NhaHangFragment extends Fragment {
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String maLoai = edtMaLoai.getText().toString();
                 String tenLoai = edtTenLoai.getText().toString();
 
-                if(maLoai.isEmpty() || tenLoai.isEmpty()){
+                if(tenLoai.isEmpty()){
                     Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else{
+                    Random random =  new Random();
+                    int x = random.nextInt((10000-1+1)+1);
+                    String maLoai = "lNH" + x;
+
                     loaiNhaHang = new LoaiNhaHang(maLoai, tenLoai, "");
 
                     uploadImageToFirebase(imageFileName, contenUri);
@@ -564,7 +566,6 @@ public class NhaHangFragment extends Fragment {
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.8);
         dialogThemNH.getWindow().setLayout(width,height);
 
-        EditText edtMaNH = dialogThemNH.findViewById(R.id.ed_dialogMaNHThemNH);
         EditText edtPhiChuyenNh = dialogThemNH.findViewById(R.id.ed_dialogPhiVCThemNH);
         EditText edtTenNH = dialogThemNH.findViewById(R.id.ed_dialogTenNHThemNH);
         EditText edtThoiGian = dialogThemNH.findViewById(R.id.ed_dialogThoiGianGiaoThemNH);
@@ -599,14 +600,17 @@ public class NhaHangFragment extends Fragment {
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String maNH = edtMaNH.getText().toString();
                 String tenNH = edtTenNH.getText().toString();
                 String thoiGian = edtThoiGian.getText().toString();
                 int phiVanChuyen = Integer.parseInt(edtPhiChuyenNh.getText().toString());
 
-                if(maNH.isEmpty() || tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen == 0){
+                if(tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen == 0){
                     Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else{
+                    Random random =  new Random();
+                    int x = random.nextInt((10000-1+1)+1);
+                    String maNH = "NH" + x;
+
                     //Thêm đánh giá và thêm nhà hàng lên Firebase
                     themDanhGiaNHToFireStore(maNH, tenNH, thoiGian, phiVanChuyen);
 

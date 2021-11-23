@@ -30,17 +30,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout4"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="240dp"
             android:background="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/view_avatar1"
-                android:layout_width="140dp"
+                android:layout_width="match_parent"
                 android:layout_height="140dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="10dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -48,42 +48,37 @@
 
                 <ImageView
                     android:id="@+id/imv_dialogThemHinhLoaiNH"
+                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/im1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_addimage"
                     tools:layout_editor_absoluteX="29dp" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:fontFamily="@font/asap_medium"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thêm hình" />
 
 
             </androidx.cardview.widget.CardView>
 
             <EditText
-                android:id="@+id/edt_dialogThemMaLoaiNH"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="45dp"
-                android:layout_marginEnd="17dp"
-                android:ems="10"
-                android:hint="Mã loại nhà hàng"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/view_avatar"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
                 android:id="@+id/edt_dialogThemTenLoaiNH"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="17dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="24dp"
                 android:ems="10"
+                android:fontFamily="@font/asap_medium"
                 android:hint="Tên loại nhà hàng"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/edt_dialogThemMaLoaiNH" />
+                app:layout_constraintTop_toBottomOf="@+id/view_avatar1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

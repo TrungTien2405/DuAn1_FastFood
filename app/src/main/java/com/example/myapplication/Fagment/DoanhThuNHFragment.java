@@ -117,8 +117,11 @@ public class DoanhThuNHFragment extends Fragment {
         imvTroVe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new CaiDatFragment()).commit();
-            }
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_out, R.anim.fade_out, R.anim.fade_in, R.anim.slide_in)
+                        .replace(R.id.nav_FrameFragment, new CaiDatFragment())
+                        .addToBackStack(null)
+                        .commit();            }
         });
 
         rcv_doanhThuNH.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_doanhThuNH, new RecyclerTouchListener.ClickListener() {

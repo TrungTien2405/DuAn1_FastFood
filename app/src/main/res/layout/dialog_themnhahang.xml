@@ -41,7 +41,7 @@
             android:layout_height="140dp"
             android:layout_marginTop="35dp"
             android:layout_marginStart="10dp"
-            app:cardCornerRadius="120dp"
+            app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints">
@@ -58,22 +58,6 @@
         </androidx.cardview.widget.CardView>
 
         <EditText
-            android:id="@+id/ed_dialogMaNHThemNH"
-            android:layout_width="200dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/custom_edt"
-            android:ems="10"
-            android:hint="Mã nhà hàng"
-            android:inputType="textPersonName"
-            android:paddingLeft="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/view_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
             android:id="@+id/ed_dialogTenNHThemNH"
             android:layout_width="match_parent"
             android:layout_marginHorizontal="10dp"
@@ -81,9 +65,9 @@
             android:layout_marginTop="200dp"
             android:background="@drawable/custom_edt"
             android:ems="10"
-            android:hint="Tên nhà hàng"
+            android:hint="...."
             android:inputType="textPersonName"
-            android:paddingLeft="10dp"
+            android:paddingLeft="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toTopOf="parent" />
@@ -96,9 +80,10 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_edt"
             android:ems="10"
-            android:hint="Thời gian giao hàng"
+            android:hint="...."
+            android:fontFamily="@font/asap_medium"
             android:inputType="textPersonName"
-            android:paddingLeft="10dp"
+            android:paddingLeft="140dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogTenNHThemNH" />
@@ -111,9 +96,11 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_edt"
             android:ems="10"
-            android:hint="Phí vận chuyển"
+            android:hint="...."
+            android:fontFamily="@font/number"
             android:inputType="number"
             android:paddingLeft="10dp"
+            android:paddingStart="120dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogThoiGianGiaoThemNH" />
@@ -122,21 +109,21 @@
             android:id="@+id/sp_dialogMaLoaiNHThemNH"
             android:layout_width="200dp"
             android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/custom_edt"
             android:paddingLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ed_dialogMaNHThemNH" />
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
         <Spinner
             android:id="@+id/sp_dialogMaTKThemNH"
             android:layout_width="200dp"
             android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/custom_edt"
             android:paddingLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sp_dialogMaLoaiNHThemNH" />
 
@@ -159,6 +146,61 @@
             app:layout_constraintEnd_toEndOf="@+id/sp_dialogMaTKThemNH"
             app:layout_constraintTop_toTopOf="@+id/sp_dialogMaTKThemNH"
             app:srcCompat="@drawable/ic_updown" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:layout_marginEnd="108dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Mã loại nhà hàng"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:fontFamily="@font/asap_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="132dp"
+            android:text="Mã tài khoản"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sp_dialogMaLoaiNHThemNH" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:text="Phí vận chuyển"
+            android:fontFamily="@font/asap_medium"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogPhiVCThemNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogPhiVCThemNH" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Thời gian giao hàng"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogThoiGianGiaoThemNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogThoiGianGiaoThemNH" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Tên nhà hàng"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogTenNHThemNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogTenNHThemNH" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

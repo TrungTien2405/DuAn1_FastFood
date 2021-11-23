@@ -84,7 +84,31 @@ public class DoanhThuMANHFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         getAllMonAn();
-        getAllGioHangCT(getContext());
+
+        //Trở lại màn hình doanh thu nhà hàng
+        imvTroVe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_out, R.anim.fade_out, R.anim.fade_in, R.anim.slide_in)
+                        .replace(R.id.nav_FrameFragment, new DoanhThuNHFragment())
+                        .addToBackStack(null)
+                        .commit();            }
+        });
+
+        tvChonNgay1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chonNgayDatePicker(0);
+            }
+        });
+
+        tvChonNgay2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chonNgayDatePicker(1);
+            }
+        });
 
         return v;
     }
@@ -169,7 +193,7 @@ public class DoanhThuMANHFragment extends Fragment {
         Collections.sort(listDoanhThu, new Comparator<DoanhThuMA>() {
             @Override
             public int compare(DoanhThuMA o1, DoanhThuMA o2) {
-                return String.valueOf(o2.getTongDT()).compareTo(String.valueOf(o1.getTongDT()));
+                return String.valueOf(o1.getTongDT()).compareTo(String.valueOf(o2.getTongDT()));
             }
         });
 
@@ -200,7 +224,7 @@ public class DoanhThuMANHFragment extends Fragment {
                             int gia = Integer.parseInt(doc.get("Gia").toString());
                             String hinhAnh = doc.get("HinhAnh").toString();
 
-                            if(maMA.equals(maNHBund)) {
+                            if(maNH.equals(maNHBund)) {
                                 monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, gia, hinhAnh);
                                 listMonAn.add(monAnNH);
                             }
@@ -239,8 +263,7 @@ public class DoanhThuMANHFragment extends Fragment {
                             DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             String ngayMua = format.format(thoiGian.toDate());
 
-//                             && ngayMua.compareTo(ngayCuoi) < 0 && ngayMua.compareTo(ngayDau) > 0
-                            if(trangThai==1) {
+                            if(trangThai==1 && ngayMua.compareTo(ngayCuoi) < 0 && ngayMua.compareTo(ngayDau) > 0) {
                                 gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false);
                                 listGioHangCT.add(gioHangCT);
                             }
