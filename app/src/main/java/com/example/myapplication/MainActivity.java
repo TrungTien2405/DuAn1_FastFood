@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity{
     TextView tvNameNavigation;
     ImageView imgAvatarNavigation;
 
+    private int viTriThuc = 1;
+    private int viTriBam = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,23 +61,36 @@ public class MainActivity extends AppCompatActivity{
             switch (item.getItemId()) {
                 case R.id.mn_main:
                     fragment =new NhaHangFragment();
+                    viTriThuc = viTriBam;
+                    viTriBam = 1;
                     loadFragment(fragment);
                     return true;
                 case R.id.mn_users:
                     fragment = new QLTaiKhoanFragment();
+                    viTriThuc = viTriBam;
+                    viTriBam = 2;
                     loadFragment(fragment);
                     return true;
                 case R.id.mn_basket:
                     fragment = new GioHangFragment();
+                    viTriThuc = viTriBam;
+                    viTriBam = 3;
                     loadFragment(fragment);
                     return true;
                 case R.id.mn_setting:
                     fragment = new CaiDatFragment();
+                    viTriThuc = viTriBam;
+                    viTriBam = 4;
                     loadFragment(fragment);
                     return true;
 
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, fragment).commit();
+
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                    .replace(R.id.nav_FrameFragment, fragment)
+                    .addToBackStack(null)
+                    .commit();
             return false;
         }
 
@@ -82,10 +98,20 @@ public class MainActivity extends AppCompatActivity{
 
     private void loadFragment(Fragment fragment) {
         // load Fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.nav_FrameFragment, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+
+        if(viTriThuc<viTriBam) {
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                    .replace(R.id.nav_FrameFragment, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }else{
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_out, R.anim.fade_out, R.anim.fade_in, R.anim.slide_in)
+                    .replace(R.id.nav_FrameFragment, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
 

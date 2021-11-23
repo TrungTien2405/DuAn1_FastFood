@@ -46,8 +46,8 @@ public class LichSuMuaFragment extends Fragment {
 
     private List<MonAnNH> listMonAn;
     private List<GioHang> listGioHang;
-    public List<GioHangCT> listGioHangCT;
-    public List<String> listTenNH;
+    private List<GioHangCT> listGioHangCT;
+    private List<String> listTenNH;
 
     private GioHang gioHang;
     private MonAnNH monAnNH;
@@ -84,6 +84,17 @@ public class LichSuMuaFragment extends Fragment {
             }
         });
 
+        imvTroVe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_out, R.anim.fade_out, R.anim.fade_in, R.anim.slide_in)
+                        .replace(R.id.nav_FrameFragment, new CaiDatFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         // Inflate the layout for this fragment
         return v;
     }
@@ -104,12 +115,12 @@ public class LichSuMuaFragment extends Fragment {
         return en.format(number);
     }
 
-    //Tính tổng giá các món ăn trong giỏ hàng, khi nhấn chọn
+    //Lưu lại các checkbox đã chọn
     public void checkedGioHang(int positon){
         listGioHangCT.get(positon).setTrangThaiCheckbox(true); // lưu lại các món ăn đã nhấn chọn
     }
 
-    //Tính hiệu giá các món ăn trong giỏ hàng, khi nhấn chọn
+    //Bỏ lưu các checkbox
     public void uncheckedGioHang(int positon){
         listGioHangCT.get(positon).setTrangThaiCheckbox(false); // lưu lại các món ăn đã nhấn chọn
     }
@@ -213,11 +224,8 @@ public class LichSuMuaFragment extends Fragment {
                                 gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
                                 listGioHangCT.add(gioHangCT);
 
-                                //Lấy tên nhà hàng từ database ra
-                                //findMaNH(getContext(), maMA);
                             }
                         }
-
                         // Thêm đầy đủ thông tin vào giỏ hàng chi tiét
                         getAllDetail_gioHang();
 

@@ -35,13 +35,35 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
 
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:layout_marginEnd="104dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Mã loại nhà hàng"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="129dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Mã tài khoản"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sp_dialogMaLoaiNHSuaNH" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/view_avatar2"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_marginTop="35dp"
             android:layout_marginStart="10dp"
-            app:cardCornerRadius="120dp"
+            app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints">
@@ -51,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/im1"
+                app:srcCompat="@drawable/ic_addimage"
                 tools:layout_editor_absoluteX="29dp" />
 
 
@@ -66,9 +88,10 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_edt"
             android:ems="10"
-            android:hint="Tên nhà hàng"
+            android:hint="...."
+            android:fontFamily="@font/asap_medium"
             android:inputType="textPersonName"
-            android:paddingLeft="10dp"
+            android:paddingLeft="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/view_avatar2" />
@@ -81,9 +104,10 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_edt"
             android:ems="10"
-            android:hint="Thời gian giao hàng"
+            android:hint="...."
+            android:fontFamily="@font/asap_medium"
             android:inputType="textPersonName"
-            android:paddingLeft="10dp"
+            android:paddingLeft="140dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogTenNHSuaNH" />
@@ -96,9 +120,10 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_edt"
             android:ems="10"
-            android:hint="Phí vận chuyển"
+            android:hint="...."
+            android:fontFamily="@font/asap_medium"
             android:inputType="number"
-            android:paddingLeft="10dp"
+            android:paddingLeft="110dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogThoiGianGiaoSuaNH" />
@@ -107,23 +132,22 @@
             android:id="@+id/sp_dialogMaLoaiNHSuaNH"
             android:layout_width="200dp"
             android:layout_height="40dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/custom_edt"
             android:paddingLeft="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
         <Spinner
             android:id="@+id/sp_dialogMaTKSuaNH"
             android:layout_width="200dp"
             android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/custom_edt"
             android:paddingLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sp_dialogMaLoaiNHSuaNH" />
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -144,6 +168,41 @@
             app:layout_constraintEnd_toEndOf="@+id/sp_dialogMaTKSuaNH"
             app:layout_constraintTop_toTopOf="@+id/sp_dialogMaTKSuaNH"
             app:srcCompat="@drawable/ic_updown" />
+
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Tên nhà hàng"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogTenNHSuaNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogTenNHSuaNH" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Thời gian giao hàng"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogThoiGianGiaoSuaNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogThoiGianGiaoSuaNH" />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Phí vận chuyển"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogPhiVCSuaNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogPhiVCSuaNH" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

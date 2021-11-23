@@ -36,13 +36,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -53,13 +56,17 @@ public class GioHangFragment extends Fragment {
     private TextView tvXoaGH; // Hiện thông tin tổng tiền từ các món khách hàng đã chọn
     private Button btnThanhToanGH; // Nhấn thanh toán giỏ hàng
 
+    //List chứa danh sách
     private List<MonAnNH> listMonAn;
     private List<GioHang> listGioHang;
-    public List<GioHangCT> listGioHangCT;
+    private List<GioHangCT> listGioHangCT;
 
+    //Model
     private GioHang gioHang;
     private MonAnNH monAnNH;
     private GioHangCT gioHangCT;
+
+    private int soDuTK; //Số tiền của người đăng nhập
 
     //Số tiền được tính tổng từ các món ăn đã chọn checkbox trong giỏ hàng
     public int TongTienGH = 0;
@@ -86,12 +93,21 @@ public class GioHangFragment extends Fragment {
 
         getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống
         getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firebase xuống
+        getSoDuND(getContext()); // Lấy số tiền của người dùng
 
         //Nhấn xóa
         tvXoaGH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickXoa();
+            }
+        });
+
+        //Nhấn nút thanh toán
+        btnThanhToanGH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickThanhToan();
             }
         });
 
@@ -139,6 +155,93 @@ public class GioHangFragment extends Fragment {
 
         return en.format(number);
     }
+
+
+    // Duyệt danh sách kiểm tra xem item nào có chọn Checkbox thì chọn thanh toán
+    public void clickThanhToan(){
+        int duyet = 0;
+        Intent intent = getActivity().getIntent();
+        String maTK = intent.getStringExtra("MaTK");
+
+        for(int i=0; i<listGioHangCT.size(); i++){
+            if(listGioHangCT.get(i).getTrangThaiCheckbox()) {
+                duyet = 1; //xác nhận đã có checkbox chọn
+
+                int _soDuTK = soDuTK - (listGioHangCT.get(i).getGiaMA() * listGioHangCT.get(i).getSoLuong());
+                if(_soDuTK>=0) { //kiểm tra tài khoản người dùng có lớn hơn 0 không
+                    soDuTK = _soDuTK;
+                    listGioHangCT.get(i).setTrangThai(1);
+
+                    //Cập nhật thông tin
+                    db.collection("GIOHANGCT").document(listGioHangCT.get(i).getMaGHCT())
+                            .update(
+                                    "TrangThai", 1,
+                                    "ThoiGian", FieldValue.serverTimestamp()
+                            );
+
+                    //Cập nhật thông tin
+                    db.collection("TAIKHOAN").document(maTK)
+                            .update(
+                                    "SoDu", soDuTK
+                            );
+
+                    //Xóa đơn hàng mới mua trong listGioHangChiTiet
+                    listGioHangCT.remove(i);
+                    i--;
+                }else{
+                    Toast.makeText(getContext(), "Số dư tài khoản của bạn không đủ", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+        }
+
+        //cập nhật lại list
+        //getAllGioHang(getContext());
+        adapter_gioHang();
+
+        if(duyet == 0){
+            Toast.makeText(getContext(), "Bạn chưa chọn checkbox nào!!", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getContext(), "Bạn đã mua hàng thành công", Toast.LENGTH_SHORT).show();
+            tvTongTienGH.setText("0");
+        }
+    }
+
+
+    //Lấy danh sách giỏ hàng từ Firebase xuống
+    public void getSoDuND(Context context){
+        Intent intent = getActivity().getIntent();
+        String _maTK = intent.getStringExtra("MaTK");
+
+        final CollectionReference reference = db.collection("TAIKHOAN");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String soDu = doc.get("SoDu").toString();
+                            String maTK = doc.get("MaTK").toString();
+
+                            if(maTK.equals(_maTK)) {
+                                soDuTK  = Integer.parseInt(soDu);
+                                return;
+                            }
+                        }
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
     //Lấy danh sách giỏ hàng từ Firebase xuống
     public void getAllGioHang(Context context){
         listGioHang = new ArrayList<>();
@@ -171,7 +274,7 @@ public class GioHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getAllGioHang: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -246,7 +349,7 @@ public class GioHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.d("=====>", e.getMessage());
                 }
             }

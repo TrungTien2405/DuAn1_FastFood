@@ -233,7 +233,13 @@ public class NhaHangFragment extends Fragment {
         MonAnFragment monAnFragment = new MonAnFragment();
         monAnFragment.setArguments(bundle);
 
-        getFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, monAnFragment).commit();
+        //getFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, monAnFragment).commit();
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                .replace(R.id.nav_FrameFragment, monAnFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 
@@ -376,7 +382,7 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Error getAllDanhGia: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -416,7 +422,7 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getLoaiNhaHang "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -448,7 +454,7 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getAllYeuThich"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -473,7 +479,7 @@ public class NhaHangFragment extends Fragment {
             // Lấy danh sách mã loại nhà hàng để đẩy lên spinner
             listMaLoaiNH = new ArrayList<>();
             for (LoaiNhaHang lnh : listLoaiNhaHang) {
-                listMaLoaiNH.add(lnh.getMaLoaiNH());
+                if(!lnh.getMaLoaiNH().equals("LNH01")) listMaLoaiNH.add(lnh.getMaLoaiNH());
             }
 
             NhaHangAdapter adapter = new NhaHangAdapter(listNhaHangTheoLoai, getContext(), this);
@@ -497,7 +503,6 @@ public class NhaHangFragment extends Fragment {
         dialogThemLoaiNH.getWindow().setLayout(width,height);
 
         EditText edtTenLoai = dialogThemLoaiNH.findViewById(R.id.edt_dialogThemTenLoaiNH);
-        EditText edtMaLoai = dialogThemLoaiNH.findViewById(R.id.edt_dialogThemMaLoaiNH);
         imvHinhLoai = dialogThemLoaiNH.findViewById(R.id.imv_dialogThemHinhLoaiNH);
         TextView tvHuyThem = dialogThemLoaiNH.findViewById(R.id.tv_dialogHuyThemLoaiNH);
         TextView tvXacNhan = dialogThemLoaiNH.findViewById(R.id.tv_dialogXacNhanThemLoaiNH);
@@ -522,12 +527,15 @@ public class NhaHangFragment extends Fragment {
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String maLoai = edtMaLoai.getText().toString();
                 String tenLoai = edtTenLoai.getText().toString();
 
-                if(maLoai.isEmpty() || tenLoai.isEmpty()){
+                if(tenLoai.isEmpty()){
                     Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else{
+                    Random random =  new Random();
+                    int x = random.nextInt((10000-1+1)+1);
+                    String maLoai = "lNH" + x;
+
                     loaiNhaHang = new LoaiNhaHang(maLoai, tenLoai, "");
 
                     uploadImageToFirebase(imageFileName, contenUri);
@@ -558,7 +566,6 @@ public class NhaHangFragment extends Fragment {
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.8);
         dialogThemNH.getWindow().setLayout(width,height);
 
-        EditText edtMaNH = dialogThemNH.findViewById(R.id.ed_dialogMaNHThemNH);
         EditText edtPhiChuyenNh = dialogThemNH.findViewById(R.id.ed_dialogPhiVCThemNH);
         EditText edtTenNH = dialogThemNH.findViewById(R.id.ed_dialogTenNHThemNH);
         EditText edtThoiGian = dialogThemNH.findViewById(R.id.ed_dialogThoiGianGiaoThemNH);
@@ -593,16 +600,20 @@ public class NhaHangFragment extends Fragment {
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String maNH = edtMaNH.getText().toString();
                 String tenNH = edtTenNH.getText().toString();
                 String thoiGian = edtThoiGian.getText().toString();
-                int phiVanChuyen = Integer.parseInt(edtPhiChuyenNh.getText().toString());
+                String phiVanChuyen = edtPhiChuyenNh.getText().toString();
 
-                if(maNH.isEmpty() || tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen == 0){
+                if(tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen.isEmpty()){
                     Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else{
+                    Random random =  new Random();
+                    int x = random.nextInt((10000-1+1)+1);
+                    String maNH = "NH" + x;
+
+                    int ship = Integer.parseInt(phiVanChuyen);
                     //Thêm đánh giá và thêm nhà hàng lên Firebase
-                    themDanhGiaNHToFireStore(maNH, tenNH, thoiGian, phiVanChuyen);
+                    themDanhGiaNHToFireStore(maNH, tenNH, thoiGian, ship);
 
                 }
             }
@@ -680,7 +691,7 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error getMaLoaiToSpinner"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -992,7 +1003,7 @@ public class NhaHangFragment extends Fragment {
             //Cập nhật lại listView
             getAllNhaHang(getContext());
         }catch (Exception e){
-            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Error update Firebase: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1054,6 +1065,7 @@ public class NhaHangFragment extends Fragment {
         data.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
         data.put("ThoiGian", nhaHang.getThoiGian());
         data.put("TenNH", nhaHang.getTenNH());
+        data.put("MaDG", nhaHang.getMaDG());
 
 
         try {
