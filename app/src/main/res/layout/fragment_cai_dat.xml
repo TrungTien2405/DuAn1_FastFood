@@ -74,13 +74,13 @@
             android:id="@+id/tv_TenKHCD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="4dp"
             android:text="Tên"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.096"
+            app:layout_constraintHorizontal_bias="0.059"
             app:layout_constraintStart_toEndOf="@+id/imv_avatarTaiKhoan_NhaHang"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
             android:id="@+id/textView4"
@@ -99,26 +99,25 @@
             android:id="@+id/tv_SDTKHCD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="SĐT"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.308"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.428" />
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toEndOf="@+id/imv_avatarTaiKhoan_NhaHang"
+            app:layout_constraintTop_toBottomOf="@+id/tv_TenKHCD" />
 
         <TextView
             android:id="@+id/tv_DiaChiKHCD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
+            android:layout_marginTop="4dp"
             android:text="Địa chỉ"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.277"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.063"
+            app:layout_constraintStart_toEndOf="@+id/imv_avatarTaiKhoan_NhaHang"
+            app:layout_constraintTop_toBottomOf="@+id/tv_SDTKHCD" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -159,10 +158,10 @@
         android:id="@+id/imgbtn_SPDaMuaCD"
         android:layout_width="30dp"
         android:layout_height="35dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="172dp"
         android:background="@null"
-        android:src="@drawable/ic_doimatkhau"
+        android:src="@drawable/ic_giohangcd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
@@ -239,11 +238,11 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <Button
-        android:id="@+id/btn_DangXuat"
+        android:id="@+id/btn_DangXuatCD"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="36dp"
         android:background="@drawable/custom_button"
         android:text="Đăng xuất"
         android:textColor="@color/white"
@@ -253,12 +252,12 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_ThemChuNhaHangCD" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tv_lsMuaHangCD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="180dp"
-        android:text="Sản phẩm đã mua"
+        android:text="Lịch sửa mua hàng"
         app:layout_constraintStart_toEndOf="@+id/imgbtn_SPDaMuaCD"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 

@@ -12,21 +12,22 @@ import android.widget.ImageView;
 import com.example.myapplication.R;
 
 
-public class ThongTinUDFragment extends Fragment {
-    ImageView imgbackTTUD;
+public class HoTroFragment extends Fragment {
+    ImageView imgbackHoTro;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_thong_tin_u_d, container, false);
-        imgbackTTUD=v.findViewById(R.id.imgBackTTUD);
+        View v = inflater.inflate(R.layout.fragment_ho_tro, container, false);
+        imgbackHoTro=v.findViewById(R.id.imgBackHotro);
 
-        imgbackTTUD.setOnClickListener(new View.OnClickListener() {
+        imgbackHoTro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new CaiDatFragment()).commit();
