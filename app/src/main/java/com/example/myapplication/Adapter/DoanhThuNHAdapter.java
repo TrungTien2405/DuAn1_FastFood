@@ -49,6 +49,22 @@ public class DoanhThuNHAdapter extends RecyclerView.Adapter<DoanhThuNHAdapter.My
         if(dt.getHinhAnh().isEmpty()){
             holder.imvHinh.setImageResource(R.drawable.im_food);
         }else Picasso.with(context).load(dt.getHinhAnh()).into(holder.imvHinh);
+
+        if(dt.getDanhGia()<1){
+            holder.imvSao2.setVisibility(View.INVISIBLE);
+            holder.imvSao3.setVisibility(View.INVISIBLE);
+            holder.imvSao4.setVisibility(View.INVISIBLE);
+            holder.imvSao5.setVisibility(View.INVISIBLE);
+        }else if(dt.getDanhGia()<2){
+            holder.imvSao3.setVisibility(View.INVISIBLE);
+            holder.imvSao4.setVisibility(View.INVISIBLE);
+            holder.imvSao5.setVisibility(View.INVISIBLE);
+        }else if(dt.getDanhGia()<3){
+            holder.imvSao4.setVisibility(View.INVISIBLE);
+            holder.imvSao5.setVisibility(View.INVISIBLE);
+        }else if(dt.getDanhGia()<4){
+            holder.imvSao5.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -58,7 +74,7 @@ public class DoanhThuNHAdapter extends RecyclerView.Adapter<DoanhThuNHAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvTenNH, tvTongDH, tvTongDT;
-        ImageView imvHinh;
+        ImageView imvHinh, imvSao1, imvSao2, imvSao3, imvSao4, imvSao5;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -66,6 +82,11 @@ public class DoanhThuNHAdapter extends RecyclerView.Adapter<DoanhThuNHAdapter.My
             tvTongDH =itemView.findViewById(R.id.tv_itemTongDHDTNH);
             tvTongDT =itemView.findViewById(R.id.tv_itemTongDTNH);
             imvHinh =  itemView.findViewById(R.id.imv_itemHinhDTNH);
+            imvSao1 = itemView.findViewById(R.id.imv_itemSaoDTNH1);
+            imvSao2 = itemView.findViewById(R.id.imv_itemSaoDTNH2);
+            imvSao3 = itemView.findViewById(R.id.imv_itemSaoDTNH3);
+            imvSao4 = itemView.findViewById(R.id.imv_itemSaoDTNH4);
+            imvSao5 = itemView.findViewById(R.id.imv_itemSaoDTNH5);
         }
     }
 
@@ -77,4 +98,6 @@ public class DoanhThuNHAdapter extends RecyclerView.Adapter<DoanhThuNHAdapter.My
 
         return en.format(number);
     }
+
+
 }
