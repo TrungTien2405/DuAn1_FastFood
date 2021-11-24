@@ -59,7 +59,8 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         holder.chk_chonItemGH.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                int soLuong = gioHangCT.getSoLuong() + 1;
+                if(isChecked && soLuong>0){
                     fragment.checkedGioHang(position, gioHangCT.getGiaMA() * gioHangCT.getSoLuong());
                 }else{
                     fragment.uncheckedGioHang(position, gioHangCT.getGiaMA() * gioHangCT.getSoLuong());
@@ -91,7 +92,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
             public void onClick(View v) {
                 int soLuong = gioHangCT.getSoLuong() - 1;
 
-                if(soLuong>-1) {
+                if(soLuong>0) {
                     holder.tv_SoLuong.setText(soLuong + "");
                     holder.tv_giaGH.setText((formatNumber(soLuong * gioHangCT.getGiaMA())));
                     fragment.updateSoLuongGH(gioHangCT.getMaGHCT(), soLuong, position);

@@ -9,6 +9,7 @@
 
     <TextView
         android:id="@+id/textView14"
+        android:fontFamily="@font/asap_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -45,6 +46,7 @@
         android:id="@+id/tv_chonNgay1DTMA"
         android:layout_width="130dp"
         android:layout_height="30dp"
+        android:fontFamily="@font/asap_medium"
         android:layout_marginStart="10dp"
         android:layout_marginTop="22dp"
         android:background="@drawable/custom_edtchonngay"
@@ -61,6 +63,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="9dp"
+        android:fontFamily="@font/asap_medium"
         android:background="@drawable/custom_edtchonngay"
         android:gravity="center"
         android:text="Chọn ngày cuối"
@@ -73,6 +76,7 @@
         android:id="@+id/sv_searchDTMA"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:fontFamily="@font/asap_medium"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="17dp"
         android:background="@drawable/custom_search"

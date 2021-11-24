@@ -201,7 +201,7 @@ public class GioHangFragment extends Fragment {
         adapter_gioHang();
 
         if(duyet == 0){
-            Toast.makeText(getContext(), "Bạn chưa chọn checkbox nào!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Bạn chưa chọn món ăn nào!!", Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(getContext(), "Bạn đã mua hàng thành công", Toast.LENGTH_SHORT).show();
             tvTongTienGH.setText("0");
@@ -400,11 +400,15 @@ public class GioHangFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         try {
+                            int ktCheck = 0;
                             for(GioHangCT gh: listGioHangCT){
                                 if(gh.getTrangThaiCheckbox()){
+                                    ktCheck = 1;
                                     deleteGioHangGioHangCTFirestore(gh.getMaGH(), gh.getMaGHCT());
                                 }
                             }
+
+                            if(ktCheck == 0) Toast.makeText(getContext(), "Bạn chưa chọn món ăn nào!!", Toast.LENGTH_SHORT).show();
                         }catch (Exception e){
                             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                         }

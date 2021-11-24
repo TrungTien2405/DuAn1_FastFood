@@ -43,7 +43,7 @@ public class LoaiNhaHangAdapter extends RecyclerView.Adapter<LoaiNhaHangAdapter.
 
         holder.tv_ten.setText(loaiNhaHang.getTenLoaiNH());
         if(loaiNhaHang.getHinhAnh().isEmpty()){
-            holder.imv_hinh.setImageResource(R.drawable.im_food);
+            holder.imv_hinh.setImageResource(R.drawable.ic_location);
         }else Picasso.with(context).load(loaiNhaHang.getHinhAnh()).into(holder.imv_hinh);
 
 
