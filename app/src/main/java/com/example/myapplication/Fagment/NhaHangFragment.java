@@ -728,7 +728,7 @@ public class NhaHangFragment extends Fragment {
         edtPhiChuyenNh.setText(listNhaHangTheoLoai.get(positon).getPhiVanChuyen()+"");
         edtTenNH.setText(listNhaHangTheoLoai.get(positon).getTenNH());
         edtThoiGian.setText(listNhaHangTheoLoai.get(positon).getThoiGian());
-        if(nhaHang.getHinhAnh().isEmpty()){
+        if(listNhaHangTheoLoai.get(positon).getHinhAnh().isEmpty()){
             imvHinhSuaNH.setImageResource(R.drawable.im_food);
         }else{
             Picasso.with(getContext()).load(listNhaHangTheoLoai.get(positon).getHinhAnh()).into(imvHinhSuaNH);
@@ -827,7 +827,7 @@ public class NhaHangFragment extends Fragment {
                 for(NhaHang nh: listNhaHangTheoLoai){
                     String tenNh =String.valueOf(nh.getTenNH());
 
-                    if(text_search.equalsIgnoreCase(tenNh)){
+                    if(text_search.contains(tenNh)){
                         listNHSearch.add(nh);
                     }
                 }

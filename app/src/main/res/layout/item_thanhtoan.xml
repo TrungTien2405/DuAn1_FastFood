@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E5E6E6">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/imv_itemHinhRes"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/item_bogoc"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/im1"
+                tools:layout_editor_absoluteX="29dp" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_itemTenMAThanhToanFra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Gà chiên gòn"
+            android:textColor="#252525"
+            android:textSize="12dp"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_itemTenMonThemThanhToanFra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Gà chiên gòn"
+            android:textColor="#252525"
+            android:textSize="12dp"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/tv_itemTenMAThanhToanFra" />
+
+        <TextView
+            android:id="@+id/tv_itemGiaThanhToanFra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Gà chiên gòn"
+            android:textColor="#252525"
+            android:textSize="12dp"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/tv_itemTenMonThemThanhToanFra" />
+
+        <TextView
+            android:id="@+id/tv_itemSoLuongThanhToanFra2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="x1"
+            android:textColor="#252525"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#3C51DADA"
+>
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Phương thức vận chuyển"
+            android:textColor="#0BC6AA"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Nhanh"
+            android:textColor="#454545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+        <TextView
+            android:id="@+id/tv_itemPhiVCThanhToanFrag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="17dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="20.000"
+            android:textColor="#454545"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Nhận hàng vào ngày 19 Th12 - 30 TH12"
+            android:textColor="#6A6A6A"
+            android:textSize="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Do ảnh hưởng của dịch Covid 19 thời gian giao hàng có thể lâu hơn dự kiến từ 1 - 3 ngày"
+            android:textColor="#6A6A6A"
+            android:textSize="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
