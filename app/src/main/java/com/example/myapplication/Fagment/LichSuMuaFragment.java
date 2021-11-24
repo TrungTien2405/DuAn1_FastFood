@@ -74,7 +74,6 @@ public class LichSuMuaFragment extends Fragment {
 
         listTenNH = new ArrayList<>();
 
-        getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống
         getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firebase xuống
 
         tvXoa.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +187,8 @@ public class LichSuMuaFragment extends Fragment {
                             monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, gia, hinhAnh);
                             listMonAn.add(monAnNH);
                         }
+
+                        getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống
 
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
