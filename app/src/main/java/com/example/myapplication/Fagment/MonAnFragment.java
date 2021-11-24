@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -95,24 +96,38 @@ public class MonAnFragment extends Fragment {
 
         tv_TenNhaHangMA.setText(tenNhaHang);
         tv_PhiVanChuyenMA.setText(formatNumber(phiVanChuyen) + " VND");
-        tv_ThoiGianMA.setText(thoiGian + "m");
+        tv_ThoiGianMA.setText(thoiGian + " m");
         tv_DanhGiaMA.setText(danhGia + "");
         if(hinhAnh.isEmpty()){
             imv_HinhNenMA.setImageResource(R.drawable.im_food);
         }else{
             Picasso.with(getContext()).load(hinhAnh).into(imv_HinhNenMA);
         }
-        tv_ThoiGianMA.setText(thoiGian);
 
         imv_TroVe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new NhaHangFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
         imv_toGioHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+        gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
             }
         });
     }

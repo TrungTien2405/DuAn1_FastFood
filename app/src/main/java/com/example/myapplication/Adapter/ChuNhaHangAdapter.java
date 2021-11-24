@@ -10,26 +10,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Fagment.ChuNhaHangFragment;
 import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class TaiKhoanAdapter extends RecyclerView.Adapter<TaiKhoanAdapter.MyViewHolder> {
+public class ChuNhaHangAdapter extends RecyclerView.Adapter<ChuNhaHangAdapter.MyViewHolder> {
      List<TaiKhoan> list;
      Context context;
+     ChuNhaHangFragment fragment;
 
-    public TaiKhoanAdapter(List<TaiKhoan> list, Context context) {
+    public ChuNhaHangAdapter(List<TaiKhoan> list, Context context, ChuNhaHangFragment fragment) {
         this.list = list;
         this.context = context;
+        this.fragment = fragment;
     }
 
     @NonNull
     @Override
-    public TaiKhoanAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChuNhaHangAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_taikhoan, parent, false);
-        return new TaiKhoanAdapter.MyViewHolder(view);
+        return new ChuNhaHangAdapter.MyViewHolder(view);
     }
 
     @Override
@@ -47,7 +50,7 @@ public class TaiKhoanAdapter extends RecyclerView.Adapter<TaiKhoanAdapter.MyView
         holder.tvXoaItemTK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                fragment.dialogXoaChuNhaHang(taiKhoan.getMaTK());
             }
         });
     }

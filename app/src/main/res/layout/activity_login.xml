@@ -14,6 +14,7 @@
         android:layout_marginLeft="330dp"
         android:textSize="20dp"
         android:id="@+id/tv_DangKy"
+        android:fontFamily="@font/asap_medium"
         android:textColor="@color/white"
         android:textAlignment="center"
         android:text="Đăng ký"/>
@@ -27,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FastFood"
-        android:fontFamily="@font/merriweather_bold"
+        android:fontFamily="@font/asap_medium"
         android:textColor="@color/white"
         android:layout_marginTop="-50dp"
         android:textSize="50dp"
@@ -69,6 +70,7 @@
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
         android:layout_margin="10dp"
+        android:fontFamily="@font/asap_medium"
         android:id="@+id/chkLuuMK" />
     <Button
         android:id="@+id/btnDangNhap"
@@ -78,6 +80,7 @@
         android:layout_margin="10dp"
         android:textColor="@color/mauchinh"
         android:background="@drawable/custom_edt"
+        android:fontFamily="@font/asap_medium"
         android:text="Đăng nhập"/>
     <TextView
         android:layout_width="match_parent"
@@ -85,6 +88,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20dp"
         android:textStyle="italic"
+        android:fontFamily="@font/asap_medium"
         android:id="@+id/tv_QuenMatKhau"
         android:textColor="@color/white"
         android:textAlignment="center"

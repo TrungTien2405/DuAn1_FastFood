@@ -69,7 +69,7 @@ public class MonAnAdapter extends BaseAdapter{
         }
         holder.tv_TenMonAn.setText(monAnNH.getTenMon());
         holder.tv_ChiTietMA.setText(monAnNH.getChiTiet());
-        holder.tv_GiaMA.setText(formatNumber(monAnNH.getGia())+" VND");
+        holder.tv_GiaMA.setText(formatNumber(monAnNH.getGia())+" VNDD");
 
         if(monAnNH.getHinhAnh().isEmpty()){
             holder.imv_hinhMonAn.setImageResource(R.drawable.im_food);
