@@ -12,16 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.myapplication.LoginActivity;
+import com.example.myapplication.DangNhapActivity;
 import com.example.myapplication.R;
-import com.example.myapplication.RegisterActivity;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.logging.LogManager;
 
 
 public class CaiDatFragment extends Fragment {
@@ -30,7 +25,7 @@ public class CaiDatFragment extends Fragment {
     Button btnDangXuat;
     private FirebaseAuth auth;
 
-    TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro, tvLSMua, tvDoanhThu;
+    TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro, tvLSMua, tvDoanhThu, tvDoiMatKhau;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +45,7 @@ public class CaiDatFragment extends Fragment {
         tvThongTinUD=v.findViewById(R.id.tv_ThongTinUngDungCD);
         tvHoTro=v.findViewById(R.id.tv_HoTroCD);
         tvDoanhThu = v.findViewById(R.id.tv_DoanhThuCD);
+        tvDoiMatKhau = v.findViewById(R.id.tv_DoiMKCD);
 
         btnDangXuat=v.findViewById(R.id.btn_DangXuatCD);
 
@@ -108,6 +104,17 @@ public class CaiDatFragment extends Fragment {
                         .commit();
             }
         });
+        //Chuyển qua fragment đổi mật khẩu
+        tvDoiMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new DoiMatKhauFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         return v;
 
@@ -119,7 +126,7 @@ public class CaiDatFragment extends Fragment {
         edit.commit();
 
         auth.signOut();
-        Intent intent = new Intent(getContext(), LoginActivity.class);
+        Intent intent = new Intent(getContext(), DangNhapActivity.class);
         startActivity(intent);
 
     }

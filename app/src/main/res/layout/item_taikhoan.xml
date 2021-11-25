@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_margin="10dp"
     android:background="@drawable/custom_item_taikhoan">
-    <ImageView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/view_avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/imgv_ItemHinhTK"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="50dp"
+        tools:ignore="MissingConstraints">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/avatar"
+            tools:layout_editor_absoluteX="29dp"
+            android:background="@drawable/custom_bogoc_hinhanh"
+            android:scaleType="centerCrop"
+            android:id="@+id/imgv_ItemHinhTK"/>
+    </androidx.cardview.widget.CardView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,12 +42,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginTop="-5dp"
+            android:layout_marginLeft="5dp"
             android:fontFamily="@font/asap_medium"
             android:textColor="@color/white"
             android:text="Nguyễn Trung Tiến"
             android:id="@+id/tvItemHoTenTK"
-            android:layout_marginLeft="5dp"
             android:textSize="22dp"/>
         <TextView
             android:layout_width="match_parent"
@@ -49,7 +60,7 @@
             android:textSize="16dp"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:fontFamily="@font/asap_medium"
             android:textColor="@color/white"
             android:layout_marginLeft="5dp"
