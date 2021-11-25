@@ -1,6 +1,8 @@
 package com.example.myapplication.Model;
 
-public class GioHangCT {
+import java.io.Serializable;
+
+public class GioHangCT implements Serializable {
     private String MaGH;
     private String MaGHCT;
     private String MaMA;
