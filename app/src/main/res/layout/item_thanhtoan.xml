@@ -10,10 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E5E6E6">
+        android:background="#B0E5E6E6">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/view_avatar"
+            android:id="@+id/view_avatarf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -24,7 +24,7 @@
             tools:ignore="MissingConstraints">
 
             <ImageView
-                android:id="@+id/imv_itemHinhRes"
+                android:id="@+id/imv_itemHinhThanhToan"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:background="@drawable/item_bogoc"
@@ -45,24 +45,24 @@
             android:text="Gà chiên gòn"
             android:textColor="#252525"
             android:textSize="12dp"
-            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintStart_toEndOf="@+id/view_avatarf"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_itemTenMonThemThanhToanFra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="65dp"
+            android:layout_height="15dp"
             android:layout_marginStart="17dp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/asap_medium"
             android:text="Gà chiên gòn"
             android:textColor="#252525"
             android:textSize="12dp"
-            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintStart_toEndOf="@+id/view_avatarf"
             app:layout_constraintTop_toBottomOf="@+id/tv_itemTenMAThanhToanFra" />
 
         <TextView
-            android:id="@+id/tv_itemGiaThanhToanFra"
+            android:id="@+id/tv_itemGiaMAThanhToanFra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
@@ -71,11 +71,11 @@
             android:text="Gà chiên gòn"
             android:textColor="#252525"
             android:textSize="12dp"
-            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintStart_toEndOf="@+id/view_avatarf"
             app:layout_constraintTop_toBottomOf="@+id/tv_itemTenMonThemThanhToanFra" />
 
         <TextView
-            android:id="@+id/tv_itemSoLuongThanhToanFra2"
+            android:id="@+id/tv_itemSoLuongMAThanhToanFra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
@@ -159,6 +159,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_itemSLTongSoTien1SPThanhToan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Tổng số tiền(1 sản phẩm): "
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_itemTongSoTienSPThanhToan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="₫ 100,000"
+            android:textSize="18dp"
+            android:textColor="#DA5F51"
+            android:fontFamily="@font/number"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
