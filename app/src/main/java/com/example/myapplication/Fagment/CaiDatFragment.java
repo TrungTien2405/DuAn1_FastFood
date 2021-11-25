@@ -21,6 +21,8 @@ import com.example.myapplication.R;
 import com.example.myapplication.RegisterActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.logging.LogManager;
 
 
@@ -132,8 +134,16 @@ public class CaiDatFragment extends Fragment {
         tvSDT.setText(SDT);
         String diaChi=intent.getStringExtra("DiaChi");
         tvDiaChi.setText(diaChi);
-        String soDu=intent.getStringExtra("SoDu");
-        tvSoDu.setText(soDu);
+        int soDu= Integer.parseInt(intent.getStringExtra("SoDu"));
+        tvSoDu.setText(formatNumber(soDu)+"VNĐ");
+    }
+    // Định dạng sang số tiền
+    private String formatNumber(int number){
+        // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
+        Locale localeEN = new Locale("en", "EN");
+        NumberFormat en = NumberFormat.getInstance(localeEN);
+
+        return en.format(number);
     }
 
 }
