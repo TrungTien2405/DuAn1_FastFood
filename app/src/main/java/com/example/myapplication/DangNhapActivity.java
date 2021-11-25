@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class LoginActivity extends AppCompatActivity {
+public class DangNhapActivity extends AppCompatActivity {
     TextInputLayout tip_SDT, tip_MatKhau;
     Button btnDangNhap;
     CheckBox chkLuuTK;
@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_dang_nhap);
 
         tip_SDT = findViewById(R.id.tip_SDT);
         tip_MatKhau = findViewById(R.id.tip_MatKhau);
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = tip_MatKhau.getEditText().getText().toString();
 
                 if(username.isEmpty() || password.isEmpty()){
-                    Toast.makeText(LoginActivity.this, "Không được để trống", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DangNhapActivity.this, "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else {
                     CheckAccount(username, password);
                 }
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         tv_DangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(DangNhapActivity.this, DangKyActivity.class);
                 startActivity(intent);
 
             }
@@ -82,14 +82,14 @@ public class LoginActivity extends AppCompatActivity {
                     QuerySnapshot snapshot = task.getResult();
                     for(QueryDocumentSnapshot doc: snapshot){
                         if(username.equals(doc.get("SDT")) && password.equals(doc.get("MatKhau"))){
-
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(DangNhapActivity.this, MainActivity.class);
                             intent.putExtra("SDT", username);
                             intent.putExtra("HoTen", doc.get("HoTen").toString());
                             intent.putExtra("HinhAnh", doc.get("HinhAnh").toString());
                             intent.putExtra("MaTK", doc.get("MaTK").toString());
                             intent.putExtra("SoDu", doc.get("SoDu").toString());
                             intent.putExtra("DiaChi", doc.get("DiaChi").toString());
+                            intent.putExtra("MatKhau", doc.get("MatKhau").toString());
                             intent.putExtra("Quyen", Integer.parseInt(doc.get("Quyen").toString()));
 
                             startActivity(intent);
@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                     if(check == 0){
-                        Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không tồn tại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DangNhapActivity.this, "Tài khoản hoặc mật khẩu không tồn tại", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

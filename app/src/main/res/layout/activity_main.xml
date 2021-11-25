@@ -7,12 +7,9 @@
     android:fitsSystemWindows="true"
     android:id="@+id/my_drawer_layout"
     tools:context=".MainActivity">
-
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
         <FrameLayout
             android:id="@+id/nav_FrameFragment"
             android:layout_width="match_parent"
@@ -21,8 +18,6 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="55dp" >
         </FrameLayout>
-
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
@@ -34,7 +29,4 @@
             app:itemTextColor="@color/bnv_tab_item_foreground"
             app:menu="@menu/bottom_navigation_menu" />
     </RelativeLayout>
-
-
-
 </androidx.drawerlayout.widget.DrawerLayout>
