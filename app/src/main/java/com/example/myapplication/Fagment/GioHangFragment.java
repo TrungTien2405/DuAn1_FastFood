@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -163,48 +165,72 @@ public class GioHangFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         String maTK = intent.getStringExtra("MaTK");
 
+        List<GioHangCT> listThanhToan = new ArrayList<>();
+
         for(int i=0; i<listGioHangCT.size(); i++){
             if(listGioHangCT.get(i).getTrangThaiCheckbox()) {
+                listThanhToan.add(listGioHangCT.get(i));
+
+
+
+
                 duyet = 1; //xác nhận đã có checkbox chọn
-
-                int _soDuTK = soDuTK - (listGioHangCT.get(i).getGiaMA() * listGioHangCT.get(i).getSoLuong());
-                if(_soDuTK>=0) { //kiểm tra tài khoản người dùng có lớn hơn 0 không
-                    soDuTK = _soDuTK;
-                    listGioHangCT.get(i).setTrangThai(1);
-
-                    //Cập nhật thông tin
-                    db.collection("GIOHANGCT").document(listGioHangCT.get(i).getMaGHCT())
-                            .update(
-                                    "TrangThai", 1,
-                                    "ThoiGian", FieldValue.serverTimestamp()
-                            );
-
-                    //Cập nhật thông tin
-                    db.collection("TAIKHOAN").document(maTK)
-                            .update(
-                                    "SoDu", soDuTK
-                            );
-
-                    //Xóa đơn hàng mới mua trong listGioHangChiTiet
-                    listGioHangCT.remove(i);
-                    i--;
-                }else{
-                    Toast.makeText(getContext(), "Số dư tài khoản của bạn không đủ", Toast.LENGTH_SHORT).show();
-                }
+//
+//                int _soDuTK = soDuTK - (listGioHangCT.get(i).getGiaMA() * listGioHangCT.get(i).getSoLuong());
+//                if(_soDuTK>=0) { //kiểm tra tài khoản người dùng có lớn hơn 0 không
+//                    soDuTK = _soDuTK;
+//                    listGioHangCT.get(i).setTrangThai(1);
+//
+//                    //Cập nhật thông tin
+//                    db.collection("GIOHANGCT").document(listGioHangCT.get(i).getMaGHCT())
+//                            .update(
+//                                    "TrangThai", 1,
+//                                    "ThoiGian", FieldValue.serverTimestamp()
+//                            );
+//
+//                    //Cập nhật thông tin
+//                    db.collection("TAIKHOAN").document(maTK)
+//                            .update(
+//                                    "SoDu", soDuTK
+//                            );
+//
+//                    //Xóa đơn hàng mới mua trong listGioHangChiTiet
+//                    listGioHangCT.remove(i);
+//                    i--;
+//                }else{
+//                    Toast.makeText(getContext(), "Số dư tài khoản của bạn không đủ", Toast.LENGTH_SHORT).show();
+//                }
             }
 
 
         }
 
+
+
+
         //cập nhật lại list
-        //getAllGioHang(getContext());
-        adapter_gioHang();
+        //adapter_gioHang();
 
         if(duyet == 0){
             Toast.makeText(getContext(), "Bạn chưa chọn món ăn nào!!", Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(getContext(), "Bạn đã mua hàng thành công", Toast.LENGTH_SHORT).show();
-            tvTongTienGH.setText("0");
+//            Toast.makeText(getContext(), "Bạn đã mua hàng thành công", Toast.LENGTH_SHORT).show();
+//            tvTongTienGH.setText("0");
+
+
+            Bundle bundle = new Bundle();
+//            bundle.putParcelableArrayList("listThanhToan", (ArrayList<? extends Parcelable>) listThanhToan);
+            bundle.putSerializable("listThanhToan", (Serializable) listThanhToan);
+            ThanhToanFragment thanhToanFragment = new ThanhToanFragment();
+            thanhToanFragment.setArguments(bundle);
+
+            //getFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, monAnFragment).commit();
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                    .replace(R.id.nav_FrameFragment, thanhToanFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 
