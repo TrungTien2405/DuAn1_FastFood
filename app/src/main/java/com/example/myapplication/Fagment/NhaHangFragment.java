@@ -32,11 +32,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.Adapter.GioHangAdapter;
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.NhaHangAdapter;
-import com.example.myapplication.LoginActivity;
-import com.example.myapplication.MainActivity;
 import com.example.myapplication.Model.DanhGiaNH;
 import com.example.myapplication.Model.LoaiNhaHang;
 import com.example.myapplication.Model.NhaHang;

@@ -1,6 +1,8 @@
 package com.example.myapplication.Fagment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +24,12 @@ import android.widget.Toast;
 
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.MonAnAdapter;
+import com.example.myapplication.Adapter.NhaHangAdapter;
 import com.example.myapplication.Model.MonAnNH;
+import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
@@ -49,6 +55,8 @@ public class MonAnFragment extends Fragment {
 
     private MonAnNH monAnNH;
 
+    public int viTriMonAn = 0 ;
+
     //Firestore
     private FirebaseFirestore db;
 
@@ -72,12 +80,21 @@ public class MonAnFragment extends Fragment {
 
         getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firestore xuống
 
+        //Nhấn nút thêm món ăn
+        flBtnThemMA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return view;
     }
 
     private void anhXa(View view){
         flBtnThemMA = view.findViewById(R.id.flBtnThemMA);
         gv_MonAn = view.findViewById(R.id.gv_MonAn);
+        svMonAn = view.findViewById(R.id.sv_monAn);
         tv_TenNhaHangMA = view.findViewById(R.id.tv_TenNhaHangMA);
         tv_PhiVanChuyenMA = view.findViewById(R.id.tv_PhiVanChuyenMA);
         tv_ThoiGianMA = view.findViewById(R.id.tv_ThoiGianMA);
@@ -182,5 +199,74 @@ public class MonAnFragment extends Fragment {
         NumberFormat en = NumberFormat.getInstance(localeEN);
 
         return en.format(number);
+    }
+
+    //tìm kiếm món ăn
+    private void timKiemMA(){
+        svMonAn.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+//                String tk_monan = svMonAn.getQuery() + "";
+//                listNHSearch = new ArrayList<>();
+//
+//                for(NhaHang nh: listNhaHangTheoLoai){
+//                    String tenNh =String.valueOf(nh.getTenNH());
+//
+//                    if(text_search.contains(tenNh)){
+//                        listNHSearch.add(nh);
+//                    }
+//                }
+//
+//                getNhaHangSearch(listNHSearch);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//                getNhaHangSearch(listNhaHangTheoLoai);
+                return false;
+            }
+        });
+    }
+
+    //xuất món ăn tìm kiếm ra danh sách
+    private void getMonAnTimKiem(List<MonAnNH> list){
+        MonAnAdapter adapter  = new MonAnAdapter(list, getContext());
+        gv_MonAn.setNumColumns(2);
+        gv_MonAn.setAdapter(adapter);
+    }
+
+    //xóa món ăn
+    private void xoaMonAnFireBase(int positon){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Thông báo")
+                .setMessage("Bạn chắn chắn muốn xóa món ăn này không?")
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+                            // Delete bảng nhà hàng
+                            db.collection("MONANNH").document(listMonAn.get(positon).getMaMA())
+                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+//                                    getAllMonAn(viTriLoaiNH);
+                                    Toast.makeText(getContext(), "Xóa món ăn thành công", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }catch (Exception e){
+                            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.show();
     }
 }
