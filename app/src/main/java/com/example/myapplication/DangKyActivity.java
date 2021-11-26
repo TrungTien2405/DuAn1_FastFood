@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -21,8 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.myapplication.Model.TaiKhoan;
@@ -53,7 +50,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class RegisterActivity extends AppCompatActivity {
+public class DangKyActivity extends AppCompatActivity {
 
     EditText edHoTen, edSoDT, edDiaChi, edMaOTP;
 
@@ -85,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_dang_ky);
         edHoTen = findViewById(R.id.ed_HoTen);
         edSoDT = findViewById(R.id.ed_SDT);
         edDiaChi = findViewById(R.id.ed_DiaChi);
@@ -101,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
         imgTrove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+               Intent intent = new Intent(DangKyActivity.this, DangNhapActivity.class);
                startActivity(intent);
             }
         });
@@ -267,7 +264,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Gửi mã OTP đến điện thoại
         sendVerificationCode(edSoDT.getText().toString());
 
-        dialogOTP = new Dialog(RegisterActivity.this);
+        dialogOTP = new Dialog(DangKyActivity.this);
         dialogOTP.setContentView(R.layout.dialog_otp_firebase);
 
         dialogOTP.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -307,7 +304,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(RegisterActivity.this, "PhoneAuthProvider "+e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(DangKyActivity.this, "PhoneAuthProvider "+e.getMessage(), Toast.LENGTH_LONG).show();
         }
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
@@ -323,7 +320,7 @@ public class RegisterActivity extends AppCompatActivity {
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber("+84"+mobile)
                         .setTimeout(60L, TimeUnit.SECONDS)
-                        .setActivity(RegisterActivity.this)
+                        .setActivity(DangKyActivity.this)
                         .setCallbacks(mCallback)
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
@@ -338,25 +335,25 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(DangKyActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this, "Xác thực thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DangKyActivity.this, "Xác thực thành công", Toast.LENGTH_SHORT).show();
                             // Load avatar lên firebase
                             uploadImageToFirebase(imageFileName, contenUri);
 
                             //Chuyển về màn hình đăng nhập
 //                            RegisterActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment
 //                                    , new FragmentThanhVien()).commit();
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            Intent intent = new Intent(DangKyActivity.this, DangNhapActivity.class);
                             startActivity(intent);
 
                             dialogOTP.dismiss();
                         } else {
                             //verification unsuccessful.. display an error message
                             String message = "Somthing is wrong, we will fix it soon...";
-                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DangKyActivity.this, message, Toast.LENGTH_SHORT).show();
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 message = "Invalid code entered...";
                             }
