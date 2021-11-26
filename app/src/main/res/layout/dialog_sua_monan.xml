@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/dialog_bogocdialog"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/dialog_bogocdialog">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:padding="20dp"
+        android:padding="25dp"
         android:background="@drawable/layout_topdialog"
         android:text="Chỉnh sửa món ăn"
         android:textAllCaps="true"
@@ -41,27 +41,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="40dp"
+                android:text="Mã nhà hàng"
+                android:fontFamily="@font/asap_medium"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <Spinner
-                    android:id="@+id/sp_dialogSuaMaNH"
+                <TextView
+                    android:id="@+id/tv_dialogSuaMaNH"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:background="@drawable/custom_edt"
-                    android:paddingLeft="10dp"
+                    android:padding="10dp"
                     android:fontFamily="@font/asap_medium"/>
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="55dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="-30dp"
                     app:srcCompat="@drawable/ic_updown" />
             </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="20dp"
+                android:text="Mã thực đơn nhà hàng"
+                android:fontFamily="@font/asap_medium"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,17 +83,15 @@
                     android:id="@+id/sp_dialogSuaMaMenuNH"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:fontFamily="@font/asap_medium"
                     android:background="@drawable/custom_edt"
-                    android:paddingLeft="10dp"/>
-
+                    android:padding="10dp"/>
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="-30dp"
                     app:srcCompat="@drawable/ic_updown" />
             </LinearLayout>
@@ -130,7 +141,7 @@
         android:orientation="horizontal"
         android:background="@drawable/layout_bottomdialog">
         <TextView
-            android:id="@+id/tv_dialogHuySuaNH"
+            android:id="@+id/tv_dialogHuySuaMA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
