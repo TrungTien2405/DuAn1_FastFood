@@ -84,7 +84,7 @@ public class MonAnAdapter extends BaseAdapter{
         holder.tv_ChinhSuaMA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                fragment.dialogSuaMonAn(position);
             }
         });
 

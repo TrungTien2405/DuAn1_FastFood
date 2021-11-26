@@ -15,9 +15,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -26,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -34,20 +32,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.MonAnAdapter;
-import com.example.myapplication.Adapter.NhaHangAdapter;
-import com.example.myapplication.Model.LoaiNhaHang;
+import com.example.myapplication.Model.MenuNH;
 import com.example.myapplication.Model.MonAnNH;
-import com.example.myapplication.Model.NhaHang;
-import com.example.myapplication.Model.YeuThich;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -78,12 +71,14 @@ public class MonAnFragment extends Fragment {
     private TextView tv_TenNhaHangMA, tv_PhiVanChuyenMA, tv_ThoiGianMA, tv_DanhGiaMA;
     private ImageView imv_HinhNenMA, imv_TroVe, imv_toGioHang;
 
-    private ImageView imv_ThemHinhMA;
-    private Spinner sp_ThemMaNH;
-    private Spinner sp_ThemMaMenuNH;
-    private Dialog dialogThemMonAn;
+    private ImageView imv_ThemHinhMA, imv_SuaHinhMA;
+    private TextView tv_dialogSuaMaNH;
+    private Spinner sp_ThemMaNH, sp_ThemMaMenuNH, sp_dialogSuaMaMenuNH;
+    private Dialog dialogThemMonAn, dialogSuaMonAn;
 
     private List<MonAnNH> listMonAn;
+    private List<MonAnNH> listMonAnTimKiem;
+    private List<String> listMaNH, listMaMenuNH;
 
     private MonAnNH monAnNH;
 
@@ -91,22 +86,19 @@ public class MonAnFragment extends Fragment {
     private Double danhGia;
     private String hinhAnhNH;
     private int phiVanChuyen;
+    private String _hinhAnh;
 
     private String _maNH, _tenNH;
-    public int viTriMonAn = 0 ;
 
     //Firestore
     private FirebaseFirestore db;
-    // variable for FirebaseAuth class xác thực OTP
-    private FirebaseAuth mAuth;
     //Image firebase
     private StorageReference storageReference;
 
 
     //Load image
-    int GALEERY_REQUEST_CODE = 105;
     Uri contenUri;
-    String imageFileName ="";
+    String imageFileName = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,17 +115,46 @@ public class MonAnFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
 
         anhXa(view);
+        timKiemMA();
 
         getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firestore xuống
+        getAllMaNH(getContext());
+        getAllMaMenuNH(getContext());
 
         //Nhấn nút thêm món ăn
         flBtnThemMA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                dialogThemMonAn(0);
+            }
+        });
+        imv_TroVe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new NhaHangFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+        gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                dialogXoaMonAn(position);
+                return false;
             }
         });
 
@@ -169,33 +190,6 @@ public class MonAnFragment extends Fragment {
         }else{
             Picasso.with(getContext()).load(hinhAnhNH).into(imv_HinhNenMA);
         }
-
-        imv_TroVe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
-                        .replace(R.id.nav_FrameFragment, new NhaHangFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
-                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return false;
-            }
-        });
     }
 
     //
@@ -239,6 +233,61 @@ public class MonAnFragment extends Fragment {
         });
     }
 
+
+        //add dữ liệu mã nhà hàng vào listMaNH
+    public void getAllMaNH(Context context){
+        listMaNH = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("NHAHANG");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot){
+                            String maNH = doc.get("MaNH").toString();
+
+                            listMaNH.add(maNH);
+                        }
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Log.d("=====> ", "Lỗi: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+    //add dữ liệu mã menu nhà hàng vào listMaMenuNH
+    public void getAllMaMenuNH(Context context){
+        listMaMenuNH = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("MENUNH");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot){
+                            String maMenuNH = doc.get("MaMenuNH").toString();
+
+                            listMaMenuNH.add(maMenuNH);
+                        }
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Log.d("=====> ", "Lỗi: " + e.getMessage());
+                }
+            }
+        });
+    }
+
     //truyền dữ liệu của fragment món ăn vào fragment món ăn chi tiết
     public void BundleFragmentMonAnCT(String _maMA, String _tenMon, int _gia, String _chiTiet, String _hinhMA){
         Bundle bundle = new Bundle();
@@ -263,7 +312,7 @@ public class MonAnFragment extends Fragment {
                 .commit();
     }
 
-    //
+    //gọi adapter món ăn
     private void goiAdapter(){
         MonAnAdapter adapter = new MonAnAdapter(listMonAn, getContext(), this);
         gv_MonAn.setNumColumns(2);
@@ -279,29 +328,29 @@ public class MonAnFragment extends Fragment {
         return en.format(number);
     }
 
-    //tìm kiếm món ăn
+   // tìm kiếm món ăn
     private void timKiemMA(){
         svMonAn.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 String tk_monan = svMonAn.getQuery() + "";
-                listNHSearch = new ArrayList<>();
+                listMonAnTimKiem = new ArrayList<>();
 
-                for(MonAnNH monAnNH: listNhaHangTheoLoai){
+                for(MonAnNH monAnNH: listMonAn){
                     String tenMonAn = String.valueOf(monAnNH.getTenMon());
 
                     if(tk_monan.contains(tenMonAn)){
-                        listNHSearch.add(monAnNH);
+                        listMonAnTimKiem.add(monAnNH);
                     }
                 }
 
-                getMonAnTimKiem(listNHSearch);
+                getMonAnTimKiem(listMonAnTimKiem);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                getMonAnTimKiem(listNhaHangTheoLoai);
+                getMonAnTimKiem(listMonAn);
                 return false;
             }
         });
@@ -309,31 +358,37 @@ public class MonAnFragment extends Fragment {
 
     //xuất món ăn tìm kiếm ra danh sách
     private void getMonAnTimKiem(List<MonAnNH> list){
-        MonAnAdapter adapter  = new MonAnAdapter(list, getContext(), this);
-        gv_MonAn.setNumColumns(2);
-        gv_MonAn.setAdapter(adapter);
+        try {
+            MonAnAdapter adapter  = new MonAnAdapter(list, getContext(), this);
+            gv_MonAn.setNumColumns(2);
+            gv_MonAn.setAdapter(adapter);
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Không tìm thấy món ăn", Toast.LENGTH_SHORT).show();
+        }
     }
 
+    //dialog thêm món ăn
     private void dialogThemMonAn(int positon){
         dialogThemMonAn =  new Dialog(getContext());
         dialogThemMonAn.setContentView(R.layout.dialog_them_monan);
 
         dialogThemMonAn.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.9);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.6);
-        dialogThemMonAn.getWindow().setLayout(width,height);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.8);
+        dialogThemMonAn.getWindow().setLayout(width, height);
 
         EditText ed_Ten = dialogThemMonAn.findViewById(R.id.ed_dialogThemTenMA);
         EditText ed_ChiTiet = dialogThemMonAn.findViewById(R.id.ed_dialogThemChiTietMA);
         EditText ed_Gia = dialogThemMonAn.findViewById(R.id.ed_dialogThemGiaMA);
-        ImageView imv_ThemHinhMA = dialogThemMonAn.findViewById(R.id.imv_dialogThemHinhMA);
-        Spinner sp_ThemMaNH = dialogThemMonAn.findViewById(R.id.sp_dialogThemMaNH);
-        Spinner sp_ThemMaMenuNH = dialogThemMonAn.findViewById(R.id.sp_dialogThemMaMenuNH);
+        imv_ThemHinhMA = dialogThemMonAn.findViewById(R.id.imv_dialogThemHinhMA);
+        sp_ThemMaNH = dialogThemMonAn.findViewById(R.id.sp_dialogThemMaNH);
+        sp_ThemMaMenuNH = dialogThemMonAn.findViewById(R.id.sp_dialogThemMaMenuNH);
         TextView tv_HuyThem = dialogThemMonAn.findViewById(R.id.tv_dialogHuyThemMA);
         TextView tv_XacNhanThem = dialogThemMonAn.findViewById(R.id.tv_dialogXacNhanThemMA);
 
-//        //Lấy danh sách mã loại nhà hàng lên spinner
-//        getMaLoaiLoaiNHToSpiner(0);
+        //gọi danh sách mã nhà hàng, mã menu nhà hàng lên spinner
+        getMaNHtoSpinner(0);
+        getMaMenuNHtoSpinner(0);
 
         imv_ThemHinhMA.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,8 +402,6 @@ public class MonAnFragment extends Fragment {
                 chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
 
                 startActivityForResult(chua, 999);
-//               Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//               startActivityForResult(gallery, GALEERY_REQUEST_CODE);
             }
         });
 
@@ -357,18 +410,20 @@ public class MonAnFragment extends Fragment {
             public void onClick(View v) {
                 String tenMon = ed_Ten.getText().toString();
                 String chiTiet = ed_ChiTiet.getText().toString();
-                String gia = ed_Gia.getText().toString();
+                int gia = Integer.parseInt(ed_Gia.getText().toString());
 
-                if(tenMon.isEmpty() || chiTiet.isEmpty() || gia.isEmpty()){
+                if(tenMon.isEmpty() || chiTiet.isEmpty() || gia == 0){
                     Toast.makeText(getContext(), "Không được để trống thông tin", Toast.LENGTH_SHORT).show();
                 }else{
                     Random random =  new Random();
                     int x = random.nextInt((10000-1+1)+1);
                     String maMA = "MA" + x;
+                    String maNH = sp_ThemMaNH.getSelectedItem().toString();
+                    String maMenuNH = sp_ThemMaMenuNH.getSelectedItem().toString();
 
-//                    MonAnNH monAnNH = new MonAnNH(maMA, tenMon, chiTiet, gia, "");
-//
-//                    uploadImageToFirebase(imageFileName, contenUri);
+                    monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, gia, "");
+
+                    uploadImageMonAnToFirebase(imageFileName, contenUri, 0);
                 }
             }
         });
@@ -384,8 +439,91 @@ public class MonAnFragment extends Fragment {
 
     }
 
-    //xóa món ăn
-    private void dialog_xoaMonAn(int positon){
+
+    //dialog sửa món ăn
+    public void dialogSuaMonAn(int positon){
+        dialogSuaMonAn =  new Dialog(getContext());
+        dialogSuaMonAn.setContentView(R.layout.dialog_sua_monan);
+
+        dialogSuaMonAn.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        int width = (int)(getContext().getResources().getDisplayMetrics().widthPixels*0.9);
+        int height = (int)(getContext().getResources().getDisplayMetrics().heightPixels*0.8);
+        dialogSuaMonAn.getWindow().setLayout(width, height);
+
+        EditText edSuaTenMA = dialogSuaMonAn.findViewById(R.id.ed_dialogSuaTenMA);
+        EditText edSuaChiTietMA = dialogSuaMonAn.findViewById(R.id.ed_dialogSuaChiTietMA);
+        EditText edSuaGiaMA = dialogSuaMonAn.findViewById(R.id.ed_dialogSuaGiaMA);
+        tv_dialogSuaMaNH = dialogSuaMonAn.findViewById(R.id.tv_dialogSuaMaNH);
+        sp_dialogSuaMaMenuNH = dialogSuaMonAn.findViewById(R.id.sp_dialogSuaMaMenuNH);
+        imv_SuaHinhMA = dialogSuaMonAn.findViewById(R.id.imv_dialogSuaHinhMA);
+        TextView tvHuySua = dialogSuaMonAn.findViewById(R.id.tv_dialogHuySuaMA);
+        TextView tvXacNhanSua = dialogSuaMonAn.findViewById(R.id.tv_dialogXacNhanSuaMA);
+
+        //gọi danh sách mã nhà hàng , mã menu nhà hàng lên spinner
+        getMaNHtoSpinner(1);
+        getMaMenuNHtoSpinner(1);
+
+        //Đẩy thông tin lên dialog sửa món ăn
+        edSuaTenMA.setText(listMonAn.get(positon).getTenMon());
+        edSuaChiTietMA.setText(listMonAn.get(positon).getChiTiet());
+        edSuaGiaMA.setText(listMonAn.get(positon).getGia() + "");
+        _hinhAnh = listMonAn.get(positon).getHinhAnh();
+
+        if(_hinhAnh.isEmpty()){
+            imv_SuaHinhMA.setImageResource(R.drawable.im_food);
+        }else{
+            Picasso.with(getContext()).load(listMonAn.get(positon).getHinhAnh()).into(imv_SuaHinhMA);
+        }
+
+        tvHuySua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSuaMonAn.dismiss();
+            }
+        });
+
+        imv_SuaHinhMA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                Intent lib = new Intent(Intent.ACTION_GET_CONTENT);
+                lib.setType("image/*");
+
+                Intent chua = Intent.createChooser(cam, "Chọn");
+                chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
+
+                startActivityForResult(chua, 888);
+            }
+        });
+
+        tvXacNhanSua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tenMon = edSuaTenMA.getText().toString();
+                String chiTiet = edSuaChiTietMA.getText().toString();
+                int gia = Integer.parseInt(edSuaGiaMA.getText().toString());
+
+                if(tenMon.isEmpty() || chiTiet.isEmpty() || gia == 0){
+                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Thêm lên Firebase
+                    String maMA = listMonAn.get(positon).getMaMA();
+                    String maMenuNH = sp_dialogSuaMaMenuNH.getSelectedItem().toString();
+
+                    monAnNH = new MonAnNH(maMA, _maNH, maMenuNH, tenMon, chiTiet, gia, "");
+                    //Đẩy hình ảnh lên firebase
+                    uploadImageMonAnToFirebase(imageFileName, contenUri, 1); // Số 0 là thêm món ăn, số 1 là sửa món ăn
+                }
+            }
+        });
+
+        dialogSuaMonAn.show();
+    }
+
+
+    //dialog xóa món ăn
+    private void dialogXoaMonAn(int positon){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
                 .setMessage("Bạn chắn chắn muốn xóa món ăn này không?")
@@ -399,7 +537,7 @@ public class MonAnFragment extends Fragment {
                                     .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-//                                    getAllMonAn(viTriLoaiNH);
+                                    getAllMonAn(getContext());
                                     Toast.makeText(getContext(), "Xóa món ăn thành công", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -419,6 +557,37 @@ public class MonAnFragment extends Fragment {
     }
 
 
+    //lấy mã nhà hàng lên spinner
+    private void getMaNHtoSpinner(int chucNang){
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                    android.R.layout.simple_list_item_1, listMaNH);
+
+            // Layout for All ROWs of Spinner.  (Optional for ArrayAdapter).
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            if(chucNang == 0){
+                sp_ThemMaNH.setAdapter(adapter);
+            }else{
+                tv_dialogSuaMaNH.setText(_maNH);
+            }
+    }
+
+    //lấy mã menu nhà hàng lên spinner
+    private void getMaMenuNHtoSpinner(int chucNang){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_1, listMaMenuNH);
+
+        // Layout for All ROWs of Spinner.  (Optional for ArrayAdapter).
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        if(chucNang == 0){
+            sp_ThemMaMenuNH.setAdapter(adapter);
+        }else{
+            sp_dialogSuaMaMenuNH.setAdapter(adapter);
+        }
+    }
+
+
 
     // Xử lí sự kiện load hình lên ImaveView
     @Override
@@ -426,15 +595,6 @@ public class MonAnFragment extends Fragment {
         //super.onActivityResult(requestCode, resultCode, data);
 
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == GALEERY_REQUEST_CODE) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                contenUri = data.getData();
-//                String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//                imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
-//                imvHinhLoai.setImageURI(contenUri);
-//            }
-//        }
-
 
         //Xử lí thêm ảnh lên imageview ảnh món ăn
         if (requestCode == 999 && resultCode == RESULT_OK){
@@ -450,22 +610,19 @@ public class MonAnFragment extends Fragment {
             }
         }
 
-
-//        //Xử lí thêm ảnh lên imageview ảnh  dialog sửa thông tin nhà hàng
-//        if (requestCode == 777 && resultCode == RESULT_OK){
-//            contenUri = data.getData();
-//            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
-//            if (data.getExtras() != null){
-//                Bundle caigio = data.getExtras();
-//                Bitmap bitmap = (Bitmap) caigio.get("data");
-//                imvHinhSuaNH.setImageBitmap(bitmap);
-//            }else{
-//                imvHinhSuaNH.setImageURI(contenUri);
-//            }
-//        }
-
-
+        //Xử lí thêm ảnh lên imageview ảnh dialog sửa thông tin nhà hàng
+        if (requestCode == 888 && resultCode == RESULT_OK){
+            contenUri = data.getData();
+            String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
+            if (data.getExtras() != null){
+                Bundle caigio = data.getExtras();
+                Bitmap bitmap = (Bitmap) caigio.get("data");
+                imv_SuaHinhMA.setImageBitmap(bitmap);
+            }else{
+                imv_SuaHinhMA.setImageURI(contenUri);
+            }
+        }
     }
 
     private  String getFileExt(Uri uri){
@@ -476,61 +633,68 @@ public class MonAnFragment extends Fragment {
 
 
     //Load hình lên folder hình ảnh của món ăn
-//    private void uploadImageNHToFirebase(String name, Uri contentUri, int congViec){
-//        StorageReference image = storageReference.child("IM_MONAN/"+name);
-//        try {
-//            image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri uri) {
-//                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
-//                            // Thêm nhà hàng lên firebase
-//                            nhaHang.setHinhAnh(uri.toString());
-//                            if(congViec == 0) {
-//                                themNHToFireStore(loaiNhaHang);
-//                            }else{
-//                                updateFirebase(nhaHang);
-//                            }
-//                        }
-//                    });
-//                }
-//            }).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Log.d("==> Exception", e.getMessage());
-//                }
-//            });
-//        }catch (Exception e){
-//            nhaHang.setHinhAnh("");
-//            themNHToFireStore(loaiNhaHang);
-//        }
-//    }
+    private void uploadImageMonAnToFirebase(String name, Uri contentUri, int congViec){
+        StorageReference image = storageReference.child("IM_MONAN/" + name);
+        try {
+            image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            // Thêm ảnh món ăn lên firebase
+                            monAnNH.setHinhAnh(uri.toString());
+                            if(congViec == 0) {
+                                themMonAnToFireStore(monAnNH);
+                            }else{
+                                capnhatMonAnToFirebase(monAnNH);
+                            }
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("==> Exception", e.getMessage());
+                }
+            });
+        }catch (Exception e){
+            if(congViec == 0) {
+                themMonAnToFireStore(monAnNH);
+            }else{
+                monAnNH.setHinhAnh(_hinhAnh);
+                capnhatMonAnToFirebase(monAnNH);
+            }
+        }
+    }
 
 
-    // Cập nhập thông tin bảng món ăn lên Firebase
-//    private void updateFirebase(MonAnNH monAnNH){
-//        final CollectionReference reference = db.collection("MONANNH");
-//        try {
-//            Map map = new HashMap<String, Object>();
-//            map.put("MaMA", monAnNH.getMaMA());
-//            map.put("MaNH", monAnNH.getMaNH());
-//            map.put("MaMenuNH", monAnNH.getMaMenuNH());
-//            map.put("TenMon", monAnNH.getTenMon());
-//            map.put("Gia", monAnNH.getGia());
-//            map.put("ChiTiet", monAnNH.getChiTiet());
-//            map.put("HinhAnh", monAnNH.getHinhAnh());
-//
-//            reference.document(monAnNH.getMaMA() + "").set(map, SetOptions.merge());
-//
-//            dialogSuaNH.dismiss();
-//            //Cập nhật lại girdview
-//            getAllMonAn(getContext());
-//        }catch (Exception e){
-//            Toast.makeText(getContext(), "Error update Firebase: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
-//        }
-//    }
+  //   Cập nhập thông tin bảng món ăn lên Firebase
+    private void capnhatMonAnToFirebase(MonAnNH monAnNH){
+        final CollectionReference reference = db.collection("MONANNH");
+
+            Map map = new HashMap<String, Object>();
+            map.put("MaMA", monAnNH.getMaMA());
+            map.put("MaNH", monAnNH.getMaNH());
+            map.put("MaMenuNH", monAnNH.getMaMenuNH());
+            map.put("TenMon", monAnNH.getTenMon());
+            map.put("Gia", monAnNH.getGia());
+            map.put("ChiTiet", monAnNH.getChiTiet());
+            map.put("HinhAnh", monAnNH.getHinhAnh());
+
+        try {
+            //cập nhật dữ liệu firebase
+            reference.document(monAnNH.getMaMA() + "").set(map, SetOptions.merge());
+
+            dialogSuaMonAn.dismiss();
+            Toast.makeText(getContext(), "Chỉnh sửa món ăn thành công", Toast.LENGTH_SHORT).show();
+            //Cập nhật lại girdview
+            getAllMonAn(getContext());
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error update Firebase: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     // Thêm thông tin món ăn mới lên Firebase
@@ -541,18 +705,20 @@ public class MonAnFragment extends Fragment {
         data.put("MaMA", monAnNH.getMaMA());
         data.put("MaNH", monAnNH.getMaNH());
         data.put("Gia", monAnNH.getGia());
-        data.put("MaMenuNH", monAnNH.getGia());
-        data.put("HinhAnh", monAnNH.getGia());
-        data.put("ChiTiet", monAnNH.getGia());
-        data.put("TenMon", monAnNH.getGia());
+        data.put("MaMenuNH", monAnNH.getMaMenuNH());
+        data.put("HinhAnh", monAnNH.getHinhAnh());
+        data.put("ChiTiet", monAnNH.getChiTiet());
+        data.put("TenMon", monAnNH.getTenMon());
 
         try {
             collectionReference.document(monAnNH.getMaMA() + "").set(data);
+
             dialogThemMonAn.dismiss();
-            Toast.makeText(getContext(), "Thêm mã món ăn thành công", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(getContext(), "Thêm món ăn thành công", Toast.LENGTH_SHORT).show();
             getAllMonAn(getContext());
         }catch (Exception e){
-            Log.d("Error_addTKFirebase", e.getMessage());
+            Log.d("Error add Firebase:", e.getMessage());
         }
     }
 }
