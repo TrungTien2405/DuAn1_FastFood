@@ -95,7 +95,7 @@ public class KhachHangFragment extends Fragment {
                                 listTKKhachHang.add(taiKhoan);
                             }
                         }
-                        adapter();
+                        goiAdapter();
                     } else {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi " + task.getException(), Toast.LENGTH_SHORT).show();
                     }
@@ -105,7 +105,7 @@ public class KhachHangFragment extends Fragment {
             }
         });
     }
-    private void adapter(){
+    private void goiAdapter(){
         KhachHangAdapter adapter = new KhachHangAdapter(listTKKhachHang, getContext(), this);
         rcv_KhachHang.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv_KhachHang.setAdapter(adapter);
