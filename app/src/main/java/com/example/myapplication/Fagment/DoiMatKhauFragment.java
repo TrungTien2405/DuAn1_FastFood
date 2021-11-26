@@ -109,8 +109,10 @@ public class DoiMatKhauFragment extends Fragment {
         btnDongY = view.findViewById(R.id.btnDongYDMK);
         btnHuy = view.findViewById(R.id.btnHuyDMK);
 
+        //lấy dữ liệu
         Intent intent = getActivity().getIntent();
         String matKhau = intent.getStringExtra("MatKhau");
+        String sdt = intent.getStringExtra("SDT");
 
         btnDongY.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +132,6 @@ public class DoiMatKhauFragment extends Fragment {
                     } else if (matKhauMoi.equals(xnMatKhauMoi)) {
                         Intent intent = getActivity().getIntent();
                         mkMoi = matKhauMoi;
-                        String sdt = intent.getStringExtra("SDT");
 
                         dialog_OpenOTP(sdt);
                     } else {
@@ -139,11 +140,14 @@ public class DoiMatKhauFragment extends Fragment {
                 }
         });
 
-//        btnHuy.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tip_matKhauCu.getEditText().setText("");
+                tip_matKhauMoi.getEditText().setText("");
+                tip_xacNhanMatKhau.getEditText().setText("");
+            }
+        });
     }
 
     private void dialog_OpenOTP(String sdt){
@@ -238,7 +242,7 @@ public class DoiMatKhauFragment extends Fragment {
                             updatePass(mkMoi, maTV);
 
                             //Chuyển sang fragment Trang chính
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new NhaHangFragment()).commit();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new CaiDatFragment()).commit();
 
                             dialogOTP.dismiss();
                         } else {

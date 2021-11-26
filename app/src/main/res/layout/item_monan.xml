@@ -43,17 +43,19 @@
         android:background="@drawable/item_tien_monan"
         android:layout_margin="10dp">
         <TextView
-            android:layout_width="140dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="16dp"
             android:textAlignment="center"
+            android:fontFamily="@font/asap_medium"
             android:id="@+id/tv_GiaMA"/>
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/imv_ChonMA"
-            android:layout_marginLeft="-10dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_cong"/>
     </LinearLayout>
