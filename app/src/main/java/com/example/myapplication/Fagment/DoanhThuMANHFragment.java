@@ -172,7 +172,7 @@ public class DoanhThuMANHFragment extends Fragment {
 
 
     //Tính tổng doanh thu từng nhà hàng
-    private void tinhDoanhThuNH(){
+    private void tinhDoanhThuMANH(){
         listDoanhThu = new ArrayList<>();
         for(MonAnNH ma: listMonAn){
             int tongDT = 0;
@@ -299,7 +299,7 @@ public class DoanhThuMANHFragment extends Fragment {
 
 
         //Tính doanh thu của từng nhà hàng
-        tinhDoanhThuNH();
+        tinhDoanhThuMANH();
     }
 
     //Tìm kiếm món ăn bằng mã món ăn, nếu có thêm món ăn vào list giỏ hàng
