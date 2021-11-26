@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.Adapter.TaiKhoanAdapter;
 import com.example.myapplication.Adapter.ThanhToanAdapter;
 import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.TaiKhoan;

@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Fagment.GioHangFragment;
+import com.example.myapplication.Fagment.MonAnCTFragment;
+import com.example.myapplication.Fagment.MonAnFragment;
 import com.example.myapplication.Model.MonAnNH;
 import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.R;
@@ -23,12 +26,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class MonAnAdapter extends BaseAdapter{
-    public List<MonAnNH> list;
-    public Context context;
+    private List<MonAnNH> list;
+    private Context context;
+    private MonAnFragment fragment;
 
-    public MonAnAdapter(List<MonAnNH> list, Context context) {
+    public MonAnAdapter(List<MonAnNH> list, Context context, MonAnFragment fragment) {
         this.list = list;
         this.context = context;
+        this.fragment = fragment;
     }
 
     @Override
@@ -69,7 +74,7 @@ public class MonAnAdapter extends BaseAdapter{
         }
         holder.tv_TenMonAn.setText(monAnNH.getTenMon());
         holder.tv_ChiTietMA.setText(monAnNH.getChiTiet());
-        holder.tv_GiaMA.setText(formatNumber(monAnNH.getGia())+" VNDD");
+        holder.tv_GiaMA.setText(formatNumber(monAnNH.getGia())+" VND");
 
         if(monAnNH.getHinhAnh().isEmpty()){
             holder.imv_hinhMonAn.setImageResource(R.drawable.im_food);
@@ -80,6 +85,14 @@ public class MonAnAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        holder.imv_ChonMA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.BundleFragmentMonAnCT(monAnNH.getMaMA(), monAnNH.getTenMon(), monAnNH.getGia(), monAnNH.getChiTiet()
+                        , monAnNH.getHinhAnh());
             }
         });
 
