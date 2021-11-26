@@ -68,6 +68,8 @@ public class DoanhThuNHFragment extends Fragment {
 
     private String ngayDau, ngayCuoi; // Biến toàn cục lưu biến ngày đầu tiên và ngày cuối
 
+    private String _maTK;
+    private int QuyenDN;
 
     //Firestore
     private FirebaseFirestore db;
@@ -145,6 +147,11 @@ public class DoanhThuNHFragment extends Fragment {
         tvChonNgay1 = v.findViewById(R.id.tv_chonNgay1DTNH);
         tvChonNgay2 = v.findViewById(R.id.tv_chonNgay2DTNH);
         imvTroVe  = v.findViewById(R.id.imv_TroveTrongDTNH);
+
+        Intent intent = getActivity().getIntent();
+        _maTK = intent.getStringExtra("MaTK");
+        QuyenDN = intent.getIntExtra("Quyen", 2);
+
     }
 
     //Chuyển thông tin qua màn hình doanh thu nhà hàng, khi người dùng nhấn click
@@ -344,9 +351,11 @@ public class DoanhThuNHFragment extends Fragment {
                             String HinhAnh = doc.get("HinhAnh").toString();
                             String MaDG = doc.get("MaDG").toString();
 
-                            Double danhGia = tinhDanhGiaTB(MaNH);
-                            nhaHang = new NhaHang(MaNH, MaLoaiNH, MaTK, TenNH, ThoiGian, PhiVanChuyen, HinhAnh, danhGia, MaDG, "");
-                            listNhaHang.add(nhaHang);
+                            if(MaTK.equals(_maTK) || QuyenDN == 0) {
+                                Double danhGia = tinhDanhGiaTB(MaNH);
+                                nhaHang = new NhaHang(MaNH, MaLoaiNH, MaTK, TenNH, ThoiGian, PhiVanChuyen, HinhAnh, danhGia, MaDG, "");
+                                listNhaHang.add(nhaHang);
+                            }
 
                         }
                     }else{

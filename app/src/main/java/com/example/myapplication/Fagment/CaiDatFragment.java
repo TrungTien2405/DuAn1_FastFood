@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.myapplication.DangNhapActivity;
@@ -25,7 +26,12 @@ public class CaiDatFragment extends Fragment {
     Button btnDangXuat;
     private FirebaseAuth auth;
 
+    private ImageButton imgBtn;
+
     TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro, tvLSMua, tvDoanhThu, tvDoiMatKhau;
+
+    public int QuyenDN = 2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,7 @@ public class CaiDatFragment extends Fragment {
         tvThongTinUD=v.findViewById(R.id.tv_ThongTinUngDungCD);
         tvHoTro=v.findViewById(R.id.tv_HoTroCD);
         tvDoanhThu = v.findViewById(R.id.tv_DoanhThuCD);
+        imgBtn = v.findViewById(R.id.imgbtn_DoanhThuCD);
         tvDoiMatKhau = v.findViewById(R.id.tv_DoiMKCD);
 
         btnDangXuat=v.findViewById(R.id.btn_DangXuatCD);
@@ -52,6 +59,8 @@ public class CaiDatFragment extends Fragment {
         tvLSMua=v.findViewById(R.id.tv_lsMuaHangCD);
 
         getDataIntent();
+
+        kiemTraQuyenDangNhap();
 
 
         tvThongTinUD.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +143,8 @@ public class CaiDatFragment extends Fragment {
     private void getDataIntent(){
         Intent intent = getActivity().getIntent();
         String hoTen= intent.getStringExtra("HoTen");
+        QuyenDN = intent.getIntExtra("Quyen", 2);
+
         tvHoTen.setText(hoTen);
         String SDT=intent.getStringExtra("SDT");
         tvSDT.setText(SDT);
@@ -141,6 +152,14 @@ public class CaiDatFragment extends Fragment {
         tvDiaChi.setText(diaChi);
         String soDu=intent.getStringExtra("SoDu");
         tvSoDu.setText(soDu);
+    }
+
+    //Kiểm tra quyền đăng nhập phù hợp với người dùng
+    public void kiemTraQuyenDangNhap(){
+        if(QuyenDN == 2){
+            tvDoanhThu.setVisibility(View.INVISIBLE);
+            imgBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
 }
