@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -113,6 +114,8 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
                         nhaHang.getPhiVanChuyen(), nhaHang.getThoiGian(), nhaHang.getDanhGia());
             }
         });
+
+        kiemTraQuyenDangNhap(nhaHang, holder);
     }
 
     @Override
@@ -124,6 +127,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         TextView tvTenNH, tvLoaiNH, tvDanhGiaTB, tvSuaNH;
         ImageView imvHinh;
         ToggleButton tgb_yeuThich;
+        ConstraintLayout cons;
 
         public adapterNhaHang(@NonNull View itemView) {
             super(itemView);
@@ -134,10 +138,24 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             tvDanhGiaTB =itemView.findViewById(R.id.tv_itemDanhGiaRes);
             imvHinh =  itemView.findViewById(R.id.imv_itemHinhRes);
             tgb_yeuThich = itemView.findViewById(R.id.tgb_favoriteRes);
+            cons = itemView.findViewById(R.id.cons_itemsuanh);
         }
     }
 
+    // Ẩn các tác vụ người dùng không được sủ dụng
+    private void kiemTraQuyenDangNhap(NhaHang nh, adapterNhaHang holder){
+        if(fragment._maTK.equals(nh.getMaTK()) && fragment.QuyenDN == 1){
 
+        }
+
+        if(fragment.QuyenDN == 2){
+            holder.cons.setVisibility(View.INVISIBLE);
+            holder.tvSuaNH.setVisibility(View.INVISIBLE);
+        }else if(!fragment._maTK.equals(nh.getMaTK()) && fragment.QuyenDN == 1){
+            holder.cons.setVisibility(View.INVISIBLE);
+            holder.tvSuaNH.setVisibility(View.INVISIBLE);
+        }
+    }
 
 
 }

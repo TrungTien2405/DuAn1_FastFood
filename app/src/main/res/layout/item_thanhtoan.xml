@@ -44,7 +44,7 @@
             android:fontFamily="@font/asap_medium"
             android:text="Gà chiên gòn"
             android:textColor="#252525"
-            android:textSize="12dp"
+            android:textSize="14dp"
             app:layout_constraintStart_toEndOf="@+id/view_avatarf"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +57,7 @@
             android:fontFamily="@font/asap_medium"
             android:text="Gà chiên gòn"
             android:textColor="#252525"
-            android:textSize="12dp"
+            android:textSize="14dp"
             app:layout_constraintStart_toEndOf="@+id/view_avatarf"
             app:layout_constraintTop_toBottomOf="@+id/tv_itemTenMAThanhToanFra" />
 
@@ -70,7 +70,7 @@
             android:fontFamily="@font/asap_medium"
             android:text="Gà chiên gòn"
             android:textColor="#252525"
-            android:textSize="12dp"
+            android:textSize="14dp"
             app:layout_constraintStart_toEndOf="@+id/view_avatarf"
             app:layout_constraintTop_toBottomOf="@+id/tv_itemTenMonThemThanhToanFra" />
 
@@ -92,7 +92,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="#3C51DADA"
 >
 
@@ -141,7 +141,7 @@
             android:fontFamily="@font/asap_medium"
             android:text="Nhận hàng vào ngày 19 Th12 - 30 TH12"
             android:textColor="#6A6A6A"
-            android:textSize="10dp"
+            android:textSize="12dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
@@ -152,10 +152,12 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/asap_medium"
             android:text="Do ảnh hưởng của dịch Covid 19 thời gian giao hàng có thể lâu hơn dự kiến từ 1 - 3 ngày"
             android:textColor="#6A6A6A"
-            android:textSize="10dp"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
