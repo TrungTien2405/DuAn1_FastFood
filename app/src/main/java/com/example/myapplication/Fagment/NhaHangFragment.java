@@ -74,7 +74,7 @@ public class NhaHangFragment extends Fragment {
     private List<NhaHang> listNhaHangTheoLoai;
     private List<DanhGiaNH> listDanhGia;
     private List<LoaiNhaHang> listLoaiNhaHang;
-    private List<NhaHang> listNHSearch ;
+    private List<NhaHang> listNHSearch;
     private List<YeuThich> listYeuThich;
 
     //List cho spinner
