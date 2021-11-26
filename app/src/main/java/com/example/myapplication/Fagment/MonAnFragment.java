@@ -279,33 +279,33 @@ public class MonAnFragment extends Fragment {
         return en.format(number);
     }
 
-    //tìm kiếm món ăn
-    private void timKiemMA(){
-        svMonAn.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                String tk_monan = svMonAn.getQuery() + "";
-                listNHSearch = new ArrayList<>();
-
-                for(MonAnNH monAnNH: listNhaHangTheoLoai){
-                    String tenMonAn = String.valueOf(monAnNH.getTenMon());
-
-                    if(tk_monan.contains(tenMonAn)){
-                        listNHSearch.add(monAnNH);
-                    }
-                }
-
-                getMonAnTimKiem(listNHSearch);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                getMonAnTimKiem(listNhaHangTheoLoai);
-                return false;
-            }
-        });
-    }
+//    //tìm kiếm món ăn
+//    private void timKiemMA(){
+//        svMonAn.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                String tk_monan = svMonAn.getQuery() + "";
+//                listNHSearch = new ArrayList<>();
+//
+//                for(MonAnNH monAnNH: listNhaHangTheoLoai){
+//                    String tenMonAn = String.valueOf(monAnNH.getTenMon());
+//
+//                    if(tk_monan.contains(tenMonAn)){
+//                        listNHSearch.add(monAnNH);
+//                    }
+//                }
+//
+//                getMonAnTimKiem(listNHSearch);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                getMonAnTimKiem(listNhaHangTheoLoai);
+//                return false;
+//            }
+//        });
+//    }
 
     //xuất món ăn tìm kiếm ra danh sách
     private void getMonAnTimKiem(List<MonAnNH> list){
