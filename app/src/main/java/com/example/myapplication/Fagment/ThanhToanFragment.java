@@ -17,9 +17,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.Adapter.TaiKhoanAdapter;
+
 import com.example.myapplication.Adapter.ThanhToanAdapter;
 import com.example.myapplication.Model.GioHangCT;
+
+
+
 import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -86,6 +89,7 @@ public class ThanhToanFragment extends Fragment {
         tvDiaChi.setText(diaChi);
     }
 
+
     private void anhxa(View view){
         rcv_thanhToan = view.findViewById(R.id.rcv_thanhToan);
         tvDiaChi = view.findViewById(R.id.tv_diaChiNHThanhToanFrag);
@@ -95,5 +99,46 @@ public class ThanhToanFragment extends Fragment {
         tvTongThanhToan1 = view.findViewById(R.id.tv_tongThanhToanTT1);
         tvTongThanhToan1 = view.findViewById(R.id.tv_tongThanhToanTT2);
         btnDatHang = view.findViewById(R.id.btn_datHangTT);
+
+    //Lấy dữ liệu từ firestore
+    public void getAllChuNhaHang(Context context) {
+        listTKChuNhaHang = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("TAIKHOAN");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot snapshot = task.getResult();
+                        for (QueryDocumentSnapshot doc : snapshot) {
+                            String maTK = doc.get("MaTK").toString();
+                            String hoTen = doc.get("HoTen").toString();
+                            String diaChi = doc.get("DiaChi").toString();
+                            String hinhAnh = doc.get("HinhAnh").toString();
+                            String soDT = doc.get("SDT").toString();
+                            int soDu = Integer.parseInt(doc.get("SoDu").toString());
+                            String matKhau = doc.get("MatKhau").toString();
+                            int quyen = Integer.parseInt(doc.get("Quyen").toString());
+
+                                taiKhoan = new TaiKhoan(maTK, hoTen, matKhau, soDT, diaChi, quyen, hinhAnh, soDu);
+                                listTKChuNhaHang.add(taiKhoan);
+                        }
+//                        TaiKhoanAdapter adapter = new TaiKhoanAdapter(listTKChuNhaHang, getContext());
+//                        rcv_ChuNhaHang.setFocusable(false);
+//                        rcv_ChuNhaHang.setNestedScrollingEnabled(false);
+//                        rcv_ChuNhaHang.setLayoutManager(new LinearLayoutManager(getContext()));
+//                        rcv_ChuNhaHang.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi " + task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Log.d("tag", "===================>" + e.getMessage());
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
-}
+}}

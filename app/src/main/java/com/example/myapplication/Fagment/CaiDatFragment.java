@@ -16,9 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.LoginActivity;
+import com.example.myapplication.DangNhapActivity;
+
 import com.example.myapplication.R;
-import com.example.myapplication.RegisterActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.NumberFormat;
@@ -121,7 +122,7 @@ public class CaiDatFragment extends Fragment {
         edit.commit();
 
         auth.signOut();
-        Intent intent = new Intent(getContext(), LoginActivity.class);
+        Intent intent = new Intent(getContext(), DangNhapActivity.class);
         startActivity(intent);
 
     }
