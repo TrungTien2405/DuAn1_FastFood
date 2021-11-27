@@ -90,7 +90,7 @@ public class    NhaHangFragment extends Fragment {
 
     private TextView tvTenTK;
     private TextInputLayout tipSoDuTK;
-    private ImageView imvThemLoaiNH;
+    private ImageView imvThemLoaiNH, imvAvatar;
     private FloatingActionButton flBtnThemNH;
     private SearchView svNhaHang;
 
@@ -264,15 +264,21 @@ public class    NhaHangFragment extends Fragment {
         imvThemLoaiNH = v.findViewById(R.id.imv_addLoaiNhFragNH);
         flBtnThemNH = v.findViewById(R.id.fbtn_themNhaHang);
         svNhaHang  = v.findViewById(R.id.sv_nhaHang);
+        imvAvatar = v.findViewById(R.id.imv_avatarTaiKhoan_NhaHang);
 
         Intent intent = getActivity().getIntent();
         String tentk = intent.getStringExtra("HoTen");
         _maTK = intent.getStringExtra("MaTK");
         QuyenDN = intent.getIntExtra("Quyen", 2);
+        String hinhAnh = intent.getStringExtra("HinhAnh");
         int soDu = Integer.parseInt(intent.getStringExtra("SoDu"));
 
         tvTenTK.setText(tentk);
         tipSoDuTK.getEditText().setText("Số dư    "+formatNumber(soDu)+" VND");
+
+        if(hinhAnh.isEmpty()){
+            imvAvatar.setImageResource(R.drawable.avatar);
+        }else Picasso.with(getContext()).load(hinhAnh).into(imvAvatar);
     }
 
     //Kiểm tra quyền đăng nhập phù hợp với người dùng
