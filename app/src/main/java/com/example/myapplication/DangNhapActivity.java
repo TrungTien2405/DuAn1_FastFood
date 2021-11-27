@@ -93,7 +93,7 @@ public class DangNhapActivity extends AppCompatActivity {
                             intent.putExtra("Quyen", Integer.parseInt(doc.get("Quyen").toString()));
 
                             startActivity(intent);
-                            remeberUser(username, password, chkLuuTK.isChecked());
+                            rememberUser(username, password, chkLuuTK.isChecked());
                             check = 1;
                             break;
                         }
@@ -106,7 +106,7 @@ public class DangNhapActivity extends AppCompatActivity {
         });
     }
 
-    public void remeberUser(String u, String p, boolean status){
+    public void rememberUser(String u, String p, boolean status){
         SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
         SharedPreferences.Editor edit = pref.edit();
         if(!status){
