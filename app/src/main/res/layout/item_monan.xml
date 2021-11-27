@@ -11,7 +11,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:text="Chỉnh sửa"
-        android:textSize="14dp"
+        android:textSize="12dp"
         android:fontFamily="@font/asap_medium"
         android:textColor="@color/black"
         android:id="@+id/tv_ChinhSuaMA"
@@ -19,6 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="Chicken Katsu Curry"
         android:id="@+id/tv_TenMonAn"
         android:fontFamily="@font/vollkorn_variablefont_wght"
@@ -34,6 +35,7 @@
         android:layout_height="40dp"
         android:textSize="10dp"
         android:layout_marginLeft="5dp"
+        android:paddingHorizontal="10dp"
         android:textAlignment="center"
         android:id="@+id/tv_ChiTietMA" />
     <LinearLayout
@@ -55,7 +57,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/imv_ChonMA"
-            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_cong"/>
     </LinearLayout>
