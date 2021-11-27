@@ -59,64 +59,75 @@
                 android:textSize="15dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/imv_avatarTaiKhoan_NhaHang"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:scaleType="centerCrop"
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="150dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/add_avatar" />
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/imv_avatarTaiKhoan_CaiDat"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/avatar" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_TenKHCD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="4dp"
             android:text="Tên"
+            android:textSize="20dp"
+            android:fontFamily="@font/asap_medium"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.059"
-            app:layout_constraintStart_toEndOf="@+id/imv_avatarTaiKhoan_NhaHang"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
             android:id="@+id/textView4"
+            android:fontFamily="@font/asap_medium"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:text="Hello"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.061"
-            app:layout_constraintStart_toEndOf="@+id/imv_avatarTaiKhoan_NhaHang"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.108" />
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_SDTKHCD"
+            android:fontFamily="@font/asap_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="4dp"
             android:text="SĐT"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.06"
-            app:layout_constraintStart_toEndOf="@+id/imv_avatarTaiKhoan_NhaHang"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/tv_TenKHCD" />
 
         <TextView
             android:id="@+id/tv_DiaChiKHCD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/asap_medium"
             android:text="Địa chỉ"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.063"
-            app:layout_constraintStart_toEndOf="@+id/imv_avatarTaiKhoan_NhaHang"
+            app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/tv_SDTKHCD" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -139,6 +150,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="76dp"
         android:background="@null"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_dt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -150,6 +162,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="120dp"
         android:background="@null"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_doimatkhau"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />

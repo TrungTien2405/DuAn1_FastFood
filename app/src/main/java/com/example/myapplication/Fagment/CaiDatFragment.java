@@ -13,11 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.DangNhapActivity;
 import com.example.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 
 public class CaiDatFragment extends Fragment {
@@ -27,6 +32,8 @@ public class CaiDatFragment extends Fragment {
     private FirebaseAuth auth;
 
     private ImageButton imgBtn;
+
+    private ImageView imvAvatar;
 
     TextView tvHoTen,tvSDT,tvDiaChi,tvSoDu,tvThongTinUD,tvHoTro, tvLSMua, tvDoanhThu, tvDoiMatKhau;
 
@@ -53,6 +60,7 @@ public class CaiDatFragment extends Fragment {
         tvDoanhThu = v.findViewById(R.id.tv_DoanhThuCD);
         imgBtn = v.findViewById(R.id.imgbtn_DoanhThuCD);
         tvDoiMatKhau = v.findViewById(R.id.tv_DoiMKCD);
+        imvAvatar = v.findViewById(R.id.imv_avatarTaiKhoan_CaiDat);
 
         btnDangXuat=v.findViewById(R.id.btn_DangXuatCD);
 
@@ -144,14 +152,19 @@ public class CaiDatFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         String hoTen= intent.getStringExtra("HoTen");
         QuyenDN = intent.getIntExtra("Quyen", 2);
+        String hinhAnh = intent.getStringExtra("HinhAnh");
 
         tvHoTen.setText(hoTen);
         String SDT=intent.getStringExtra("SDT");
         tvSDT.setText(SDT);
         String diaChi=intent.getStringExtra("DiaChi");
         tvDiaChi.setText(diaChi);
-        String soDu=intent.getStringExtra("SoDu");
-        tvSoDu.setText(soDu);
+        int soDu=Integer.parseInt(intent.getStringExtra("SoDu"));
+        tvSoDu.setText("Số dư  "+formatNumber(soDu) + " VND");
+
+        if(hinhAnh.isEmpty()){
+            imvAvatar.setImageResource(R.drawable.avatar);
+        }else Picasso.with(getContext()).load(hinhAnh).into(imvAvatar);
     }
 
     //Kiểm tra quyền đăng nhập phù hợp với người dùng
@@ -160,6 +173,15 @@ public class CaiDatFragment extends Fragment {
             tvDoanhThu.setVisibility(View.INVISIBLE);
             imgBtn.setVisibility(View.INVISIBLE);
         }
+    }
+
+    // Định dạng sang số tiền
+    private String formatNumber(int number){
+        // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
+        Locale localeEN = new Locale("en", "EN");
+        NumberFormat en = NumberFormat.getInstance(localeEN);
+
+        return en.format(number);
     }
 
 }

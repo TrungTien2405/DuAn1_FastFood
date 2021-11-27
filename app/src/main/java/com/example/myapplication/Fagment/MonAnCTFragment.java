@@ -90,6 +90,8 @@ public class MonAnCTFragment extends Fragment {
 
         anhXa(view);
 
+        getMaGH();
+
         thayDoiSoLuongMonAn();
 
         addListMonThem();
@@ -103,13 +105,13 @@ public class MonAnCTFragment extends Fragment {
 
     private void addListMonThem(){
         listMonThem = new ArrayList<>();
-        listMonThem.add(new MonAnThem("Đùi gà", R.drawable.ic_camera, 0));
-        listMonThem.add(new MonAnThem("Cơm", R.drawable.ic_camera, 0));
-        listMonThem.add(new MonAnThem("Ớt", R.drawable.ic_camera, 0));
-        listMonThem.add(new MonAnThem("Cà chua", R.drawable.ic_camera, 0));
-        listMonThem.add(new MonAnThem("Canh", R.drawable.ic_camera, 0));
-        listMonThem.add(new MonAnThem("Pepsi", R.drawable.ic_camera, 0));
-        listMonThem.add(new MonAnThem("Trà sữa", R.drawable.ic_camera, 0));
+        listMonThem.add(new MonAnThem("Đùi gà", R.drawable.ic_chickendleg, 0));
+        listMonThem.add(new MonAnThem("Cơm", R.drawable.ic_ricebow, 0));
+        listMonThem.add(new MonAnThem("Ớt", R.drawable.ic_pepper, 0));
+        listMonThem.add(new MonAnThem("Cà chua", R.drawable.ic_tomato, 0));
+        listMonThem.add(new MonAnThem("Canh", R.drawable.ic_soup, 0));
+        listMonThem.add(new MonAnThem("Pepsi", R.drawable.ic_pepsi, 0));
+        listMonThem.add(new MonAnThem("Trà sữa", R.drawable.ic_bubbletea, 0));
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -130,7 +132,12 @@ public class MonAnCTFragment extends Fragment {
                     if(ma.getCheckBox() == 1) TenMonThem += " " + ma.getTenMonThem();
                 }
 
-                themGioHangToFireStore();
+                //Nếu tài khoản chưa có mã giỏ hàng thì tạo mã giỏ hàng cho no
+                if(MaGioHang.isEmpty()) {
+                    themGioHangToFireStore();
+                }else{
+                    themGioHangCTToFireStore(MaGioHang);
+                }
             }
         });
     }
@@ -319,7 +326,7 @@ public class MonAnCTFragment extends Fragment {
         data.put("MaGH", _maGH);
         data.put("MaGHCT", maGHCT);
         data.put("MaMA", gioHangCT.getMaMA());
-        data.put("SoLuong", gioHangCT.getSoLuong());
+        data.put("SoLuong", SoLuongMA);
         data.put("TenMonThem", TenMonThem);
         data.put("ThoiGian", FieldValue.serverTimestamp());
         data.put("TrangThai", gioHangCT.getTrangThai());
