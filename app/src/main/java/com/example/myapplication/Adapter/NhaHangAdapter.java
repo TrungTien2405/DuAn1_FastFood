@@ -111,7 +111,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             @Override
             public void onClick(View v) {
                 fragment.chuyenDenFragmentMonAN(nhaHang.getMaNH(), nhaHang.getTenNH(), nhaHang.getHinhAnh(),
-                        nhaHang.getPhiVanChuyen(), nhaHang.getThoiGian(), nhaHang.getDanhGia());
+                        nhaHang.getPhiVanChuyen(), nhaHang.getThoiGian(), nhaHang.getDanhGia(), nhaHang.getMaDG());
             }
         });
 

@@ -87,6 +87,7 @@ public class MonAnFragment extends Fragment {
     private String hinhAnhNH;
     private int phiVanChuyen;
     private String _hinhAnh;
+    private String maDanhGia;
 
     private String _maNH, _tenNH;
 
@@ -180,6 +181,7 @@ public class MonAnFragment extends Fragment {
         thoiGian = bundle.getString("ThoiGian");
         danhGia = bundle.getDouble("DanhGia");
         phiVanChuyen = bundle.getInt("PhiVanChuyen");
+        maDanhGia = bundle.getString("MaDanhGia");
 
         tv_TenNhaHangMA.setText(tenNhaHang);
         tv_PhiVanChuyenMA.setText(formatNumber(phiVanChuyen) + " VND");
@@ -302,6 +304,7 @@ public class MonAnFragment extends Fragment {
         bundle.putString("MaNH", _maNH);
         bundle.putString("TenNH", _tenNH);
         bundle.putString("HinhAnhNH", hinhAnhNH);
+        bundle.putString("MaDanhGia", maDanhGia);
         MonAnCTFragment monAnCTFragment = new MonAnCTFragment();
         monAnCTFragment.setArguments(bundle);
 

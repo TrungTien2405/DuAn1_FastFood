@@ -220,7 +220,7 @@ public class    NhaHangFragment extends Fragment {
         return _maTK;
     }
 
-    public void chuyenDenFragmentMonAN(String _maNH, String _tenNH, String _hinhNH, int _phiVanChuyen, String _thoiGian, Double _danhGia){
+    public void chuyenDenFragmentMonAN(String _maNH, String _tenNH, String _hinhNH, int _phiVanChuyen, String _thoiGian, Double _danhGia, String _maDG){
         Bundle bundle = new Bundle();
         bundle.putString("MaNH", _maNH);
         bundle.putString("TenNH", _tenNH);
@@ -228,6 +228,7 @@ public class    NhaHangFragment extends Fragment {
         bundle.putInt("PhiVanChuyen", _phiVanChuyen);
         bundle.putString("ThoiGian", _thoiGian);
         bundle.putDouble("DanhGia", _danhGia);
+        bundle.putString("MaDanhGia", _maDG);
         MonAnFragment monAnFragment = new MonAnFragment();
         monAnFragment.setArguments(bundle);
 
