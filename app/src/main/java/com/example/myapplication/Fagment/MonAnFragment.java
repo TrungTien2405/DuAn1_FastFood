@@ -737,7 +737,7 @@ public class MonAnFragment extends Fragment {
                             if(congViec == 0) {
                                 themMonAnToFireStore(monAnNH);
                             }else{
-                                capnhatMonAnToFirebase(monAnNH);
+                                capnhatMonAnToFireStore(monAnNH);
                             }
                         }
                     });
@@ -753,14 +753,14 @@ public class MonAnFragment extends Fragment {
                 themMonAnToFireStore(monAnNH);
             }else{
                 monAnNH.setHinhAnh(_hinhAnh);
-                capnhatMonAnToFirebase(monAnNH);
+                capnhatMonAnToFireStore(monAnNH);
             }
         }
     }
 
 
   //   Cập nhập thông tin bảng món ăn lên Firebase
-    private void capnhatMonAnToFirebase(MonAnNH monAnNH){
+    private void capnhatMonAnToFireStore(MonAnNH monAnNH){
         final CollectionReference reference = db.collection("MONANNH");
 
             Map map = new HashMap<String, Object>();

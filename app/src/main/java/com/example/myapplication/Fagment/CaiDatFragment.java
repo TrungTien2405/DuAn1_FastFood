@@ -136,6 +136,7 @@ public class CaiDatFragment extends Fragment {
         return v;
 
     }
+
     public void signOut() {
         SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         SharedPreferences.Editor edit = pref.edit();

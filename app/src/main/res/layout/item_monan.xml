@@ -30,14 +30,18 @@
         android:layout_height="150dp"
         android:layout_margin="5dp"
         android:id="@+id/imv_HinhMA"/>
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textSize="10dp"
-        android:layout_marginLeft="5dp"
-        android:paddingHorizontal="10dp"
-        android:textAlignment="center"
-        android:id="@+id/tv_ChiTietMA" />
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textSize="10dp"
+            android:layout_marginLeft="5dp"
+            android:paddingHorizontal="10dp"
+            android:textAlignment="center"
+            android:id="@+id/tv_ChiTietMA" />
+    </ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

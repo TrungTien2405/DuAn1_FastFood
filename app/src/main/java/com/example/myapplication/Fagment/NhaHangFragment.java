@@ -121,7 +121,6 @@ public class    NhaHangFragment extends Fragment {
     public String _maTK;
 
 
-
     // variable for FirebaseAuth class xác thực OTP
     private FirebaseAuth mAuth;
     //Firestore
