@@ -25,11 +25,25 @@
         app:layout_constraintTop_toTopOf="@+id/imv_HinhNenMA"
         app:layout_constraintVertical_bias="0.205" />
 
+<!--    <ImageView-->
+<!--        android:id="@+id/imv_toGioHang"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:src="@drawable/ic_giohangs"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/imv_HinhNenMA"-->
+<!--        app:layout_constraintHorizontal_bias="0.948"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/imv_TroVe"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/imv_HinhNenMA"-->
+<!--        app:layout_constraintVertical_bias="0.205" />-->
+
     <ImageView
-        android:id="@+id/imv_toGioHang"
+        android:id="@+id/imv_danhGiaNHMACT"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_giohangs"
+        android:padding="10dp"
+        android:background="@drawable/custom_search"
+        android:src="@drawable/ic_star1"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"
         app:layout_constraintEnd_toEndOf="@+id/imv_HinhNenMA"
         app:layout_constraintHorizontal_bias="0.948"

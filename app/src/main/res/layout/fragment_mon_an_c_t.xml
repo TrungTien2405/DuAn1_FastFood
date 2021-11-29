@@ -24,14 +24,21 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="12dp"
                 android:src="@drawable/ic_trove"/>
+<!--            <ImageView-->
+<!--                android:id="@+id/imv_danhGiaNHMACT"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_marginLeft="287dp"-->
+<!--                android:padding="10dp"-->
+<!--                android:background="@drawable/custom_search"-->
+<!--                android:src="@drawable/ic_star1"/>-->
+
             <ImageView
-                android:id="@+id/imv_danhGiaNHMACT"
+                android:id="@+id/imv_toGioHang"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="287dp"
-                android:padding="10dp"
-                android:background="@drawable/custom_search"
-                android:src="@drawable/ic_star1"/>
+                android:src="@drawable/ic_giohangs"
+                android:layout_marginLeft="287dp" />
         </LinearLayout>
         <androidx.cardview.widget.CardView
             android:id="@+id/view_avatar"
@@ -204,11 +211,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ingredients: "
+        android:text="Món thêm: "
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/asap_medium"
-        android:textSize="30dp"/>
+        android:textSize="25dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_monAnThemCT"

@@ -101,6 +101,8 @@ public class LichSuMuaFragment extends Fragment {
     private void anhxa(View v){
         rcv_lsMua = v.findViewById(R.id.rcv_lichSuMH);
         tvXoa = v.findViewById(R.id.tv_xoaLichSu);
+        tvXoa.setVisibility(View.INVISIBLE);
+
         imvTroVe = v.findViewById(R.id.imv_TroveTrongLSMH);
     }
 

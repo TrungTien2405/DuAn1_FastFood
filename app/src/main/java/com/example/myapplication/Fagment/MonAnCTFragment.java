@@ -52,7 +52,7 @@ public class MonAnCTFragment extends Fragment {
     private RecyclerView rcv_monAnThem;
 
     private TextView tv_tenMonCT, tv_giaMonCT, tv_chiTietMACT, tv_PhiVanChuyenMACT, tv_ThoiGianMACT, tv_DanhGiaMACT, tv_soLuongMonAnCT;
-    private ImageView imv_hinhMonAnCT, imv_TroVe, imv_danhGiaNH, imvCong, imvTru;
+    private ImageView imv_hinhMonAnCT, imv_TroVe, imvCong, imvTru, imv_toGioHang;
     private Button btnThemVaoGioHang;
 
 
@@ -65,9 +65,9 @@ public class MonAnCTFragment extends Fragment {
 
     private String TenMonThem;
     private String MaGioHang = "";
-    private String MaDanhGia = "";
+//    private String MaDanhGia = "";
 
-    private Dialog dialogDanhGiaNH;
+//    private Dialog dialogDanhGiaNH;
 
     private int SoLuongMA = 1;
     //Firestore
@@ -109,6 +109,17 @@ public class MonAnCTFragment extends Fragment {
         clickThemGioHang();
 
         getAllMonAnChiTiet(getContext());
+
+        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         return view;
     }
@@ -180,7 +191,8 @@ public class MonAnCTFragment extends Fragment {
         tv_DanhGiaMACT = view.findViewById(R.id.tv_DanhGiaMACT);
         imv_hinhMonAnCT = view.findViewById(R.id.imv_hinhMonAnCT);
         imv_TroVe = view.findViewById(R.id.imv_TroVe);
-        imv_danhGiaNH = view.findViewById(R.id.imv_danhGiaNHMACT);
+//        imv_danhGiaNH = view.findViewById(R.id.imv_danhGiaNHMACT);
+        imv_toGioHang = view.findViewById(R.id.imv_toGioHang);
         tv_tenMonCT = view.findViewById(R.id.tv_tenMonAnCT);
         tv_giaMonCT = view.findViewById(R.id.tv_giaMonAnCT);
         tv_chiTietMACT = view.findViewById(R.id.tv_chiTietMonAnCT);
@@ -200,7 +212,7 @@ public class MonAnCTFragment extends Fragment {
         String chiTiet = bundle.getString("ChiTiet");
         String hinhAnh = bundle.getString("HinhAnh");
         String thoiGian = bundle.getString("ThoiGian");
-        MaDanhGia = bundle.getString("MaDanhGia");
+//        MaDanhGia = bundle.getString("MaDanhGia");
         Double danhGia = bundle.getDouble("DanhGia");
         int phiVanChuyen = bundle.getInt("PhiVanChuyen");
 
@@ -246,12 +258,12 @@ public class MonAnCTFragment extends Fragment {
                         .commit();
             }
         });
-        imv_danhGiaNH.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog_danhGiaNH();
-            }
-        });
+//        imv_danhGiaNH.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog_danhGiaNH();
+//            }
+//        });
     }
 
     public void getAllMonAnChiTiet(Context context){
@@ -383,75 +395,4 @@ public class MonAnCTFragment extends Fragment {
         return en.format(number);
     }
 
-
-
-    //Dialog gửi đánh giá
-    private void dialog_danhGiaNH(){
-        dialogDanhGiaNH =  new Dialog(getContext());
-        dialogDanhGiaNH.setContentView(R.layout.dialog_danhgianh);
-
-        dialogDanhGiaNH.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.9);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.6);
-        dialogDanhGiaNH.getWindow().setLayout(width,height);
-
-        ToggleButton tg1 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia1);
-        ToggleButton tg2 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia2);
-        ToggleButton tg3 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia3);
-        ToggleButton tg4 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia4);
-        ToggleButton tg5 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia5);
-        Button btnGuiDanhGia = dialogDanhGiaNH.findViewById(R.id.btn_dialogGuiDanhGiaNH);
-
-        btnGuiDanhGia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                db.collection("DANHGIANH").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            QuerySnapshot snapshot = task.getResult();
-                            for(QueryDocumentSnapshot doc: snapshot) {
-                                String maDG = doc.get("MaDanhGia").toString();
-                                int tongDG = Integer.parseInt(doc.get("TongDG").toString());
-                                int LuotDG = Integer.parseInt(doc.get("LuotDG").toString());
-
-                                if(maDG.equals(MaDanhGia)){
-                                    int danhGia = 0;
-                                    if(tg1.isChecked()) danhGia+=1;
-                                    if(tg2.isChecked()) danhGia+=1;
-                                    if(tg3.isChecked()) danhGia+=1;
-                                    if(tg4.isChecked()) danhGia+=1;
-                                    if(tg5.isChecked()) danhGia+=1;
-
-                                    updateSoLuongGH(tongDG, LuotDG, danhGia);
-                                    break;
-                                }
-
-                            }
-                    }
-                }
-            });
-            }
-        });
-
-        dialogDanhGiaNH.show();
-    }
-
-
-    public void updateSoLuongGH(int _tongDG, int _luotDG, int _danhGia){
-            db.collection("DANHGIANH").document(MaDanhGia)
-                    .update(
-                            "TongDG" , _tongDG + _danhGia,
-                            "LuotDG" , _luotDG + 1
-                    ).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Toast.makeText(getContext(), "Cảm ơn bạn đã đánh giá", Toast.LENGTH_SHORT).show();
-                    dialogDanhGiaNH.dismiss();
-                }
-            });
-
-        }
 }
