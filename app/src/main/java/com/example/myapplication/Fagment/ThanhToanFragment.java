@@ -22,6 +22,7 @@ import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
@@ -106,12 +107,16 @@ public class ThanhToanFragment extends Fragment {
                     //Cập nhật thông tin
                     db.collection("TAIKHOAN").document(maTK)
                             .update(
-                                    "SoDu", soDuTK
-                            );
+                                    "SoDu", _soDuTK
+                            ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            //Cập nhật số dư trong intent
+                            intent.putExtra("SoDu", _soDuTK + "");
+                            startActivity(intent);
+                        }
+                    });
 
-                    //Cập nhật số dư trong intent
-                    intent.putExtra("SoDu", _soDuTK + "");
-                    startActivity(intent);
 
                     soDuTK = _soDuTK;
 

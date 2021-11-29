@@ -47,7 +47,7 @@ public class DoanhThuMAAdapter extends RecyclerView.Adapter<DoanhThuMAAdapter.My
 
         if(dt.getHinhAnh().isEmpty()){
             holder.imvHinh.setImageResource(R.drawable.im_food);
-        }else Picasso.with(context).load(dt.getHinhAnh()).into(holder.imvHinh);
+        }else Picasso.with(context).load(dt.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvHinh);
 
     }
 

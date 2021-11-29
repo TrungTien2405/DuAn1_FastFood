@@ -43,10 +43,13 @@ public class ChuNhaHangAdapter extends RecyclerView.Adapter<ChuNhaHangAdapter.My
         holder.tvItemSoDTTK.setText((taiKhoan.getSDT()+""));
         holder.tvItemDiaChiTK.setText(taiKhoan.getDiaChi());
 
-        if(taiKhoan.getHinhAnh().isEmpty()){
-            holder.imgv_ItemHinhTK.setImageResource(R.drawable.avatar);
-        }else Picasso.with(context).load(taiKhoan.getHinhAnh()).into(holder.imgv_ItemHinhTK);
+        try {
+            if (taiKhoan.getHinhAnh().isEmpty()) {
+                holder.imgv_ItemHinhTK.setImageResource(R.drawable.avatar);
+            } else Picasso.with(context).load(taiKhoan.getHinhAnh()).resize(1000, 1000).centerCrop().onlyScaleDown().into(holder.imgv_ItemHinhTK);
+        }catch (Exception e){
 
+        }
         holder.tvXoaItemTK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

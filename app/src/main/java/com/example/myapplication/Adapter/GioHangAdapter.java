@@ -52,7 +52,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
 
         if(gioHangCT.getHinhAnh().isEmpty()){
             holder.imv_hinh.setImageResource(R.drawable.im_food);
-        }else Picasso.with(context).load(gioHangCT.getHinhAnh()).into(holder.imv_hinh);
+        }else Picasso.with(context).load(gioHangCT.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imv_hinh);
 
 
         //Nhấn Checkbox chọn món ăn, tăng tổng giá món ăn
