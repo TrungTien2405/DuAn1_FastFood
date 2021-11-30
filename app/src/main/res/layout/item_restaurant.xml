@@ -109,6 +109,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons_itemsuanh"
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:background="@drawable/layout_chinhsua"

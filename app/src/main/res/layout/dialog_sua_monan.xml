@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_bogocdialog">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:padding="25dp"
+        android:background="@drawable/layout_topdialog"
+        android:text="Chỉnh sửa món ăn"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:fontFamily="@font/asap_medium"
+        android:textAlignment="center" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view_avatar2"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="20dp"
+            tools:ignore="MissingConstraints">
+            <ImageView
+                android:id="@+id/imv_dialogSuaHinhMA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_addimage"
+                tools:layout_editor_absoluteX="29dp" />
+        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="40dp"
+                android:text="Mã nhà hàng"
+                android:fontFamily="@font/asap_medium"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_dialogSuaMaNH"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:background="@drawable/custom_edt"
+                    android:padding="10dp"
+                    android:fontFamily="@font/asap_medium"/>
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="-30dp"
+                    app:srcCompat="@drawable/ic_updown" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="20dp"
+                android:text="Mã thực đơn nhà hàng"
+                android:fontFamily="@font/asap_medium"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Spinner
+                    android:id="@+id/sp_dialogSuaMaMenuNH"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:fontFamily="@font/asap_medium"
+                    android:background="@drawable/custom_edt"
+                    android:padding="10dp"/>
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="-30dp"
+                    app:srcCompat="@drawable/ic_updown" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/ed_dialogSuaTenMA"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/custom_edt"
+        android:ems="10"
+        android:hint="Nhập tên món ăn"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:fontFamily="@font/asap_medium"/>
+
+    <EditText
+        android:id="@+id/ed_dialogSuaChiTietMA"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_edt"
+        android:ems="10"
+        android:hint="Nhập chi tiết món ăn"
+        android:fontFamily="@font/asap_medium"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"/>
+    <EditText
+        android:id="@+id/ed_dialogSuaGiaMA"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_edt"
+        android:ems="10"
+        android:hint="Nhập giá món ăn"
+        android:fontFamily="@font/asap_medium"
+        android:inputType="number"
+        android:paddingLeft="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:background="@drawable/layout_bottomdialog">
+        <TextView
+            android:id="@+id/tv_dialogHuySuaMA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Hủy bỏ"
+            android:textColor="@color/white"
+            android:textSize="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_dialogXacNhanSuaMA"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="160dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Xác nhận"
+            android:textColor="@color/white"
+            android:textSize="20dp"/>
+    </LinearLayout>
+</LinearLayout>

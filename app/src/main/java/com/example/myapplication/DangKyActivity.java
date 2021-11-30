@@ -177,7 +177,7 @@ public class DangKyActivity extends AppCompatActivity {
         });
     }
 
-    //Thêm tài khoản vào firestore
+    //Thêm tài khoản vào firestore bằng mã tài khoản
     private void themTaiKhoanToFireStore(TaiKhoan taiKhoan){
         final CollectionReference collectionReference = db.collection("TAIKHOAN");
 
@@ -333,6 +333,8 @@ public class DangKyActivity extends AppCompatActivity {
         //signing the user
         signInWithCredential(credential);
     }
+
+    //
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(DangKyActivity.this, new OnCompleteListener<AuthResult>() {
@@ -343,9 +345,6 @@ public class DangKyActivity extends AppCompatActivity {
                             // Load avatar lên firebase
                             uploadImageToFirebase(imageFileName, contenUri);
 
-                            //Chuyển về màn hình đăng nhập
-//                            RegisterActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment
-//                                    , new FragmentThanhVien()).commit();
                             Intent intent = new Intent(DangKyActivity.this, DangNhapActivity.class);
                             startActivity(intent);
 

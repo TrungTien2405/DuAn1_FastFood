@@ -57,7 +57,7 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
             holder.tvDiaChi.setText(diaChi);
             holder.tvTenMA.setText(gioHangCT.getTenMA());
             holder.tvTenNH.setText("");
-            holder.tvGia.setText(formatNumber(gioHangCT.getGiaMA()) + " VND");
+            holder.tvGia.setText(formatNumber(gioHangCT.getGiaMA() * gioHangCT.getSoLuong()) + " VND");
 
             if (gioHangCT.getHinhAnh().isEmpty()) {
                 holder.imvHinhMA.setImageResource(R.drawable.im_food);

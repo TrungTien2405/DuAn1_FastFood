@@ -69,12 +69,12 @@ import java.util.Random;
 import static android.app.Activity.RESULT_OK;
 
 
-public class NhaHangFragment extends Fragment {
+public class    NhaHangFragment extends Fragment {
     private List<NhaHang> listNhaHang;
     private List<NhaHang> listNhaHangTheoLoai;
     private List<DanhGiaNH> listDanhGia;
     private List<LoaiNhaHang> listLoaiNhaHang;
-    private List<NhaHang> listNHSearch ;
+    private List<NhaHang> listNHSearch;
     private List<YeuThich> listYeuThich;
 
     //List cho spinner
@@ -90,7 +90,7 @@ public class NhaHangFragment extends Fragment {
 
     private TextView tvTenTK;
     private TextInputLayout tipSoDuTK;
-    private ImageView imvThemLoaiNH;
+    private ImageView imvThemLoaiNH, imvAvatar;
     private FloatingActionButton flBtnThemNH;
     private SearchView svNhaHang;
 
@@ -110,6 +110,8 @@ public class NhaHangFragment extends Fragment {
     //Vị trí hiện tại đang chọn loại nhà hàng
     public int viTriLoaiNH = 0 ;
 
+    public int QuyenDN = 2;
+
     //Dialog hình thêm loại nhà hàng
     private ImageView imvHinhLoai;
 
@@ -117,7 +119,6 @@ public class NhaHangFragment extends Fragment {
     private ImageView imvHinh;
 
     public String _maTK;
-
 
 
     // variable for FirebaseAuth class xác thực OTP
@@ -149,8 +150,7 @@ public class NhaHangFragment extends Fragment {
         //Thêm thông tin phần tài khoản màn hình chính
         anhxa(v);
 
-        Intent intent = getActivity().getIntent();
-        _maTK = intent.getStringExtra("MaTK");
+        kiemTraQuyenDangNhap();
 
         rcv_nhahang =v.findViewById(R.id.rcv_restaurant);
         rcv_loainhahang =v.findViewById(R.id.rcv_categoryRes);
@@ -263,13 +263,29 @@ public class NhaHangFragment extends Fragment {
         imvThemLoaiNH = v.findViewById(R.id.imv_addLoaiNhFragNH);
         flBtnThemNH = v.findViewById(R.id.fbtn_themNhaHang);
         svNhaHang  = v.findViewById(R.id.sv_nhaHang);
+        imvAvatar = v.findViewById(R.id.imv_avatarTaiKhoan_NhaHang);
 
         Intent intent = getActivity().getIntent();
         String tentk = intent.getStringExtra("HoTen");
+        _maTK = intent.getStringExtra("MaTK");
+        QuyenDN = intent.getIntExtra("Quyen", 2);
+        String hinhAnh = intent.getStringExtra("HinhAnh");
         int soDu = Integer.parseInt(intent.getStringExtra("SoDu"));
 
         tvTenTK.setText(tentk);
         tipSoDuTK.getEditText().setText("Số dư    "+formatNumber(soDu)+" VND");
+
+        if(hinhAnh.isEmpty()){
+            imvAvatar.setImageResource(R.drawable.avatar);
+        }else Picasso.with(getContext()).load(hinhAnh).into(imvAvatar);
+    }
+
+    //Kiểm tra quyền đăng nhập phù hợp với người dùng
+    public void kiemTraQuyenDangNhap(){
+        if(QuyenDN >= 1){
+            flBtnThemNH.setVisibility(View.INVISIBLE);
+            imvThemLoaiNH.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Định dạng sang số tiền
@@ -1066,6 +1082,12 @@ public class NhaHangFragment extends Fragment {
 
 
         try {
+            //Cho tài khoản thành quyền chủ nhà hàng
+            db.collection("TAIKHOAN").document(nhaHang.getMaTK())
+                    .update(
+                            "Quyen", 1
+                    );
+
             collectionReference.document(nhaHang.getMaNH() + "").set(data);
             dialogThemNH.dismiss();
             Toast.makeText(getContext(), "Thêm mã nhà hàng thành công", Toast.LENGTH_SHORT).show();
@@ -1149,7 +1171,4 @@ public class NhaHangFragment extends Fragment {
 
         builder.show();
     }
-
-
-
 }

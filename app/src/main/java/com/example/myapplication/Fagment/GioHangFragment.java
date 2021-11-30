@@ -171,52 +171,16 @@ public class GioHangFragment extends Fragment {
             if(listGioHangCT.get(i).getTrangThaiCheckbox()) {
                 listThanhToan.add(listGioHangCT.get(i));
 
-
-
-
                 duyet = 1; //xác nhận đã có checkbox chọn
-//
-//                int _soDuTK = soDuTK - (listGioHangCT.get(i).getGiaMA() * listGioHangCT.get(i).getSoLuong());
-//                if(_soDuTK>=0) { //kiểm tra tài khoản người dùng có lớn hơn 0 không
-//                    soDuTK = _soDuTK;
-//                    listGioHangCT.get(i).setTrangThai(1);
-//
-//                    //Cập nhật thông tin
-//                    db.collection("GIOHANGCT").document(listGioHangCT.get(i).getMaGHCT())
-//                            .update(
-//                                    "TrangThai", 1,
-//                                    "ThoiGian", FieldValue.serverTimestamp()
-//                            );
-//
-//                    //Cập nhật thông tin
-//                    db.collection("TAIKHOAN").document(maTK)
-//                            .update(
-//                                    "SoDu", soDuTK
-//                            );
-//
-//                    //Xóa đơn hàng mới mua trong listGioHangChiTiet
-//                    listGioHangCT.remove(i);
-//                    i--;
-//                }else{
-//                    Toast.makeText(getContext(), "Số dư tài khoản của bạn không đủ", Toast.LENGTH_SHORT).show();
-//                }
-            }
 
+            }
 
         }
 
 
-
-
-        //cập nhật lại list
-        //adapter_gioHang();
-
         if(duyet == 0){
             Toast.makeText(getContext(), "Bạn chưa chọn món ăn nào!!", Toast.LENGTH_SHORT).show();
         }else {
-//            Toast.makeText(getContext(), "Bạn đã mua hàng thành công", Toast.LENGTH_SHORT).show();
-//            tvTongTienGH.setText("0");
-
 
             Bundle bundle = new Bundle();
 //            bundle.putParcelableArrayList("listThanhToan", (ArrayList<? extends Parcelable>) listThanhToan);
@@ -228,14 +192,14 @@ public class GioHangFragment extends Fragment {
 
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
-                    .replace(R.id.nav_FrameFragment, thanhToanFragment)
+                    .replace(R.id.nav_FrameFragment,  thanhToanFragment)
                     .addToBackStack(null)
                     .commit();
         }
     }
 
 
-    //Lấy danh sách giỏ hàng từ Firebase xuống
+    //Lấy danh sách người dùng từ Firebase xuống, để kiểm tra số dư tài khoản
     public void getSoDuND(Context context){
         Intent intent = getActivity().getIntent();
         String _maTK = intent.getStringExtra("MaTK");
