@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="5dp"
+        android:layout_margin="10dp"
         android:src="@drawable/ic_trove"
         android:id="@+id/imgTrove"/>
     <ImageView
