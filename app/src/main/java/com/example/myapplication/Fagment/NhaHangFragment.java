@@ -219,7 +219,7 @@ public class    NhaHangFragment extends Fragment {
         return _maTK;
     }
 
-    public void chuyenDenFragmentMonAN(String _maNH, String _tenNH, String _hinhNH, int _phiVanChuyen, String _thoiGian, Double _danhGia){
+    public void chuyenDenFragmentMonAN(String _maNH, String _tenNH, String _hinhNH, int _phiVanChuyen, String _thoiGian, Double _danhGia, String _maDG){
         Bundle bundle = new Bundle();
         bundle.putString("MaNH", _maNH);
         bundle.putString("TenNH", _tenNH);
@@ -227,6 +227,7 @@ public class    NhaHangFragment extends Fragment {
         bundle.putInt("PhiVanChuyen", _phiVanChuyen);
         bundle.putString("ThoiGian", _thoiGian);
         bundle.putDouble("DanhGia", _danhGia);
+        bundle.putString("MaDanhGia", _maDG);
         MonAnFragment monAnFragment = new MonAnFragment();
         monAnFragment.setArguments(bundle);
 
@@ -543,7 +544,7 @@ public class    NhaHangFragment extends Fragment {
                 String tenLoai = edtTenLoai.getText().toString();
 
                 if(tenLoai.isEmpty()){
-                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Vui lòng nhập tên loại nhà hàng", Toast.LENGTH_SHORT).show();
                 }else{
                     Random random =  new Random();
                     int x = random.nextInt((10000-1+1)+1);
@@ -617,8 +618,8 @@ public class    NhaHangFragment extends Fragment {
                 String thoiGian = edtThoiGian.getText().toString();
                 String phiVanChuyen = edtPhiChuyenNh.getText().toString();
 
-                if(tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen.isEmpty()){
-                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                if(!kiemLoiONhap(tenNH, thoiGian, phiVanChuyen).isEmpty()){
+                    Toast.makeText(getContext(), kiemLoiONhap(tenNH, thoiGian, phiVanChuyen), Toast.LENGTH_SHORT).show();
                 }else{
                     Random random =  new Random();
                     int x = random.nextInt((10000-1+1)+1);
@@ -640,6 +641,26 @@ public class    NhaHangFragment extends Fragment {
         });
 
         dialogThemNH.show();
+    }
+
+    private String kiemLoiONhap(String tenNh, String thoiGian, String phiVC){
+        String loi = "";
+        if(tenNh.isEmpty()) loi += "Bạn chưa nhập tên nhà hàng";
+        if(thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng";
+        if(phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
+        return loi;
+    }
+
+    private Boolean kiemKhoangTrang(String _duLieu){
+        for (int i = 0; i < _duLieu.length(); i++) {
+            if(!Character.isWhitespace(_duLieu.charAt(i))){
+                return true;
+            }
+            if (i + 1 == _duLieu.length()) {
+                return false;
+            }
+        }
+        return false;
     }
 
 
@@ -744,8 +765,10 @@ public class    NhaHangFragment extends Fragment {
         if(listNhaHangTheoLoai.get(positon).getHinhAnh().isEmpty()){
             imvHinhSuaNH.setImageResource(R.drawable.im_food);
         }else{
-            Picasso.with(getContext()).load(listNhaHangTheoLoai.get(positon).getHinhAnh()).into(imvHinhSuaNH);
+            Picasso.with(getContext()).load(listNhaHangTheoLoai.get(positon).getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(imvHinhSuaNH);
         }
+        //Lưu đường dẫn hình ảnh
+        imageFileName = listNhaHangTheoLoai.get(positon).getHinhAnh();
 
         tvHuyThem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -776,10 +799,10 @@ public class    NhaHangFragment extends Fragment {
             public void onClick(View v) {
                 String tenNH = edtTenNH.getText().toString();
                 String thoiGian = edtThoiGian.getText().toString();
-                int phiVanChuyen = Integer.parseInt(edtPhiChuyenNh.getText().toString());
+                String phiVanChuyen = edtPhiChuyenNh.getText().toString();
 
-                if(tenNH.isEmpty() || thoiGian.isEmpty() || phiVanChuyen == 0){
-                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                if(!kiemLoiONhap(tenNH, thoiGian, phiVanChuyen).isEmpty()){
+                    Toast.makeText(getContext(), kiemLoiONhap(tenNH, thoiGian, phiVanChuyen), Toast.LENGTH_SHORT).show();
                 }else{
                     //Thêm đánh giá và thêm nhà hàng lên Firebase
                     String maNH = listNhaHangTheoLoai.get(positon).getMaNH();
@@ -787,10 +810,10 @@ public class    NhaHangFragment extends Fragment {
                     String maYT = listNhaHangTheoLoai.get(positon).getMaYT();
                     Double danhGia = listNhaHangTheoLoai.get(positon).getDanhGia();
 
-                    nhaHang  = new NhaHang(maNH, spMaLoaiNHSuaNH.getSelectedItem().toString(), spMaTKSuaNH.getSelectedItem().toString(), tenNH, thoiGian, phiVanChuyen, "", danhGia, maDG, maYT);
+                    nhaHang  = new NhaHang(maNH, spMaLoaiNHSuaNH.getSelectedItem().toString(), spMaTKSuaNH.getSelectedItem().toString(), tenNH, thoiGian, Integer.parseInt(phiVanChuyen), "", danhGia, maDG, maYT);
                     //Đẩy hình ảnh lên firebase sau đó cập nhật tất cả dũ liệu lên Firebase
                     uploadImageNHToFirebase(imageFileName, contenUri, 1); // Số 0 là thêm nhà hàng, số 1 là sửa nhà hàng
-
+                    dialogSuaNH.dismiss();
                 }
             }
         });
@@ -961,8 +984,12 @@ public class    NhaHangFragment extends Fragment {
                 }
             });
         }catch (Exception e){
-            nhaHang.setHinhAnh("");
-            themNHToFireStore(loaiNhaHang);
+            if(congViec == 0) {
+                themNHToFireStore(loaiNhaHang);
+            }else{
+                nhaHang.setHinhAnh(imageFileName);
+                updateFirebase(nhaHang);
+            }
         }
     }
 
@@ -1010,11 +1037,15 @@ public class    NhaHangFragment extends Fragment {
             map.put("HinhAnh", nhaHang.getHinhAnh());
             map.put("MaDG", nhaHang.getMaDG());
             map.put("MaYT", nhaHang.getMaYT());
-            reference.document(nhaHang.getMaNH() + "").set(map, SetOptions.merge());
+            reference.document(nhaHang.getMaNH() + "").set(map, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    //Cập nhật lại listView
+                    getAllNhaHang(getContext());
+//                    getAllDanhGia(getContext());
+                }
+            });
 
-            dialogSuaNH.dismiss();
-            //Cập nhật lại listView
-            getAllNhaHang(getContext());
         }catch (Exception e){
             Toast.makeText(getContext(), "Error update Firebase: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -1053,7 +1084,6 @@ public class    NhaHangFragment extends Fragment {
         data.put("MaNH", maNH);
         data.put("TongDG", 0);
         data.put("LuotDG", 0);
-
 
         try {
             collectionReference.document(MaDG).set(data);

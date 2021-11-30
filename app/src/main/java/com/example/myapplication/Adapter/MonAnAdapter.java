@@ -79,7 +79,7 @@ public class MonAnAdapter extends BaseAdapter{
         if(monAnNH.getHinhAnh().isEmpty()){
             holder.imv_hinhMonAn.setImageResource(R.drawable.im_food);
         }else{
-            Picasso.with(context).load(monAnNH.getHinhAnh()).into(holder.imv_hinhMonAn);
+            Picasso.with(context).load(monAnNH.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imv_hinhMonAn);
         }
         holder.tv_ChinhSuaMA.setOnClickListener(new View.OnClickListener() {
             @Override
