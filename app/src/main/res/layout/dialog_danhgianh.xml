@@ -15,7 +15,7 @@
         android:layout_marginTop="25dp"
         android:fontFamily="@font/sourceserifpro_semibold"
         android:gravity="center"
-        android:text="Bạn có hài lòng với ứng dụng của chúng tôi không?"
+        android:text="Bạn có hài lòng với nhà hàng của chúng tôi không?"
         android:textColor="@color/black"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
