@@ -127,11 +127,12 @@ public class DangKyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     String hoTen = edHoTen.getText().toString();
-                    String soDT = edSoDT.getText().toString();
+                    String soDT = edSoDT.getText().toString().trim();
+                    //trim() xóa kí tự trắng ở đầu và cuối của số điện thoại
                     String diaChi = edDiaChi.getText().toString();
 
-                    if(hoTen.isEmpty() || soDT.isEmpty() || diaChi.isEmpty()){
-                        Toast.makeText(getApplicationContext(), "Không được để trống thông tin", Toast.LENGTH_SHORT).show();
+                    if(!kiemLoiNhap(hoTen, soDT, diaChi).isEmpty()) {
+                        Toast.makeText(getApplicationContext(), kiemLoiNhap(hoTen, soDT, diaChi), Toast.LENGTH_SHORT).show();
                     }else{
                         //Load hình ảnh lên firebase
                         if(imageFileName.isEmpty()){
@@ -175,6 +176,50 @@ public class DangKyActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //hàm kiểm lỗi nhập
+    private String kiemLoiNhap(String _hoTen, String _SDT, String _diaChi) {
+        String loi = "";
+        if (_hoTen.isEmpty())
+            loi += "Bạn chưa nhập họ tên";
+        else if (!kiemKhoangTrang(_hoTen))
+            loi += "Không được nhập khoảng trắng";
+
+
+        if(_SDT.isEmpty()) {
+            loi += "\nBạn chưa nhập số điện thoại";
+        }else if(kiemKhoangTrangSDT(_SDT) || !kiemKhoangTrang(_SDT)){
+            loi += "\nSố điện thoại không được nhập khoảng trắng";
+        }else if(!_SDT.startsWith("0") || _SDT.length() != 10) {
+            loi += "\nBạn đã nhập số điện thoại không chính xác";
+        }
+
+
+        if (_diaChi.isEmpty())
+            loi += "\nBạn chưa nhập địa chỉ";
+
+        return loi;
+    }
+
+    //hàm kiểm tra lỗi nhập khoảng trắng toàn bộ Edittext
+    private Boolean kiemKhoangTrang(String _duLieu){
+        for (int i = 0; i < _duLieu.length(); i++) {
+            if(!Character.isWhitespace(_duLieu.charAt(i))){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //hàm kiểm tra lỗi nhập khoảng cách trắng
+    private Boolean kiemKhoangTrangSDT(String _duLieu){
+        for (int i = 0; i < _duLieu.length(); i++) {
+            if(Character.isWhitespace(_duLieu.charAt(i))){
+                return true;
+            }
+        }
+        return false;
     }
 
     //Thêm tài khoản vào firestore bằng mã tài khoản

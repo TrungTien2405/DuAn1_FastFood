@@ -208,13 +208,13 @@
 
                 <TextView
                     android:id="@+id/textView39"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/asap_medium"
-                    android:text="₫"
-                    android:textColor="#505050"
-                    android:textSize="19dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/asap_medium"
+                        android:text="₫"
+                        android:textColor="#505050"
+                        android:textSize="19dp"
                     app:layout_constraintEnd_toStartOf="@+id/tv_tongThanhToanTT1"
                     app:layout_constraintTop_toBottomOf="@+id/textView38" />
 

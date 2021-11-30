@@ -70,7 +70,7 @@ public class ChuNhaHangFragment extends Fragment {
         return view;
     }
 
-    //Lấy dữ liệu từ firestore
+    //lấy dữ liệu của bảng TAIKHOAN từ firestore về, lưu vào listTKChuNhaHang
     public void getAllChuNhaHang(Context context) {
         listTKChuNhaHang = new ArrayList<>();
 
@@ -107,11 +107,15 @@ public class ChuNhaHangFragment extends Fragment {
             }
         });
     }
+
+    //gọi adapter, xuất danh sách listTKChuNhaHang lên rcv
     private void goiAdapter() {
         ChuNhaHangAdapter adapter = new ChuNhaHangAdapter(listTKChuNhaHang, getContext(), this);
         rcv_ChuNhaHang.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv_ChuNhaHang.setAdapter(adapter);
     }
+
+    //dialog thông báo xóa tài khoản chủ nhà hàng
     public void dialogXoaChuNhaHang(String _maTK){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
@@ -135,6 +139,7 @@ public class ChuNhaHangFragment extends Fragment {
         builder.show();
     }
 
+    //câu lệnh xóa tài khoản theo mã tài khoản của Firebase
     public void xoaChuNhaHangFirestore(String _maTK){
         db.collection("TAIKHOAN").document(_maTK)
                 .delete();

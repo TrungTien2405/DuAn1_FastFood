@@ -25,7 +25,7 @@ public class HoTroFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_ho_tro, container, false);
-        imgbackHoTro=v.findViewById(R.id.imgBackHotro);
+        imgbackHoTro = v.findViewById(R.id.imgBackHotro);
 
         imgbackHoTro.setOnClickListener(new View.OnClickListener() {
             @Override

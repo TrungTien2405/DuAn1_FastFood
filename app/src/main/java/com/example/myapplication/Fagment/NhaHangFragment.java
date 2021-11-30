@@ -655,8 +655,11 @@ public class    NhaHangFragment extends Fragment {
         int _thoiGian = Integer.parseInt(thoiGian);
         if(_thoiGian<=1) loi+= "Thời gian giao hàng phải lớn hơn một";
 
+
         if(phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
+
         return loi;
+
     }
 
     private Boolean kiemKhoangTrang(String _duLieu){

@@ -171,7 +171,7 @@ public class ThanhToanFragment extends Fragment {
         int tongTienHang = 0;
         int tongThanhToan = 0;
         for(GioHangCT gh: list){
-            tongGiaoHang+=20000;
+            tongGiaoHang += 20000;
             tongTienHang += gh.getSoLuong() * gh.getGiaMA();
         }
 
