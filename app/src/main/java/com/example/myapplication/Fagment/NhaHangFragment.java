@@ -645,8 +645,10 @@ public class    NhaHangFragment extends Fragment {
 
     private String kiemLoiONhap(String tenNh, String thoiGian, String phiVC){
         String loi = "";
-        if(tenNh.isEmpty()) loi += "Bạn chưa nhập tên nhà hàng";
-        if(thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng";
+        if(tenNh.isEmpty()) loi += "Bạn chưa nhập tên nhà hàng"; else if(!kiemKhoangTrang(tenNh))
+            Toast.makeText(getContext(), "Không được nhập khoảng trằng", Toast.LENGTH_SHORT).show();;
+        if(thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng"; else if(kiemKhoangTrang(thoiGian))
+            Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
         if(phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
         return loi;
     }
@@ -656,13 +658,9 @@ public class    NhaHangFragment extends Fragment {
             if(!Character.isWhitespace(_duLieu.charAt(i))){
                 return true;
             }
-            if (i + 1 == _duLieu.length()) {
-                return false;
-            }
         }
         return false;
     }
-
 
     //////////////// Spinner mã loại nhà hàng
 
