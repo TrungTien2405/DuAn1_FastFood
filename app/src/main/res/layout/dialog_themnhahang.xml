@@ -81,9 +81,9 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_edt"
             android:ems="10"
-            android:hint="...."
             android:fontFamily="@font/asap_medium"
-            android:inputType="textPersonName"
+            android:hint="...."
+            android:inputType="number"
             android:paddingLeft="140dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
@@ -204,6 +204,16 @@
             android:text="Tên nhà hàng"
             app:layout_constraintStart_toStartOf="@+id/ed_dialogTenNHThemNH"
             app:layout_constraintTop_toTopOf="@+id/ed_dialogTenNHThemNH" />
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogThoiGianGiaoThemNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogThoiGianGiaoThemNH"
+            app:srcCompat="@drawable/ic_fastdelivery" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
