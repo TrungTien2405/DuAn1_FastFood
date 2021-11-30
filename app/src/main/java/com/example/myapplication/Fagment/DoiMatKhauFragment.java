@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.myapplication.DangNhapActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -150,6 +151,7 @@ public class DoiMatKhauFragment extends Fragment {
         });
     }
 
+    //dialog cho phép nhập mã otp khi được gửi tới qua sdt
     private void dialog_OpenOTP(String sdt){
         // Gửi mã OTP đến điện thoại
         sendVerificationCode(sdt);
@@ -241,6 +243,7 @@ public class DoiMatKhauFragment extends Fragment {
                             // Cập nhật mật khẩu firestore
                             updatePass(mkMoi, maTV);
 
+                            //
                             //Chuyển sang fragment Trang chính
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new CaiDatFragment()).commit();
 

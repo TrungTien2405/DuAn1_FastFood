@@ -20,10 +20,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:text="Đổi mật khẩu"
-            android:textSize="30dp"
+            android:textSize="24dp"
             android:textColor="@color/white"
             android:fontFamily="@font/asap_medium"/>
     </LinearLayout>
