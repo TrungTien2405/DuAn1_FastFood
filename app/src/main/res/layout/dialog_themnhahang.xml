@@ -68,6 +68,7 @@
             android:hint="...."
             android:inputType="textPersonName"
             android:paddingLeft="100dp"
+            android:paddingRight="40dp"
             android:fontFamily="@font/asap_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
@@ -85,6 +86,7 @@
             android:hint="...."
             android:inputType="number"
             android:paddingLeft="140dp"
+            android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogTenNHThemNH" />
@@ -100,8 +102,8 @@
             android:hint="...."
             android:fontFamily="@font/number"
             android:inputType="number"
-            android:paddingLeft="10dp"
             android:paddingStart="120dp"
+            android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogThoiGianGiaoThemNH" />
@@ -207,13 +209,33 @@
 
         <ImageView
             android:id="@+id/imageView8"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="@+id/ed_dialogThoiGianGiaoThemNH"
             app:layout_constraintTop_toTopOf="@+id/ed_dialogThoiGianGiaoThemNH"
             app:srcCompat="@drawable/ic_fastdelivery" />
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogTenNHThemNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogTenNHThemNH"
+            app:srcCompat="@drawable/ic_restaurant_blackj" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogPhiVCThemNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogPhiVCThemNH"
+            app:srcCompat="@drawable/ic_money" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

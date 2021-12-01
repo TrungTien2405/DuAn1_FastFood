@@ -539,17 +539,20 @@ public class    NhaHangFragment extends Fragment {
             }
         });
 
+
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tenLoai = edtTenLoai.getText().toString();
+                String tenLoai = edtTenLoai.getText().toString().trim();
 
                 if(tenLoai.isEmpty()){
                     Toast.makeText(getContext(), "Vui lòng nhập tên loại nhà hàng", Toast.LENGTH_SHORT).show();
+                }else if(!kiemKhoangTrang(tenLoai)){
+                    Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
                 }else{
-                    Random random =  new Random();
-                    int x = random.nextInt((10000-1+1)+1);
-                    String maLoai = "lNH" + x;
+
+                    UUID uuid = UUID.randomUUID();
+                    String maLoai = String.valueOf(uuid);
 
                     loaiNhaHang = new LoaiNhaHang(maLoai, tenLoai, "");
 
@@ -615,9 +618,9 @@ public class    NhaHangFragment extends Fragment {
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tenNH = edtTenNH.getText().toString();
-                String thoiGian = edtThoiGian.getText().toString();
-                String phiVanChuyen = edtPhiChuyenNh.getText().toString();
+                String tenNH = edtTenNH.getText().toString().trim();
+                String thoiGian = edtThoiGian.getText().toString().trim();
+                String phiVanChuyen = edtPhiChuyenNh.getText().toString().trim();
 
                 if(!kiemLoiONhap(tenNH, thoiGian, phiVanChuyen).isEmpty()){
                     Toast.makeText(getContext(), kiemLoiONhap(tenNH, thoiGian, phiVanChuyen), Toast.LENGTH_SHORT).show();
@@ -646,18 +649,23 @@ public class    NhaHangFragment extends Fragment {
 
     private String kiemLoiONhap(String tenNh, String thoiGian, String phiVC){
         String loi = "";
-        if(tenNh.isEmpty()) loi += "Bạn chưa nhập tên nhà hàng"; else if(!kiemKhoangTrang(tenNh))
-            loi += "Tên nhà hàng không được nhập khoảng trằng";
+        try {
+            if (tenNh.isEmpty()) loi += "Bạn chưa nhập tên nhà hàng";
+            else if (!kiemKhoangTrang(tenNh))
+                loi += "Tên nhà hàng không được nhập khoảng trằng";
 
-        if(thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng"; else if(!kiemKhoangTrang(thoiGian))
-            loi += "Thời gian không được nhập khoảng trắng";
+            if (thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng";
+            else if (!kiemKhoangTrang(thoiGian))
+                loi += "Thời gian không được nhập khoảng trắng";
 
-        int _thoiGian = Integer.parseInt(thoiGian);
-        if(_thoiGian<=1) loi+= "Thời gian giao hàng phải lớn hơn một";
+            int _thoiGian = Integer.parseInt(thoiGian);
+            if (_thoiGian <= 1) loi += "Thời gian giao hàng phải lớn hơn một";
 
 
-        if(phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
-
+            if (phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
+        }catch (Exception e){
+            loi += "\n" + e.getMessage();
+        }
         return loi;
 
     }
@@ -806,9 +814,9 @@ public class    NhaHangFragment extends Fragment {
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tenNH = edtTenNH.getText().toString();
-                String thoiGian = edtThoiGian.getText().toString();
-                String phiVanChuyen = edtPhiChuyenNh.getText().toString();
+                String tenNH = edtTenNH.getText().toString().trim();
+                String thoiGian = edtThoiGian.getText().toString().trim();
+                String phiVanChuyen = edtPhiChuyenNh.getText().toString().trim();
 
                 if(!kiemLoiONhap(tenNH, thoiGian, phiVanChuyen).isEmpty()){
                     Toast.makeText(getContext(), kiemLoiONhap(tenNH, thoiGian, phiVanChuyen), Toast.LENGTH_SHORT).show();

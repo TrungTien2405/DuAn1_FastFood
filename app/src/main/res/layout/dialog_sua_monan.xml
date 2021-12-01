@@ -97,43 +97,95 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <EditText
-        android:id="@+id/ed_dialogSuaTenMA"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="10dp"
-        android:background="@drawable/custom_edt"
-        android:ems="10"
-        android:hint="Nhập tên món ăn"
-        android:inputType="textPersonName"
-        android:paddingLeft="10dp"
-        android:fontFamily="@font/asap_medium"/>
 
-    <EditText
-        android:id="@+id/ed_dialogSuaChiTietMA"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_edt"
-        android:ems="10"
-        android:hint="Nhập chi tiết món ăn"
-        android:fontFamily="@font/asap_medium"
-        android:inputType="textPersonName"
-        android:paddingLeft="10dp"/>
-    <EditText
-        android:id="@+id/ed_dialogSuaGiaMA"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_edt"
-        android:ems="10"
-        android:hint="Nhập giá món ăn"
-        android:fontFamily="@font/asap_medium"
-        android:inputType="number"
-        android:paddingLeft="10dp"/>
+        android:layout_height="180dp">
+
+        <EditText
+            android:id="@+id/ed_dialogSuaTenMA"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_edt"
+            android:ems="10"
+            android:fontFamily="@font/asap_medium"
+            android:hint="Nhập tên món ăn"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:paddingRight="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/ed_dialogSuaChiTietMA"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edt"
+            android:ems="10"
+            android:fontFamily="@font/asap_medium"
+            android:hint="Nhập chi tiết món ăn"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:paddingRight="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ed_dialogSuaTenMA" />
+
+        <EditText
+            android:id="@+id/ed_dialogSuaGiaMA"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edt"
+            android:ems="10"
+            android:fontFamily="@font/asap_medium"
+            android:hint="Nhập giá món ăn"
+            android:inputType="number"
+            android:paddingLeft="10dp"
+            android:paddingRight="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ed_dialogSuaChiTietMA" />
+
+        <ImageView
+            android:id="@+id/imageView15"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogSuaTenMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaTenMA"
+            app:srcCompat="@drawable/ic_name_food" />
+
+        <ImageView
+            android:id="@+id/imageView16"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogSuaChiTietMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaChiTietMA"
+            app:srcCompat="@drawable/ic_food_detail" />
+
+        <ImageView
+            android:id="@+id/imageView17"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogSuaGiaMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaGiaMA"
+            app:srcCompat="@drawable/ic_money" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"

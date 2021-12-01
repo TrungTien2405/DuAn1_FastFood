@@ -9,7 +9,7 @@
         android:background="@drawable/custom_edt"
         android:layout_marginHorizontal="20dp"
         android:paddingLeft="20dp"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginTop="22dp"
         android:ems="10"
@@ -21,7 +21,7 @@
         android:background="@drawable/custom_edt"
         android:backgroundTint="@color/mauchinh"
         android:textColor="@color/white"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:text="Xác thực"/>

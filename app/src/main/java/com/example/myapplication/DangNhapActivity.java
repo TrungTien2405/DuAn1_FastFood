@@ -49,8 +49,8 @@ public class DangNhapActivity extends AppCompatActivity {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = tip_SDT.getEditText().getText().toString();
-                String password = tip_MatKhau.getEditText().getText().toString();
+                String username = tip_SDT.getEditText().getText().toString().trim();
+                String password = tip_MatKhau.getEditText().getText().toString().trim();
 
                 if(username.isEmpty() || password.isEmpty()){
                     Toast.makeText(DangNhapActivity.this, "Không được để trống", Toast.LENGTH_SHORT).show();
