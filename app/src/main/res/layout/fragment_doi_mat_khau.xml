@@ -86,28 +86,36 @@
             android:hint="Nhập lại mật khẩu mới"
             android:background="@drawable/custom_edt"/>
     </com.google.android.material.textfield.TextInputLayout>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp">
+
         <Button
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Đồng ý"
             android:id="@+id/btnDongYDMK"
-            android:background="@drawable/custom_edt"
-            android:textColor="@color/mauchinh"
-            android:fontFamily="@font/asap_medium"/>
-        <Button
-            android:layout_width="190dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Hủy"
-            android:id="@+id/btnHuyDMK"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/custom_edt"
+            android:fontFamily="@font/asap_medium"
+            android:text="Đồng ý"
             android:textColor="@color/mauchinh"
-            android:fontFamily="@font/asap_medium"/>
-    </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnHuyDMK"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/custom_edt"
+            android:fontFamily="@font/asap_medium"
+            android:text="Hủy"
+            android:textColor="@color/mauchinh"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

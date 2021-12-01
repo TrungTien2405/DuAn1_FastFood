@@ -92,6 +92,7 @@
             android:fontFamily="@font/asap_medium"
             android:inputType="textPersonName"
             android:paddingLeft="100dp"
+            android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/view_avatar2" />
@@ -104,10 +105,11 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_edt"
             android:ems="10"
-            android:hint="...."
             android:fontFamily="@font/asap_medium"
-            android:inputType="textPersonName"
+            android:hint="...."
+            android:inputType="number"
             android:paddingLeft="140dp"
+            android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogTenNHSuaNH" />
@@ -124,6 +126,7 @@
             android:fontFamily="@font/asap_medium"
             android:inputType="number"
             android:paddingLeft="110dp"
+            android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogThoiGianGiaoSuaNH" />
@@ -202,6 +205,36 @@
             android:text="Phí vận chuyển"
             app:layout_constraintStart_toStartOf="@+id/ed_dialogPhiVCSuaNH"
             app:layout_constraintTop_toTopOf="@+id/ed_dialogPhiVCSuaNH" />
+
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogPhiVCSuaNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogPhiVCSuaNH"
+            app:srcCompat="@drawable/ic_money" />
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogThoiGianGiaoSuaNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogThoiGianGiaoSuaNH"
+            app:srcCompat="@drawable/ic_fastdelivery" />
+
+        <ImageView
+            android:id="@+id/imageView13"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/ed_dialogTenNHSuaNH"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogTenNHSuaNH"
+            app:srcCompat="@drawable/ic_restaurant_blackj" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

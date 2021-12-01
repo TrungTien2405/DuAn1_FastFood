@@ -65,6 +65,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -538,17 +539,20 @@ public class    NhaHangFragment extends Fragment {
             }
         });
 
+
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tenLoai = edtTenLoai.getText().toString();
+                String tenLoai = edtTenLoai.getText().toString().trim();
 
                 if(tenLoai.isEmpty()){
                     Toast.makeText(getContext(), "Vui lòng nhập tên loại nhà hàng", Toast.LENGTH_SHORT).show();
+                }else if(!kiemKhoangTrang(tenLoai)){
+                    Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
                 }else{
-                    Random random =  new Random();
-                    int x = random.nextInt((10000-1+1)+1);
-                    String maLoai = "lNH" + x;
+
+                    UUID uuid = UUID.randomUUID();
+                    String maLoai = String.valueOf(uuid);
 
                     loaiNhaHang = new LoaiNhaHang(maLoai, tenLoai, "");
 
@@ -614,9 +618,9 @@ public class    NhaHangFragment extends Fragment {
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tenNH = edtTenNH.getText().toString();
-                String thoiGian = edtThoiGian.getText().toString();
-                String phiVanChuyen = edtPhiChuyenNh.getText().toString();
+                String tenNH = edtTenNH.getText().toString().trim();
+                String thoiGian = edtThoiGian.getText().toString().trim();
+                String phiVanChuyen = edtPhiChuyenNh.getText().toString().trim();
 
                 if(!kiemLoiONhap(tenNH, thoiGian, phiVanChuyen).isEmpty()){
                     Toast.makeText(getContext(), kiemLoiONhap(tenNH, thoiGian, phiVanChuyen), Toast.LENGTH_SHORT).show();
@@ -645,12 +649,23 @@ public class    NhaHangFragment extends Fragment {
 
     private String kiemLoiONhap(String tenNh, String thoiGian, String phiVC){
         String loi = "";
-        if(tenNh.isEmpty()) loi += "Bạn chưa nhập tên nhà hàng"; else if(!kiemKhoangTrang(tenNh))
-            Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
-        if(thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng"; else if(kiemKhoangTrang(thoiGian))
-            Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
-        if(phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
+        try {
+            if (tenNh.isEmpty()) loi += "Bạn chưa nhập tên nhà hàng";
+            else if (!kiemKhoangTrang(tenNh))
+                loi += "Tên nhà hàng không được nhập khoảng trằng";
 
+            if (thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng";
+            else if (!kiemKhoangTrang(thoiGian))
+                loi += "Thời gian không được nhập khoảng trắng";
+
+            int _thoiGian = Integer.parseInt(thoiGian);
+            if (_thoiGian <= 1) loi += "Thời gian giao hàng phải lớn hơn một";
+
+
+            if (phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
+        }catch (Exception e){
+            loi += "\n" + e.getMessage();
+        }
         return loi;
 
     }
@@ -706,8 +721,10 @@ public class    NhaHangFragment extends Fragment {
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot){
                             String MaTK = doc.get("MaTK").toString();
+                            String _quyen = doc.get("Quyen").toString();
 
-                            listMaTK.add(MaTK);
+                            //Không cho admin làm chủ hàng hàng
+                            if(!_quyen.equals("0")) listMaTK.add(MaTK);
                         }
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
@@ -797,9 +814,9 @@ public class    NhaHangFragment extends Fragment {
         tvXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tenNH = edtTenNH.getText().toString();
-                String thoiGian = edtThoiGian.getText().toString();
-                String phiVanChuyen = edtPhiChuyenNh.getText().toString();
+                String tenNH = edtTenNH.getText().toString().trim();
+                String thoiGian = edtThoiGian.getText().toString().trim();
+                String phiVanChuyen = edtPhiChuyenNh.getText().toString().trim();
 
                 if(!kiemLoiONhap(tenNH, thoiGian, phiVanChuyen).isEmpty()){
                     Toast.makeText(getContext(), kiemLoiONhap(tenNH, thoiGian, phiVanChuyen), Toast.LENGTH_SHORT).show();
@@ -970,7 +987,7 @@ public class    NhaHangFragment extends Fragment {
                             // Thêm nhà hàng lên firebase
                             nhaHang.setHinhAnh(uri.toString());
                             if(congViec == 0) {
-                                themNHToFireStore(loaiNhaHang);
+                                themNHToFireStore();
                             }else{
                                 updateFirebase(nhaHang);
                             }
@@ -985,7 +1002,7 @@ public class    NhaHangFragment extends Fragment {
             });
         }catch (Exception e){
             if(congViec == 0) {
-                themNHToFireStore(loaiNhaHang);
+                themNHToFireStore();
             }else{
                 nhaHang.setHinhAnh(imageFileName);
                 updateFirebase(nhaHang);
@@ -1097,14 +1114,16 @@ public class    NhaHangFragment extends Fragment {
     }
 
     // Thêm object nhà hàng lên Firebase
-    private void themNHToFireStore(LoaiNhaHang loaiNhaHang){
+    private void themNHToFireStore(){
+        UUID uuid = UUID.randomUUID();
+
         final CollectionReference collectionReference = db.collection("NHAHANG");
 
         Map<String, Object> data = new HashMap<>();
         data.put("MaLoaiNH", nhaHang.getMaLoaiNH());
         data.put("MaTK", nhaHang.getMaTK());
         data.put("HinhAnh", nhaHang.getHinhAnh());
-        data.put("MaNH", nhaHang.getMaNH());
+        data.put("MaNH", String.valueOf(uuid));
         data.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
         data.put("ThoiGian", nhaHang.getThoiGian());
         data.put("TenNH", nhaHang.getTenNH());
@@ -1118,7 +1137,7 @@ public class    NhaHangFragment extends Fragment {
                             "Quyen", 1
                     );
 
-            collectionReference.document(nhaHang.getMaNH() + "").set(data);
+            collectionReference.document(String.valueOf(uuid)).set(data);
             dialogThemNH.dismiss();
             Toast.makeText(getContext(), "Thêm mã nhà hàng thành công", Toast.LENGTH_SHORT).show();
             getAllNhaHang(getContext());

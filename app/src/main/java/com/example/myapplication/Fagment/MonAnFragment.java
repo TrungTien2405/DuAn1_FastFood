@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -229,35 +230,42 @@ public class MonAnFragment extends Fragment {
         btnGuiDanhGia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int danhGia = 0;
+                if(tg1.isChecked()) danhGia+=1;
+                if(tg2.isChecked()) danhGia+=1;
+                if(tg3.isChecked()) danhGia+=1;
+                if(tg4.isChecked()) danhGia+=1;
+                if(tg5.isChecked()) danhGia+=1;
 
+                if(danhGia != 0) {
+                    db.collection("DANHGIANH").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                QuerySnapshot snapshot = task.getResult();
+                                for (QueryDocumentSnapshot doc : snapshot) {
+                                    String maDG = doc.get("MaDanhGia").toString();
+                                    int tongDG = Integer.parseInt(doc.get("TongDG").toString());
+                                    int LuotDG = Integer.parseInt(doc.get("LuotDG").toString());
 
-                db.collection("DANHGIANH").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            QuerySnapshot snapshot = task.getResult();
-                            for(QueryDocumentSnapshot doc: snapshot) {
-                                String maDG = doc.get("MaDanhGia").toString();
-                                int tongDG = Integer.parseInt(doc.get("TongDG").toString());
-                                int LuotDG = Integer.parseInt(doc.get("LuotDG").toString());
+//                                Log.d("==> ", MaDanhGia);
+                                    if (maDG.equals(MaDanhGia)) {
+                                        int danhGia = 0;
+                                        if(tg1.isChecked()) danhGia+=1;
+                                        if(tg2.isChecked()) danhGia+=1;
+                                        if(tg3.isChecked()) danhGia+=1;
+                                        if(tg4.isChecked()) danhGia+=1;
+                                        if(tg5.isChecked()) danhGia+=1;
 
-                                Log.d("==> ", MaDanhGia);
-                                if(maDG.equals(MaDanhGia)){
-                                    int danhGia = 0;
-                                    if(tg1.isChecked()) danhGia+=1;
-                                    if(tg2.isChecked()) danhGia+=1;
-                                    if(tg3.isChecked()) danhGia+=1;
-                                    if(tg4.isChecked()) danhGia+=1;
-                                    if(tg5.isChecked()) danhGia+=1;
+                                        updateDanhGiaGH(tongDG, LuotDG, danhGia);
+                                        break;
+                                    }
 
-                                    updateDanhGiaGH(tongDG, LuotDG, danhGia);
-                                    break;
                                 }
-
                             }
                         }
-                    }
-                });
+                    });
+                }else Toast.makeText(getContext(), "Bạn chua chọn đánh giá", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -499,10 +507,10 @@ public class MonAnFragment extends Fragment {
             public void onClick(View v) {
                 String tenMon = ed_Ten.getText().toString();
                 String chiTiet = ed_ChiTiet.getText().toString();
-                int gia = Integer.parseInt(ed_Gia.getText().toString());
+                String gia = ed_Gia.getText().toString();
 
-                if(tenMon.isEmpty() || chiTiet.isEmpty() || gia == 0){
-                    Toast.makeText(getContext(), "Không được để trống thông tin", Toast.LENGTH_SHORT).show();
+                if(!kiemLoiONhap(tenMon, chiTiet, gia).isEmpty()){
+                    Toast.makeText(getContext(), kiemLoiONhap(tenMon, chiTiet, gia), Toast.LENGTH_SHORT).show();
                 }else{
                     Random random =  new Random();
                     int x = random.nextInt((10000-1+1)+1);
@@ -510,7 +518,7 @@ public class MonAnFragment extends Fragment {
                     String maNH = sp_ThemMaNH.getSelectedItem().toString();
                     String maMenuNH = sp_ThemMaMenuNH.getSelectedItem().toString();
 
-                    monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, gia, "");
+                    monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, Integer.parseInt(gia), "");
 
                     uploadImageMonAnToFirebase(imageFileName, contenUri, 0);
                 }
@@ -591,16 +599,17 @@ public class MonAnFragment extends Fragment {
             public void onClick(View v) {
                 String tenMon = edSuaTenMA.getText().toString();
                 String chiTiet = edSuaChiTietMA.getText().toString();
-                int gia = Integer.parseInt(edSuaGiaMA.getText().toString());
+                String gia = edSuaGiaMA.getText().toString();
 
-                if(tenMon.isEmpty() || chiTiet.isEmpty() || gia == 0){
-                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                if(!kiemLoiONhap(tenMon, chiTiet, gia).isEmpty()){
+                    Toast.makeText(getContext(), kiemLoiONhap(tenMon, chiTiet, gia), Toast.LENGTH_SHORT).show();
                 }else{
                     //Thêm lên Firebase
                     String maMA = listMonAn.get(positon).getMaMA();
                     String maMenuNH = sp_dialogSuaMaMenuNH.getSelectedItem().toString();
 
-                    monAnNH = new MonAnNH(maMA, _maNH, maMenuNH, tenMon, chiTiet, gia, "");
+                    int _gia = Integer.parseInt(gia);
+                    monAnNH = new MonAnNH(maMA, _maNH, maMenuNH, tenMon, chiTiet, _gia, "");
                     //Đẩy hình ảnh lên firebase
                     uploadImageMonAnToFirebase(imageFileName, contenUri, 1); // Số 0 là thêm món ăn, số 1 là sửa món ăn
                 }
@@ -643,6 +652,39 @@ public class MonAnFragment extends Fragment {
         });
 
         builder.show();
+    }
+
+
+    private String kiemLoiONhap(String tenMa, String ctMa, String giaMa){
+        String loi = "";
+        try {
+            if (tenMa.isEmpty()) loi += "\nBạn chưa nhập tên món ăn";
+            else if (!kiemKhoangTrang(tenMa))
+                loi += "\nTên món ăn không được nhập khoảng trằng";
+
+            if (ctMa.isEmpty()) loi += "\nBạn chưa nhập chi tiết món ăn";
+            else if (!kiemKhoangTrang(ctMa))
+                loi += "\nMón ăn chi tiết không được nhập khoảng trắng";
+
+            int _giaMa = Integer.parseInt(giaMa);
+            if (_giaMa <= 1000) loi += "\nGiá món ăn không được nhỏ hơn 1000 VND";
+
+
+            if (giaMa.isEmpty()) loi += "\nBạn chưa nhập giá món ăn";
+        }catch (Exception e){
+            loi += "\n" + e.getMessage();
+        }
+        return loi;
+
+    }
+
+    private Boolean kiemKhoangTrang(String _duLieu){
+        for (int i = 0; i < _duLieu.length(); i++) {
+            if(!Character.isWhitespace(_duLieu.charAt(i))){
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -788,10 +830,12 @@ public class MonAnFragment extends Fragment {
 
     // Thêm thông tin món ăn mới lên Firebase
     private void themMonAnToFireStore(MonAnNH monAnNH){
+        UUID uuid = UUID.randomUUID();
+
         final CollectionReference collectionReference = db.collection("MONANNH");
 
         Map<String, Object> data = new HashMap<>();
-        data.put("MaMA", monAnNH.getMaMA());
+        data.put("MaMA", String.valueOf(uuid));
         data.put("MaNH", monAnNH.getMaNH());
         data.put("Gia", monAnNH.getGia());
         data.put("MaMenuNH", monAnNH.getMaMenuNH());
@@ -800,7 +844,7 @@ public class MonAnFragment extends Fragment {
         data.put("TenMon", monAnNH.getTenMon());
 
         try {
-            collectionReference.document(monAnNH.getMaMA() + "").set(data);
+            collectionReference.document(String.valueOf(uuid)).set(data);
 
             dialogThemMonAn.dismiss();
 

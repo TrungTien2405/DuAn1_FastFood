@@ -118,9 +118,9 @@ public class DoiMatKhauFragment extends Fragment {
         btnDongY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String matKhauCu = tip_matKhauCu.getEditText().getText().toString();
-                String matKhauMoi = tip_matKhauMoi.getEditText().getText().toString();
-                String xnMatKhauMoi = tip_xacNhanMatKhau.getEditText().getText().toString();
+                String matKhauCu = tip_matKhauCu.getEditText().getText().toString().trim();
+                String matKhauMoi = tip_matKhauMoi.getEditText().getText().toString().trim();
+                String xnMatKhauMoi = tip_xacNhanMatKhau.getEditText().getText().toString().trim();
 
                 if (matKhauCu.isEmpty()) {
                     Toast.makeText(getContext(), "Không để trống mật khẩu cũ", Toast.LENGTH_SHORT).show();
