@@ -52,11 +52,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <Spinner
+                <TextView
                     android:id="@+id/sp_dialogThemMaNH"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="15dp"
                     android:background="@drawable/custom_edt"
                     android:paddingLeft="5dp"
                     android:fontFamily="@font/asap_medium"/>
@@ -64,7 +64,7 @@
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="-30dp"
                     app:srcCompat="@drawable/ic_updown" />
             </LinearLayout>
@@ -83,7 +83,7 @@
                     android:id="@+id/sp_dialogThemMaMenuNH"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="10dp"
                     android:fontFamily="@font/asap_medium"
                     android:background="@drawable/custom_edt"
                     android:paddingLeft="5dp"/>
@@ -183,31 +183,38 @@
             app:layout_constraintTop_toTopOf="@+id/ed_dialogThemChiTietMA"
             app:srcCompat="@drawable/ic_money" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:background="@drawable/layout_bottomdialog">
+
         <TextView
             android:id="@+id/tv_dialogHuyThemMA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="27dp"
             android:fontFamily="@font/asap_medium"
             android:text="Hủy bỏ"
             android:textColor="@color/white"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/tv_dialogXacNhanThemMA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_dialogXacNhanThemMA"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="160dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="40dp"
             android:fontFamily="@font/asap_medium"
             android:text="Xác nhận"
             android:textColor="@color/white"
-            android:textSize="20dp"/>
-    </LinearLayout>
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

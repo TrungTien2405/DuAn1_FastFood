@@ -650,16 +650,16 @@ public class    NhaHangFragment extends Fragment {
     private String kiemLoiONhap(String tenNh, String thoiGian, String phiVC){
         String loi = "";
         try {
-            if (tenNh.isEmpty()) loi += "Bạn chưa nhập tên nhà hàng";
+            if (tenNh.isEmpty()) loi += "\nBạn chưa nhập tên nhà hàng";
             else if (!kiemKhoangTrang(tenNh))
-                loi += "Tên nhà hàng không được nhập khoảng trằng";
+                loi += "\nTên nhà hàng không được nhập khoảng trằng";
 
             if (thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng";
             else if (!kiemKhoangTrang(thoiGian))
-                loi += "Thời gian không được nhập khoảng trắng";
+                loi += "\nThời gian không được nhập khoảng trắng";
 
             int _thoiGian = Integer.parseInt(thoiGian);
-            if (_thoiGian <= 1) loi += "Thời gian giao hàng phải lớn hơn một";
+            if (_thoiGian <= 1) loi += "\nThời gian giao hàng phải lớn hơn một";
 
 
             if (phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
@@ -1171,7 +1171,6 @@ public class    NhaHangFragment extends Fragment {
 
 
     // Delete nhà hàng
-
     private void deleteNhaHangFireBase(int positon){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
@@ -1220,4 +1219,57 @@ public class    NhaHangFragment extends Fragment {
 
         builder.show();
     }
+
+
+    // Delete nhà hàng
+    private void deleteGioHangFireBase(int positon){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Thông báo")
+                .setMessage("Bạn chắn chắn muốn xóa nhà hàng không?")
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+                            // Delete bảng nhà hàng
+                            db.collection("NHAHANG").document(listNhaHangTheoLoai.get(positon).getMaNH() + "")
+                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    getAllNhaHangTheoLoai(viTriLoaiNH);
+                                    Toast.makeText(getContext(), "Xóa nhà hàng thành công", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            //Delete bảng dánh giá nhà hàng có mã nhà hàng vừa xóa
+                            db.collection("DANHGIANH").document(listNhaHangTheoLoai.get(positon).getMaDG() + "")
+                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            });
+
+                            //Delete bảng YEUTHICH có cùng mã nhà hàng vừa xóa
+                            db.collection("YEUTHICH").document(listNhaHangTheoLoai.get(positon).getMaYT() + "")
+                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            });
+                        }catch (Exception e){
+                            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.show();
+    }
+
+
 }
