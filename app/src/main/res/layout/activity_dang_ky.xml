@@ -42,7 +42,7 @@
                 android:id="@+id/view_avatar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 app:cardCornerRadius="50dp"
                 tools:ignore="MissingConstraints">
                 <ImageView
@@ -76,14 +76,15 @@
                 android:id="@+id/ed_HoTen"
                 android:padding="10dp"
                 android:hint="Nhập họ tên"/>
+
             <EditText
+                android:id="@+id/ed_SDT"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/custom_edt"
                 android:layout_margin="10dp"
-                android:id="@+id/ed_SDT"
-                android:padding="10dp"
-                android:hint="Nhập số điện thoại"/>
+                android:background="@drawable/custom_edt"
+                android:hint="Nhập số điện thoại"
+                android:padding="10dp" />
         </LinearLayout>
     </LinearLayout>
     <EditText

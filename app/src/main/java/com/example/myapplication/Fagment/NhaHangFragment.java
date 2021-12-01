@@ -70,7 +70,7 @@ import java.util.UUID;
 import static android.app.Activity.RESULT_OK;
 
 
-public class    NhaHangFragment extends Fragment {
+public class     NhaHangFragment extends Fragment {
     private List<NhaHang> listNhaHang;
     private List<NhaHang> listNhaHangTheoLoai;
     private List<DanhGiaNH> listDanhGia;

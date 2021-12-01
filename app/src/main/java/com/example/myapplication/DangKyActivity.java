@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.Model.TaiKhoan;
@@ -42,22 +44,25 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class DangKyActivity extends AppCompatActivity {
 
-    EditText edHoTen, edSoDT, edDiaChi, edMaOTP;
+    private EditText edHoTen, edSoDT, edDiaChi, edMaOTP;
 
-    ImageButton imBtn_ThemHinhDK;
-    ImageView imgTrove, imgHinhDK;
+    private ImageButton imBtn_ThemHinhDK;
+    private ImageView imgTrove, imgHinhDK;
 
-    Button btnDangKy, btnXacThucOTP;
+    private Button btnDangKy, btnXacThucOTP;
 
     // variable for FirebaseAuth class xác thực OTP
     private FirebaseAuth mAuth;
@@ -69,15 +74,20 @@ public class DangKyActivity extends AppCompatActivity {
     //Image firebase
     StorageReference storageReference;
 
-    Dialog dialogOTP;
+    private Dialog dialogOTP, diaLogThongBaoThongTinTK;
 
     //Load image
     int GALEERY_REQUEST_CODE = 105;
     Uri contenUri;
-    String imageFileName ="";
+    String imageFileName = "";
 
-    TaiKhoan taiKhoan;
-    int Quyen = 2;
+    private List<String> listSoDTKhachHang;
+    private List<TaiKhoan> listTaiKhoan;
+
+    private TaiKhoan taiKhoan;
+    private int Quyen = 2;
+    private String soDTTT;
+    private String _hinhAnh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +104,9 @@ public class DangKyActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        getSoDT();
+        getAllTaiKhoan(getApplicationContext());
 
         imgTrove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,8 +130,6 @@ public class DangKyActivity extends AppCompatActivity {
                 chua.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{lib});
 
                 startActivityForResult(chua, 999);
-//                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(gallery, GALEERY_REQUEST_CODE);
             }
         });
 
@@ -139,7 +150,7 @@ public class DangKyActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Chưa được thêm hình ảnh", Toast.LENGTH_SHORT).show();
                         }else {
                             //Thêm tài khoản vào database
-                            Random random =  new Random();
+                            Random random = new Random();
                             int x = random.nextInt((1000-1+1)+1);
                             String maTK = "TK" + x;
                             taiKhoan = new TaiKhoan(maTK, hoTen, soDT, soDT, diaChi, 2, imageFileName,1000000);
@@ -178,28 +189,79 @@ public class DangKyActivity extends AppCompatActivity {
         });
     }
 
+
+    //lấy số điện thoại trong danh sách tài khoản của firestore xuống, lưu vào listSoDTKhachHang
+    public void getSoDT(){
+        listSoDTKhachHang = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("TAIKHOAN");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot){
+                            soDTTT = doc.get("SDT").toString();
+
+                            listSoDTKhachHang.add(soDTTT);
+                        }
+                    }else{
+                        Toast.makeText(DangKyActivity.this, "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Log.d("=====> ", "Lỗi: " + e.getMessage());
+                }
+            }
+        });
+    }
+
     //hàm kiểm lỗi nhập
     private String kiemLoiNhap(String _hoTen, String _SDT, String _diaChi) {
         String loi = "";
+        //pattern định dạng số điện thoại chỉ được số 03, 08, 09
+        String pattern = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
         if (_hoTen.isEmpty())
             loi += "Bạn chưa nhập họ tên";
         else if (!kiemKhoangTrang(_hoTen))
             loi += "Không được nhập khoảng trắng";
+        else if (_hoTen.length()<5)
+            loi += "Họ tên quá ngắn";
 
 
         if(_SDT.isEmpty()) {
             loi += "\nBạn chưa nhập số điện thoại";
-        }else if(kiemKhoangTrangSDT(_SDT) || !kiemKhoangTrang(_SDT)){
-            loi += "\nSố điện thoại không được nhập khoảng trắng";
-        }else if(!_SDT.startsWith("0") || _SDT.length() != 10) {
-            loi += "\nBạn đã nhập số điện thoại không chính xác";
+        }else if(!_SDT.matches(pattern)){
+            loi += "\nSố điện thoại không đúng định dạng";
+        }else if(kiemTraSoDTTonTai(_SDT)){
+            loi += "\nSố điện thoại đã tồn tại";
         }
-
 
         if (_diaChi.isEmpty())
             loi += "\nBạn chưa nhập địa chỉ";
+        else if (!kiemKhoangTrang(_hoTen))
+            loi += "Không được nhập khoảng trắng";
+        else if(_diaChi.length()<5)
+            loi += "\nĐịa chỉ quá ngắn";
 
         return loi;
+    }
+
+    //kiểm tra số điện thoại đã được sử dụng thì không được đăng ký nữa
+    private boolean kiemTraSoDTTonTai(String _duLieu){
+        try {
+            for(String _soDTTT: listSoDTKhachHang){
+                if(_soDTTT.equals(_duLieu)){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            Log.d("======> ", "Lỗi " + e.getMessage());
+            return false;
+        }
+
+        return false;
     }
 
     //hàm kiểm tra lỗi nhập khoảng trắng toàn bộ Edittext
@@ -248,15 +310,6 @@ public class DangKyActivity extends AppCompatActivity {
         //super.onActivityResult(requestCode, resultCode, data);
 
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == GALEERY_REQUEST_CODE) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                contenUri = data.getData();
-//                String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//                imageFileName = "JPEG_" + timSamp + "." + getFileExt(contenUri);
-//                imgThemHinhAnh.setImageURI(contenUri);
-//            }
-//        }
-
         if (requestCode == 999 && resultCode == RESULT_OK){
             contenUri = data.getData();
             String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -305,6 +358,7 @@ public class DangKyActivity extends AppCompatActivity {
         }
     }
 
+    //dialog xác thực mã otp
     private void diaLogOpenOTP(){
         // Gửi mã OTP đến điện thoại
         sendVerificationCode(edSoDT.getText().toString());
@@ -324,10 +378,88 @@ public class DangKyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 verifyCode(edMaOTP.getText().toString());
+
+                diaLogThongBaoThongTinTK.show();
             }
         });
 
         dialogOTP.show();
+    }
+
+        public void getAllTaiKhoan(Context context){
+            listTaiKhoan = new ArrayList<>();
+
+            final CollectionReference reference = db.collection("TAIKHOAN");
+
+            reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    try {
+                        if(task.isSuccessful()){
+                            QuerySnapshot snapshot = task.getResult();
+                            for(QueryDocumentSnapshot doc: snapshot){
+                                String maTK = doc.get("MaTK").toString();
+                                String hoTen = doc.get("HoTen").toString();
+                                String matKhau = doc.get("MatKhau").toString();
+                                String soDT = doc.get("SDT").toString();
+                                String diaChi = doc.get("DiaChi").toString();
+                                int quyen = Integer.parseInt(doc.get("Quyen").toString());
+                                String hinhAnh = doc.get("HinhAnh").toString();
+                                int soDu = Integer.parseInt(doc.get("SoDu").toString());
+
+                                taiKhoan = new TaiKhoan(maTK, hoTen, matKhau, soDT, diaChi, quyen, hinhAnh, soDu);
+                                listTaiKhoan.add(taiKhoan);
+
+                            }
+                        }else{
+                            Toast.makeText(DangKyActivity.this, "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (Exception e){
+//                    Toast.makeText(getContext(), "Lỗi get nhà hàng: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("=====> ", "Lỗi get nhà hàng: " + e.getMessage());
+                    }
+                }
+            });
+        }
+
+    private void diaLogThongBaoThongTinTK(int position){
+        diaLogThongBaoThongTinTK = new Dialog(DangKyActivity.this);
+        diaLogThongBaoThongTinTK.setContentView(R.layout.dialog_thongtin_taikhoan);
+
+        diaLogThongBaoThongTinTK.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.8);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.6);
+        diaLogThongBaoThongTinTK.getWindow().setLayout(width, height);
+
+        TextView tv_HoTenTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.tv_dialogHoTenTTDK);
+        TextView tv_SoDTTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.tv_dialogSoDTTTDK);
+        TextView tv_MatKhauTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.tv_dialogMatKhauTTDK);
+        TextView tv_DiaChiTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.tv_dialogDiaChiTTDK);
+        ImageView imv_HinhTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.imv_dialogHinhTTDK);
+        TextView tv_XacNhanTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.tv_dialogXacNhanTTDK);
+
+        tv_HoTenTTDK.setText(listTaiKhoan.get(position).getHoTen());
+        tv_SoDTTTDK.setText(listTaiKhoan.get(position).getSDT());
+        tv_MatKhauTTDK.setText(listTaiKhoan.get(position).getMatKhau());
+        tv_DiaChiTTDK.setText(listTaiKhoan.get(position).getDiaChi());
+
+        _hinhAnh = listTaiKhoan.get(position).getHinhAnh();
+
+        if(_hinhAnh.isEmpty()){
+            imv_HinhTTDK.setImageResource(R.drawable.im_food);
+        }else{
+            Picasso.with(getApplicationContext()).load(listTaiKhoan.get(position).getHinhAnh()).into(imv_HinhTTDK);
+        }
+
+
+        tv_XacNhanTTDK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        diaLogThongBaoThongTinTK.show();
     }
 
     // Gửi mã xác thực OTP
