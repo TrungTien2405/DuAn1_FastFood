@@ -82,7 +82,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         if(nhaHang.getHinhAnh().isEmpty()){
             holder.imvHinh.setImageResource(R.drawable.im_food);
         }else{
-            Picasso.with(context).load(nhaHang.getHinhAnh()).into(holder.imvHinh);
+            Picasso.with(context).load(nhaHang.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvHinh);
         }
 
         //Nhấn nút yêu thích nhà hàng
@@ -111,7 +111,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             @Override
             public void onClick(View v) {
                 fragment.chuyenDenFragmentMonAN(nhaHang.getMaNH(), nhaHang.getTenNH(), nhaHang.getHinhAnh(),
-                        nhaHang.getPhiVanChuyen(), nhaHang.getThoiGian(), nhaHang.getDanhGia());
+                        nhaHang.getPhiVanChuyen(), nhaHang.getThoiGian(), nhaHang.getDanhGia(), nhaHang.getMaDG());
             }
         });
 

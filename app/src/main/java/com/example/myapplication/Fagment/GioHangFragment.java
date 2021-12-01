@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.myapplication.Adapter.GioHangAdapter;
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.NhaHangAdapter;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.Model.DanhGiaNH;
 import com.example.myapplication.Model.GioHang;
 import com.example.myapplication.Model.GioHangCT;
@@ -90,6 +91,7 @@ public class GioHangFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gio_hang, container, false);
         anhxa(view);
 
+
         //Gọi Firebase xuống
         db = FirebaseFirestore.getInstance();
 
@@ -125,11 +127,18 @@ public class GioHangFragment extends Fragment {
 
     //Tính tổng tiền trong giỏ hàng
     public void tinhTongTien(){
-        TongTienGH = 0;
-        for(GioHangCT gh: listGioHangCT){
-            if(gh.getTrangThaiCheckbox())  TongTienGH += gh.getSoLuong() * gh.getGiaMA();
+        try {
+            TongTienGH = 0;
+            for (GioHangCT gh : listGioHangCT) {
+                if (gh.getTrangThaiCheckbox()) TongTienGH += gh.getSoLuong() * gh.getGiaMA();
+            }
+            if(TongTienGH == 0){
+                tvTongTienGH.setText("00.00");
+            }else tvTongTienGH.setText(formatNumber(TongTienGH));
+        }catch (Exception e){
+
+
         }
-        tvTongTienGH.setText(formatNumber(TongTienGH));
     }
 
     //Tính tổng giá các món ăn trong giỏ hàng, khi nhấn chọn
@@ -351,6 +360,7 @@ public class GioHangFragment extends Fragment {
         GioHangAdapter adapter  = new GioHangAdapter(listGioHangCT, getContext(), this);
         rcv_GioHang.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv_GioHang.setAdapter(adapter);
+        tinhTongTien();
     }
 
     //Cập nhật đầy đủ thông tin giỏ hàng lên listGioHangCT;
@@ -416,13 +426,21 @@ public class GioHangFragment extends Fragment {
 
     // Xóa món ăn trong giỏ hàng
     public void deleteGioHangGioHangCTFirestore(String _maGH, String _maGHCT){
-        db.collection("GIOHANG").document(_maGH)
-                .delete();
+//        db.collection("GIOHANG").document(_maGH)
+//                .delete();
 
-        db.collection("GIOHANGCT").document(_maGHCT)
-                .delete();
+        try {
 
-        getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống, sau đó đưa danh sách giỏ hàng lên rcv
+            db.collection("GIOHANGCT").document(_maGHCT)
+                    .delete();
+
+            Toast.makeText(getContext(), "Bạn đã xóa thành công", Toast.LENGTH_SHORT).show();
+
+            getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống, sau đó đưa danh sách giỏ hàng lên rcv
+            getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firebase xuống
+        }catch (Exception e){
+            Log.d("===> ", e.getMessage());
+        }
     }
 
 

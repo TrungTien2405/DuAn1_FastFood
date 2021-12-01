@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,13 +44,17 @@ public class ChuNhaHangAdapter extends RecyclerView.Adapter<ChuNhaHangAdapter.My
         holder.tvItemSoDTTK.setText((taiKhoan.getSDT()+""));
         holder.tvItemDiaChiTK.setText(taiKhoan.getDiaChi());
 
-        if(taiKhoan.getHinhAnh().isEmpty()){
-            holder.imgv_ItemHinhTK.setImageResource(R.drawable.avatar);
-        }else Picasso.with(context).load(taiKhoan.getHinhAnh()).into(holder.imgv_ItemHinhTK);
-
+        try {
+            if (taiKhoan.getHinhAnh().isEmpty()) {
+                holder.imgv_ItemHinhTK.setImageResource(R.drawable.avatar);
+            } else Picasso.with(context).load(taiKhoan.getHinhAnh()).resize(1000, 1000).centerCrop().onlyScaleDown().into(holder.imgv_ItemHinhTK);
+        }catch (Exception e){
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
         holder.tvXoaItemTK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //gọi fragment lấy hàm dialog xóa bên ChuHangFragment, lấy ra mã cần xóa
                 fragment.dialogXoaChuNhaHang(taiKhoan.getMaTK());
             }
         });

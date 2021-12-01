@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.myapplication.Adapter.MonAnAdapter;
 import com.example.myapplication.Model.MenuNH;
@@ -60,6 +62,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -69,7 +72,7 @@ public class MonAnFragment extends Fragment {
     private SearchView svMonAn;
 
     private TextView tv_TenNhaHangMA, tv_PhiVanChuyenMA, tv_ThoiGianMA, tv_DanhGiaMA;
-    private ImageView imv_HinhNenMA, imv_TroVe, imv_toGioHang;
+    private ImageView imv_HinhNenMA, imv_TroVe, imv_danhGiaNH;
 
     private ImageView imv_ThemHinhMA, imv_SuaHinhMA;
     private TextView tv_dialogSuaMaNH;
@@ -87,6 +90,10 @@ public class MonAnFragment extends Fragment {
     private String hinhAnhNH;
     private int phiVanChuyen;
     private String _hinhAnh;
+//    private String maDanhGia;
+
+    private Dialog dialogDanhGiaNH;
+    private String MaDanhGia = "";
 
     private String _maNH, _tenNH;
 
@@ -140,16 +147,16 @@ public class MonAnFragment extends Fragment {
                         .commit();
             }
         });
-        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
-                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+//        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+//                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
+//                        .addToBackStack(null)
+//                        .commit();
+//            }
+//        });
         gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -171,7 +178,8 @@ public class MonAnFragment extends Fragment {
         tv_DanhGiaMA  = view.findViewById(R.id.tv_DanhGiaMA);
         imv_HinhNenMA  = view.findViewById(R.id.imv_HinhNenMA);
         imv_TroVe  = view.findViewById(R.id.imv_TroVe);
-        imv_toGioHang = view.findViewById(R.id.imv_toGioHang);
+//        imv_toGioHang = view.findViewById(R.id.imv_toGioHang);
+        imv_danhGiaNH = view.findViewById(R.id.imv_danhGiaNHMACT);
 
         //lấy dữ liệu từ fragment nhà hàng
         Bundle bundle = this.getArguments();
@@ -180,6 +188,7 @@ public class MonAnFragment extends Fragment {
         thoiGian = bundle.getString("ThoiGian");
         danhGia = bundle.getDouble("DanhGia");
         phiVanChuyen = bundle.getInt("PhiVanChuyen");
+        MaDanhGia = bundle.getString("MaDanhGia");
 
         tv_TenNhaHangMA.setText(tenNhaHang);
         tv_PhiVanChuyenMA.setText(formatNumber(phiVanChuyen) + " VND");
@@ -190,6 +199,93 @@ public class MonAnFragment extends Fragment {
         }else{
             Picasso.with(getContext()).load(hinhAnhNH).into(imv_HinhNenMA);
         }
+
+        imv_danhGiaNH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_danhGiaNH();
+            }
+        });
+    }
+
+
+
+    //Dialog gửi đánh giá
+    private void dialog_danhGiaNH(){
+        dialogDanhGiaNH =  new Dialog(getContext());
+        dialogDanhGiaNH.setContentView(R.layout.dialog_danhgianh);
+
+        dialogDanhGiaNH.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.9);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.6);
+        dialogDanhGiaNH.getWindow().setLayout(width,height);
+
+        ToggleButton tg1 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia1);
+        ToggleButton tg2 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia2);
+        ToggleButton tg3 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia3);
+        ToggleButton tg4 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia4);
+        ToggleButton tg5 = dialogDanhGiaNH.findViewById(R.id.tg_danhGia5);
+        Button btnGuiDanhGia = dialogDanhGiaNH.findViewById(R.id.btn_dialogGuiDanhGiaNH);
+
+        btnGuiDanhGia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int danhGia = 0;
+                if(tg1.isChecked()) danhGia+=1;
+                if(tg2.isChecked()) danhGia+=1;
+                if(tg3.isChecked()) danhGia+=1;
+                if(tg4.isChecked()) danhGia+=1;
+                if(tg5.isChecked()) danhGia+=1;
+
+                if(danhGia != 0) {
+                    db.collection("DANHGIANH").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                QuerySnapshot snapshot = task.getResult();
+                                for (QueryDocumentSnapshot doc : snapshot) {
+                                    String maDG = doc.get("MaDanhGia").toString();
+                                    int tongDG = Integer.parseInt(doc.get("TongDG").toString());
+                                    int LuotDG = Integer.parseInt(doc.get("LuotDG").toString());
+
+//                                Log.d("==> ", MaDanhGia);
+                                    if (maDG.equals(MaDanhGia)) {
+                                        int danhGia = 0;
+                                        if(tg1.isChecked()) danhGia+=1;
+                                        if(tg2.isChecked()) danhGia+=1;
+                                        if(tg3.isChecked()) danhGia+=1;
+                                        if(tg4.isChecked()) danhGia+=1;
+                                        if(tg5.isChecked()) danhGia+=1;
+
+                                        updateDanhGiaGH(tongDG, LuotDG, danhGia);
+                                        break;
+                                    }
+
+                                }
+                            }
+                        }
+                    });
+                }else Toast.makeText(getContext(), "Bạn chua chọn đánh giá", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialogDanhGiaNH.show();
+    }
+
+    //Cập nhật lại đánh giá giỏ hàng
+    public void updateDanhGiaGH(int _tongDG, int _luotDG, int _danhGia){
+        db.collection("DANHGIANH").document(MaDanhGia)
+                .update(
+                        "TongDG" , _tongDG + _danhGia,
+                        "LuotDG" , _luotDG + 1
+                ).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getContext(), "Cảm ơn bạn đã đánh giá", Toast.LENGTH_SHORT).show();
+                dialogDanhGiaNH.dismiss();
+            }
+        });
+
     }
 
     //
@@ -302,6 +398,7 @@ public class MonAnFragment extends Fragment {
         bundle.putString("MaNH", _maNH);
         bundle.putString("TenNH", _tenNH);
         bundle.putString("HinhAnhNH", hinhAnhNH);
+//        bundle.putString("MaDanhGia", maDanhGia);
         MonAnCTFragment monAnCTFragment = new MonAnCTFragment();
         monAnCTFragment.setArguments(bundle);
 
@@ -410,10 +507,10 @@ public class MonAnFragment extends Fragment {
             public void onClick(View v) {
                 String tenMon = ed_Ten.getText().toString();
                 String chiTiet = ed_ChiTiet.getText().toString();
-                int gia = Integer.parseInt(ed_Gia.getText().toString());
+                String gia = ed_Gia.getText().toString();
 
-                if(tenMon.isEmpty() || chiTiet.isEmpty() || gia == 0){
-                    Toast.makeText(getContext(), "Không được để trống thông tin", Toast.LENGTH_SHORT).show();
+                if(!kiemLoiONhap(tenMon, chiTiet, gia).isEmpty()){
+                    Toast.makeText(getContext(), kiemLoiONhap(tenMon, chiTiet, gia), Toast.LENGTH_SHORT).show();
                 }else{
                     Random random =  new Random();
                     int x = random.nextInt((10000-1+1)+1);
@@ -421,7 +518,7 @@ public class MonAnFragment extends Fragment {
                     String maNH = sp_ThemMaNH.getSelectedItem().toString();
                     String maMenuNH = sp_ThemMaMenuNH.getSelectedItem().toString();
 
-                    monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, gia, "");
+                    monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, Integer.parseInt(gia), "");
 
                     uploadImageMonAnToFirebase(imageFileName, contenUri, 0);
                 }
@@ -502,16 +599,17 @@ public class MonAnFragment extends Fragment {
             public void onClick(View v) {
                 String tenMon = edSuaTenMA.getText().toString();
                 String chiTiet = edSuaChiTietMA.getText().toString();
-                int gia = Integer.parseInt(edSuaGiaMA.getText().toString());
+                String gia = edSuaGiaMA.getText().toString();
 
-                if(tenMon.isEmpty() || chiTiet.isEmpty() || gia == 0){
-                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                if(!kiemLoiONhap(tenMon, chiTiet, gia).isEmpty()){
+                    Toast.makeText(getContext(), kiemLoiONhap(tenMon, chiTiet, gia), Toast.LENGTH_SHORT).show();
                 }else{
                     //Thêm lên Firebase
                     String maMA = listMonAn.get(positon).getMaMA();
                     String maMenuNH = sp_dialogSuaMaMenuNH.getSelectedItem().toString();
 
-                    monAnNH = new MonAnNH(maMA, _maNH, maMenuNH, tenMon, chiTiet, gia, "");
+                    int _gia = Integer.parseInt(gia);
+                    monAnNH = new MonAnNH(maMA, _maNH, maMenuNH, tenMon, chiTiet, _gia, "");
                     //Đẩy hình ảnh lên firebase
                     uploadImageMonAnToFirebase(imageFileName, contenUri, 1); // Số 0 là thêm món ăn, số 1 là sửa món ăn
                 }
@@ -554,6 +652,39 @@ public class MonAnFragment extends Fragment {
         });
 
         builder.show();
+    }
+
+
+    private String kiemLoiONhap(String tenMa, String ctMa, String giaMa){
+        String loi = "";
+        try {
+            if (tenMa.isEmpty()) loi += "\nBạn chưa nhập tên món ăn";
+            else if (!kiemKhoangTrang(tenMa))
+                loi += "\nTên món ăn không được nhập khoảng trằng";
+
+            if (ctMa.isEmpty()) loi += "\nBạn chưa nhập chi tiết món ăn";
+            else if (!kiemKhoangTrang(ctMa))
+                loi += "\nMón ăn chi tiết không được nhập khoảng trắng";
+
+            int _giaMa = Integer.parseInt(giaMa);
+            if (_giaMa <= 1000) loi += "\nGiá món ăn không được nhỏ hơn 1000 VND";
+
+
+            if (giaMa.isEmpty()) loi += "\nBạn chưa nhập giá món ăn";
+        }catch (Exception e){
+            loi += "\n" + e.getMessage();
+        }
+        return loi;
+
+    }
+
+    private Boolean kiemKhoangTrang(String _duLieu){
+        for (int i = 0; i < _duLieu.length(); i++) {
+            if(!Character.isWhitespace(_duLieu.charAt(i))){
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -699,10 +830,12 @@ public class MonAnFragment extends Fragment {
 
     // Thêm thông tin món ăn mới lên Firebase
     private void themMonAnToFireStore(MonAnNH monAnNH){
+        UUID uuid = UUID.randomUUID();
+
         final CollectionReference collectionReference = db.collection("MONANNH");
 
         Map<String, Object> data = new HashMap<>();
-        data.put("MaMA", monAnNH.getMaMA());
+        data.put("MaMA", String.valueOf(uuid));
         data.put("MaNH", monAnNH.getMaNH());
         data.put("Gia", monAnNH.getGia());
         data.put("MaMenuNH", monAnNH.getMaMenuNH());
@@ -711,7 +844,7 @@ public class MonAnFragment extends Fragment {
         data.put("TenMon", monAnNH.getTenMon());
 
         try {
-            collectionReference.document(monAnNH.getMaMA() + "").set(data);
+            collectionReference.document(String.valueOf(uuid)).set(data);
 
             dialogThemMonAn.dismiss();
 
@@ -721,4 +854,6 @@ public class MonAnFragment extends Fragment {
             Log.d("Error add Firebase:", e.getMessage());
         }
     }
+
+
 }

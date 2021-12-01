@@ -1,7 +1,10 @@
 package com.example.myapplication.Fagment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,14 +12,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.MonAnThemAdapter;
@@ -25,6 +31,7 @@ import com.example.myapplication.Model.MonAnThem;
 import com.example.myapplication.Model.MonAnNH;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
@@ -45,7 +52,7 @@ public class MonAnCTFragment extends Fragment {
     private RecyclerView rcv_monAnThem;
 
     private TextView tv_tenMonCT, tv_giaMonCT, tv_chiTietMACT, tv_PhiVanChuyenMACT, tv_ThoiGianMACT, tv_DanhGiaMACT, tv_soLuongMonAnCT;
-    private ImageView imv_hinhMonAnCT, imv_TroVe, imv_toGioHang, imvCong, imvTru;
+    private ImageView imv_hinhMonAnCT, imv_TroVe, imvCong, imvTru, imv_toGioHang;
     private Button btnThemVaoGioHang;
 
 
@@ -58,6 +65,9 @@ public class MonAnCTFragment extends Fragment {
 
     private String TenMonThem;
     private String MaGioHang = "";
+//    private String MaDanhGia = "";
+
+//    private Dialog dialogDanhGiaNH;
 
     private int SoLuongMA = 1;
     //Firestore
@@ -99,6 +109,17 @@ public class MonAnCTFragment extends Fragment {
         clickThemGioHang();
 
         getAllMonAnChiTiet(getContext());
+
+        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         return view;
     }
@@ -170,6 +191,7 @@ public class MonAnCTFragment extends Fragment {
         tv_DanhGiaMACT = view.findViewById(R.id.tv_DanhGiaMACT);
         imv_hinhMonAnCT = view.findViewById(R.id.imv_hinhMonAnCT);
         imv_TroVe = view.findViewById(R.id.imv_TroVe);
+//        imv_danhGiaNH = view.findViewById(R.id.imv_danhGiaNHMACT);
         imv_toGioHang = view.findViewById(R.id.imv_toGioHang);
         tv_tenMonCT = view.findViewById(R.id.tv_tenMonAnCT);
         tv_giaMonCT = view.findViewById(R.id.tv_giaMonAnCT);
@@ -190,6 +212,7 @@ public class MonAnCTFragment extends Fragment {
         String chiTiet = bundle.getString("ChiTiet");
         String hinhAnh = bundle.getString("HinhAnh");
         String thoiGian = bundle.getString("ThoiGian");
+//        MaDanhGia = bundle.getString("MaDanhGia");
         Double danhGia = bundle.getDouble("DanhGia");
         int phiVanChuyen = bundle.getInt("PhiVanChuyen");
 
@@ -235,16 +258,12 @@ public class MonAnCTFragment extends Fragment {
                         .commit();
             }
         });
-        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
-                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+//        imv_danhGiaNH.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog_danhGiaNH();
+//            }
+//        });
     }
 
     public void getAllMonAnChiTiet(Context context){
@@ -375,4 +394,5 @@ public class MonAnCTFragment extends Fragment {
 
         return en.format(number);
     }
+
 }

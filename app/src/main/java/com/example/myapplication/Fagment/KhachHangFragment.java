@@ -69,6 +69,8 @@ public class KhachHangFragment extends Fragment {
 
         return view;
     }
+
+    //lấy dữ liệu của bảng TAIKHOAN từ firestore về, lưu vào listTKKhachHang
     public void getAllKhachHang(Context context) {
         listTKKhachHang = new ArrayList<>();
 
@@ -105,11 +107,15 @@ public class KhachHangFragment extends Fragment {
             }
         });
     }
+
+    //gọi adapter, xuất danh sách listTKKhachHang lên rcv
     private void goiAdapter(){
         KhachHangAdapter adapter = new KhachHangAdapter(listTKKhachHang, getContext(), this);
         rcv_KhachHang.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv_KhachHang.setAdapter(adapter);
     }
+
+    //dialog thông báo xóa tài khoản khách hàng
     public void dialogXoaKhachHang(String _maTK){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
@@ -133,6 +139,8 @@ public class KhachHangFragment extends Fragment {
         builder.show();
     }
 
+
+    //câu lệnh xóa tài khoản theo mã tài khoản của Firebase
     public void xoaChuNhaHangFirestore(String _maTK){
         db.collection("TAIKHOAN").document(_maTK)
                 .delete();

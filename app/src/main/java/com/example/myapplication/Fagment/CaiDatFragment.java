@@ -76,7 +76,7 @@ public class CaiDatFragment extends Fragment {
         tvHoTro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new ThanhToanFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new HoTroFragment()).commit();
             }
         });
 

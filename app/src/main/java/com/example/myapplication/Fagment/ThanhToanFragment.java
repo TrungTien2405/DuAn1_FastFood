@@ -26,8 +26,10 @@ import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -70,6 +72,65 @@ public class ThanhToanFragment extends Fragment {
         return view;
     }
 
+
+
+
+
+    // Cập nhật thông tin thanh toán món ăn của khách hàng
+    public void clickDatHang(){
+        Intent intent = getActivity().getIntent();
+        String maTK = intent.getStringExtra("MaTK");
+        int soDuTK = Integer.parseInt(intent.getStringExtra("SoDu"));
+
+        int ktSoDu = 0;
+        for(GioHangCT gh: list){
+            ktSoDu += (gh.getGiaMA() * gh.getSoLuong()) + 20000;
+        }
+
+        ktSoDu = soDuTK - ktSoDu;
+        if(ktSoDu>=0) {
+            for (GioHangCT gh : list) {
+                int _soDuTK = (soDuTK - (gh.getGiaMA() * gh.getSoLuong())) + 20000;
+                    //Cập nhật thông tin
+                    db.collection("GIOHANGCT").document(gh.getMaGHCT())
+                            .update(
+                                    "TrangThai", 1,
+                                    "ThoiGian", FieldValue.serverTimestamp()
+                            );
+
+                    //Cập nhật thông tin
+                    db.collection("TAIKHOAN").document(maTK)
+                            .update(
+                                    "SoDu", _soDuTK
+                            ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            //Cập nhật số dư trong intent
+                            intent.putExtra("SoDu", _soDuTK + "");
+                            startActivity(intent);
+                        }
+                    });
+
+
+                    soDuTK = _soDuTK;
+
+            }
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                    .replace(R.id.nav_FrameFragment, new NhaHangFragment())
+                    .addToBackStack(null)
+                    .commit();
+
+            Toast.makeText(getContext(), "Bạn đã đặt hàng thành công", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Số dư tài khoản của bạn không đủ", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
     private void adapterThanhToan(){
         ThanhToanAdapter adapter = new ThanhToanAdapter(list, getContext());
         rcv_thanhToan.setFocusable(false);
@@ -100,45 +161,25 @@ public class ThanhToanFragment extends Fragment {
         tvTongThanhToan1 = view.findViewById(R.id.tv_tongThanhToanTT2);
         btnDatHang = view.findViewById(R.id.btn_datHangTT);
 
-    //Lấy dữ liệu từ firestore
-    public void getAllChuNhaHang(Context context) {
-        listTKChuNhaHang = new ArrayList<>();
 
-        final CollectionReference reference = db.collection("TAIKHOAN");
+    private void tinhTong(){
+        int tongGiaoHang = 0;
+        int tongTienHang = 0;
+        int tongThanhToan = 0;
+        for(GioHangCT gh: list){
+            tongGiaoHang += 20000;
+            tongTienHang += gh.getSoLuong() * gh.getGiaMA();
+        }
 
-        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                try {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot snapshot = task.getResult();
-                        for (QueryDocumentSnapshot doc : snapshot) {
-                            String maTK = doc.get("MaTK").toString();
-                            String hoTen = doc.get("HoTen").toString();
-                            String diaChi = doc.get("DiaChi").toString();
-                            String hinhAnh = doc.get("HinhAnh").toString();
-                            String soDT = doc.get("SDT").toString();
-                            int soDu = Integer.parseInt(doc.get("SoDu").toString());
-                            String matKhau = doc.get("MatKhau").toString();
-                            int quyen = Integer.parseInt(doc.get("Quyen").toString());
+        tongThanhToan = tongTienHang + tongGiaoHang;
 
-                                taiKhoan = new TaiKhoan(maTK, hoTen, matKhau, soDT, diaChi, quyen, hinhAnh, soDu);
-                                listTKChuNhaHang.add(taiKhoan);
-                        }
-//                        TaiKhoanAdapter adapter = new TaiKhoanAdapter(listTKChuNhaHang, getContext());
-//                        rcv_ChuNhaHang.setFocusable(false);
-//                        rcv_ChuNhaHang.setNestedScrollingEnabled(false);
-//                        rcv_ChuNhaHang.setLayoutManager(new LinearLayoutManager(getContext()));
-//                        rcv_ChuNhaHang.setAdapter(adapter);
-                    } else {
-                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi " + task.getException(), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    Log.d("tag", "===================>" + e.getMessage());
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        tvTongTienHang.setText(formatNumber(tongTienHang));
+        tvTongPhiVC.setText(formatNumber(tongGiaoHang));
+        tvTongThanhToan1.setText(formatNumber(tongThanhToan));
+        tvTongThanhToan2.setText(formatNumber(tongThanhToan));
+    }
+
+
 
     }
 }}

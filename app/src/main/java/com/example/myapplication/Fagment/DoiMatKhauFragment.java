@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.myapplication.DangNhapActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -117,9 +118,9 @@ public class DoiMatKhauFragment extends Fragment {
         btnDongY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String matKhauCu = tip_matKhauCu.getEditText().getText().toString();
-                String matKhauMoi = tip_matKhauMoi.getEditText().getText().toString();
-                String xnMatKhauMoi = tip_xacNhanMatKhau.getEditText().getText().toString();
+                String matKhauCu = tip_matKhauCu.getEditText().getText().toString().trim();
+                String matKhauMoi = tip_matKhauMoi.getEditText().getText().toString().trim();
+                String xnMatKhauMoi = tip_xacNhanMatKhau.getEditText().getText().toString().trim();
 
                 if (matKhauCu.isEmpty()) {
                     Toast.makeText(getContext(), "Không để trống mật khẩu cũ", Toast.LENGTH_SHORT).show();
@@ -150,6 +151,7 @@ public class DoiMatKhauFragment extends Fragment {
         });
     }
 
+    //dialog cho phép nhập mã otp khi được gửi tới qua sdt
     private void dialog_OpenOTP(String sdt){
         // Gửi mã OTP đến điện thoại
         sendVerificationCode(sdt);
@@ -241,6 +243,7 @@ public class DoiMatKhauFragment extends Fragment {
                             // Cập nhật mật khẩu firestore
                             updatePass(mkMoi, maTV);
 
+                            //
                             //Chuyển sang fragment Trang chính
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new CaiDatFragment()).commit();
 

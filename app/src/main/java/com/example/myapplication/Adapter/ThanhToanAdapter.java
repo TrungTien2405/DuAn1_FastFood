@@ -49,7 +49,7 @@ public class ThanhToanAdapter extends RecyclerView.Adapter<ThanhToanAdapter.MyVi
 
         if(tt.getHinhAnh().isEmpty()){
             holder.imvMa.setImageResource(R.drawable.avatar);
-        }else Picasso.with(context).load(tt.getHinhAnh()).into(holder.imvMa);
+        }else Picasso.with(context).load(tt.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvMa);
 
     }
 

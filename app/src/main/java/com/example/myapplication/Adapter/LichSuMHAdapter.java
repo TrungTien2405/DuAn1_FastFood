@@ -61,7 +61,9 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
 
             if (gioHangCT.getHinhAnh().isEmpty()) {
                 holder.imvHinhMA.setImageResource(R.drawable.im_food);
-            } else Picasso.with(context).load(gioHangCT.getHinhAnh()).into(holder.imvHinhMA);
+            } else Picasso.with(context).load(gioHangCT.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvHinhMA);
+
+            holder.chkChon.setVisibility(View.INVISIBLE);
 
             holder.chkChon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
