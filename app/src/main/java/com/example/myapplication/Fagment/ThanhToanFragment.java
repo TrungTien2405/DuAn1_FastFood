@@ -183,7 +183,8 @@ public class ThanhToanFragment extends Fragment {
         tvTongThanhToan2.setText(formatNumber(tongThanhToan));
     }
 
-    // Định dạng sang số tiền
+    
+    //Định dạng sang số tiền
     private String formatNumber(int number){
         // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
         Locale localeEN = new Locale("en", "EN");
