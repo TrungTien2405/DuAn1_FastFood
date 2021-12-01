@@ -34,8 +34,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ThanhToanFragment extends Fragment {
@@ -151,7 +153,7 @@ public class ThanhToanFragment extends Fragment {
     }
 
 
-    private void anhxa(View view){
+    private void anhxa(View view) {
         rcv_thanhToan = view.findViewById(R.id.rcv_thanhToan);
         tvDiaChi = view.findViewById(R.id.tv_diaChiNHThanhToanFrag);
         tvHoTenSDT = view.findViewById(R.id.tv_hoTenSDTThanhToanFrag);
@@ -160,7 +162,7 @@ public class ThanhToanFragment extends Fragment {
         tvTongThanhToan1 = view.findViewById(R.id.tv_tongThanhToanTT1);
         tvTongThanhToan1 = view.findViewById(R.id.tv_tongThanhToanTT2);
         btnDatHang = view.findViewById(R.id.btn_datHangTT);
-
+    }
 
     private void tinhTong(){
         int tongGiaoHang = 0;
@@ -180,6 +182,15 @@ public class ThanhToanFragment extends Fragment {
     }
 
 
+    
+    //Định dạng sang số tiền
+    private String formatNumber(int number){
+        // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
+        Locale localeEN = new Locale("en", "EN");
+        NumberFormat en = NumberFormat.getInstance(localeEN);
+
+        return en.format(number);
+
 
     }
-}}
+}
