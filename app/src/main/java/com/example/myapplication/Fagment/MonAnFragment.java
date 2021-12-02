@@ -147,16 +147,6 @@ public class MonAnFragment extends Fragment {
                         .commit();
             }
         });
-//        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
-//                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
-//                        .addToBackStack(null)
-//                        .commit();
-//            }
-//        });
         gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -178,7 +168,6 @@ public class MonAnFragment extends Fragment {
         tv_DanhGiaMA  = view.findViewById(R.id.tv_DanhGiaMA);
         imv_HinhNenMA  = view.findViewById(R.id.imv_HinhNenMA);
         imv_TroVe  = view.findViewById(R.id.imv_TroVe);
-//        imv_toGioHang = view.findViewById(R.id.imv_toGioHang);
         imv_danhGiaNH = view.findViewById(R.id.imv_danhGiaNHMACT);
 
         //lấy dữ liệu từ fragment nhà hàng
@@ -265,7 +254,7 @@ public class MonAnFragment extends Fragment {
                             }
                         }
                     });
-                }else Toast.makeText(getContext(), "Bạn chua chọn đánh giá", Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(getContext(), "Bạn chưa chọn đánh giá", Toast.LENGTH_SHORT).show();
             }
         });
 
