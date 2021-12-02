@@ -867,7 +867,9 @@ public class MonAnFragment extends Fragment {
             dialogThemMonAn.dismiss();
 
             Toast.makeText(getContext(), "Thêm món ăn thành công", Toast.LENGTH_SHORT).show();
-            getAllMonAn(getContext());
+            getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firestore xuống
+            getAllMaNH(getContext());
+            getAllMaMenuNH(getContext());
         }catch (Exception e){
             Log.d("Error add Firebase:", e.getMessage());
         }

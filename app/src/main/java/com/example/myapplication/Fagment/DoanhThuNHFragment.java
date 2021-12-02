@@ -303,8 +303,7 @@ public class DoanhThuNHFragment extends Fragment {
         Collections.sort(listDoanhThu, new Comparator<DoanhThuNH>() {
             @Override
             public int compare(DoanhThuNH o1, DoanhThuNH o2) {
-//                return String.valueOf(o2.getTongDT()).compareTo(String.valueOf(o1.getTongDT()));
-                return o2.getTongDT() > o1.getTongDT();
+                return String.valueOf(o2.getTongDT()).compareTo(String.valueOf(o1.getTongDT()));
             }
         });
 
@@ -553,15 +552,8 @@ public class DoanhThuNHFragment extends Fragment {
             addDetail_gioHang(listGioHangCT.get(i).getMaMA(), i);
         }
 
-//        for(int i=0; i<listGioHangCTNam.size(); i++){
-//            addDetail_gioHangNam(listGioHangCTNam.get(i).getMaMA(), i);
-//        }
-
         //Tính doanh thu của từng nhà hàng
         tinhDoanhThuNH();
-
-        //Tính doanh thu món ăn của năm
-//        tinhDoanhThuNHNam();
 
     }
 

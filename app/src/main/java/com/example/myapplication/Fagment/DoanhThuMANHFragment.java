@@ -195,6 +195,7 @@ public class DoanhThuMANHFragment extends Fragment {
             @Override
             public int compare(DoanhThuMA o1, DoanhThuMA o2) {
                 return String.valueOf(o2.getTongDT()).compareTo(String.valueOf(o1.getTongDT()));
+
             }
         });
 
