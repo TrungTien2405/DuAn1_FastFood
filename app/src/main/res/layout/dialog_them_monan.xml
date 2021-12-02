@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="40dp"
                 android:text="Mã nhà hàng"
                 android:fontFamily="@font/asap_medium"/>
@@ -52,20 +52,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <Spinner
-                    android:id="@+id/sp_dialogThemMaNH"
-                    android:layout_width="200dp"
+                <TextView
+                    android:id="@+id/tv_dialogThemMaNH"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:text="NH02"
+                    android:textSize="16dp"
                     android:background="@drawable/custom_edt"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
                     android:fontFamily="@font/asap_medium"/>
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="-30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="-45dp"
                     app:srcCompat="@drawable/ic_updown" />
             </LinearLayout>
             <TextView
@@ -74,25 +78,25 @@
                 android:text="Mã thực đơn nhà hàng"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/asap_medium"
-                android:layout_marginLeft="50dp"/>
+                android:layout_marginLeft="20dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Spinner
                     android:id="@+id/sp_dialogThemMaMenuNH"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
                     android:fontFamily="@font/asap_medium"
-                    android:background="@drawable/custom_edt"
-                    android:paddingLeft="5dp"/>
+                    android:background="@drawable/custom_edt" />
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginLeft="-30dp"
+                    android:layout_marginLeft="-45dp"
                     app:srcCompat="@drawable/ic_updown" />
             </LinearLayout>
         </LinearLayout>
