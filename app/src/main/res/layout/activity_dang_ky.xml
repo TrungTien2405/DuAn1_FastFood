@@ -82,6 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
+                android:inputType="number"
                 android:background="@drawable/custom_edt"
                 android:hint="Nhập số điện thoại"
                 android:padding="10dp" />

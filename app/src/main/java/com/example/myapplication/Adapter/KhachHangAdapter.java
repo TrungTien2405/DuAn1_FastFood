@@ -44,8 +44,6 @@ public class KhachHangAdapter extends RecyclerView.Adapter<KhachHangAdapter.MyVi
         holder.tvItemSoDTTK.setText((taiKhoan.getSDT()+""));
         holder.tvItemDiaChiTK.setText(taiKhoan.getDiaChi());
 
-        holder.tvXoaItemTK.setVisibility(View.INVISIBLE);
-
         try {
             if (taiKhoan.getHinhAnh().isEmpty()) {
                 holder.imgv_ItemHinhTK.setImageResource(R.drawable.avatar);
@@ -53,6 +51,7 @@ public class KhachHangAdapter extends RecyclerView.Adapter<KhachHangAdapter.MyVi
         }catch (Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
         holder.tvXoaItemTK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
