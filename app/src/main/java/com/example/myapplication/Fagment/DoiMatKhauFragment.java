@@ -123,15 +123,14 @@ public class DoiMatKhauFragment extends Fragment {
                 String xnMatKhauMoi = tip_xacNhanMatKhau.getEditText().getText().toString().trim();
 
                 if (matKhauCu.isEmpty()) {
-                    Toast.makeText(getContext(), "Không để trống mật khẩu cũ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Không được để trống thông tin", Toast.LENGTH_SHORT).show();
                     }else if(!matKhauCu.equals(matKhau)) {
-                        Toast.makeText(getContext(), "Mật khẩu cũ không chính xác" + matKhau, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Mật khẩu cũ không chính xác", Toast.LENGTH_SHORT).show();
                     } else if (!kiemLoi(matKhauMoi).isEmpty()) {
                         Toast.makeText(getContext(), kiemLoi(matKhauMoi), Toast.LENGTH_SHORT).show();
                     } else if (!kiemLoi(xnMatKhauMoi).isEmpty()) {
                         Toast.makeText(getContext(), "Xác nhận mật khẩu mới không chính xác", Toast.LENGTH_SHORT).show();
                     } else if (matKhauMoi.equals(xnMatKhauMoi)) {
-                        Intent intent = getActivity().getIntent();
                         mkMoi = matKhauMoi;
 
                         dialog_OpenOTP(sdt);
@@ -162,7 +161,7 @@ public class DoiMatKhauFragment extends Fragment {
         dialogOTP.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.6);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.2);
-        dialogOTP.getWindow().setLayout(width,height);
+        dialogOTP.getWindow().setLayout(width, height);
 
         ed_MaOTP = dialogOTP.findViewById(R.id.edMaOTP);
         btnXacThucOTP = dialogOTP.findViewById(R.id.btnXacThucOTP);
@@ -243,7 +242,6 @@ public class DoiMatKhauFragment extends Fragment {
                             // Cập nhật mật khẩu firestore
                             updatePass(mkMoi, maTV);
 
-                            //
                             //Chuyển sang fragment Trang chính
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_FrameFragment, new CaiDatFragment()).commit();
 
@@ -270,9 +268,9 @@ public class DoiMatKhauFragment extends Fragment {
 
     //Kiểm lỗi mật khẩu
     private String kiemLoi(String mk){
-        String error = "";
+        String loi = "";
         Boolean hoa = true, thuong = true, so = true;
-        if(mk.length()<8) error = "Mật khẩu quá ngắn";
+        if(mk.length()<8) loi = "Mật khẩu quá ngắn";
 
         for(int i = 0; i<mk.length(); i++){
             int ascii = (int) mk.charAt(i);
@@ -281,10 +279,10 @@ public class DoiMatKhauFragment extends Fragment {
             if(ascii > 47 && ascii < 58) so = false;
         }
 
-        if(hoa) error += " phải có chữ hoa";
-        if(thuong) error += " thiếu kí tự thường";
-        if(so) error += " phải có số";
+        if(hoa) loi += " phải có chữ hoa";
+        if(thuong) loi += " thiếu kí tự thường";
+        if(so) loi += " phải có số";
 
-        return error;
+        return loi;
     }
 }
