@@ -35,6 +35,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.myapplication.Adapter.MonAnAdapter;
+import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.MenuNH;
 import com.example.myapplication.Model.MonAnNH;
 import com.example.myapplication.R;
@@ -82,6 +83,7 @@ public class MonAnFragment extends Fragment {
     private List<MonAnNH> listMonAn;
     private List<MonAnNH> listMonAnTimKiem;
     private List<String> listMaNH, listMaMenuNH;
+    private List<GioHangCT> listGioHangCT;
 
     private MonAnNH monAnNH;
 
@@ -129,6 +131,7 @@ public class MonAnFragment extends Fragment {
         getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firestore xuống
         getAllMaNH(getContext());
         getAllMaMenuNH(getContext());
+        getAllGioHangCT();
 
         //Nhấn nút thêm món ăn
         flBtnThemMA.setOnClickListener(new View.OnClickListener() {
@@ -147,13 +150,14 @@ public class MonAnFragment extends Fragment {
                         .commit();
             }
         });
-        gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                //dialogXoaMonAn(position);
-                return false;
-            }
-        });
+//        gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                //dialogXoaMonAn(position);
+//                Toast.makeText(getContext(), "Hihi", Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
 
         return view;
     }
@@ -368,6 +372,47 @@ public class MonAnFragment extends Fragment {
                     }
                 }catch (Exception e){
                     Log.d("=====> ", "Lỗi: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+
+
+    // Lấy danh sách giỏ hàng chi tiết từ Firebase xuống
+    public void getAllGioHangCT(){
+        listGioHangCT = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("GIOHANGCT");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        GioHangCT gioHangCT;
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String maMA = doc.get("MaMA").toString();
+                            String maGHCT = doc.get("MaGHCT").toString();
+                            String maGH = doc.get("MaGH").toString();
+                            int soLuong = Integer.parseInt(doc.get("SoLuong").toString());
+                            String tenMonThem = doc.get("TenMonThem").toString();
+                            String thoiGian = doc.get("ThoiGian").toString();
+                            int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+
+                            if(trangThai == 1) {
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
+                                listGioHangCT.add(gioHangCT);
+                            }
+                        }
+
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", e.getMessage());
                 }
             }
         });
@@ -628,7 +673,7 @@ public class MonAnFragment extends Fragment {
 
 
     //dialog xóa món ăn
-    private void dialogXoaMonAn(int positon){
+    public void dialogXoaMonAn(int positon){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
                 .setMessage("Bạn chắn chắn muốn xóa món ăn này không?")
@@ -637,15 +682,22 @@ public class MonAnFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         try {
-                            // Delete bảng nhà hàng
-                            db.collection("MONANNH").document(listMonAn.get(positon).getMaMA())
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    getAllMonAn(getContext());
-                                    Toast.makeText(getContext(), "Xóa món ăn thành công", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+
+                            if(!KiemTraMonAnTrongGioHang(listMonAn.get(positon).getMaMA())) {
+
+                                // Delete bảng món ăn
+                                db.collection("MONANNH").document(listMonAn.get(positon).getMaMA())
+                                        .delete();
+
+                                deleteGioHangFireBase(listMonAn.get(positon).getMaMA());
+
+                                getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firestore xuống
+                                getAllMaNH(getContext());
+                                getAllMaMenuNH(getContext());
+                                getAllGioHangCT();
+                                Toast.makeText(getContext(), "Xóa món ăn thành công", Toast.LENGTH_SHORT).show();
+                            }else Toast.makeText(getContext(), "Món ăn đã được mua, không thể xóa", Toast.LENGTH_SHORT).show();
+
                         }catch (Exception e){
                             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -864,5 +916,52 @@ public class MonAnFragment extends Fragment {
         }
     }
 
+    //Kiểm tra món ăn đã được mua chưa, nếu chua thì
+    private Boolean KiemTraMonAnTrongGioHang(String _maMA){
+        for(GioHangCT gh: listGioHangCT){
+            if(_maMA.equals(gh.getMaMA())){
+                return true; // có món ăn trong giỏ hàng, không đc xóa
+            }
+        }
+
+        return false;// Được xóa
+    }
+
+    // Delete giỏ hàng từ mã món ăn
+    private void deleteGioHangFireBase(String _maMA){
+
+        try {
+            final CollectionReference reference = db.collection("GIOHANGCT");
+            reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    try {
+                        if(task.isSuccessful()){
+                            QuerySnapshot snapshot = task.getResult();
+                            for(QueryDocumentSnapshot doc: snapshot){
+                                String maMA = doc.get("MaMA").toString();
+                                String maGHCT = doc.get("MaGHCT").toString();
+                                int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+
+                                if (maMA.equals(_maMA) && trangThai == 0) {
+                                    // Delete bảng nhà hàng
+                                    db.collection("GIOHANGCT").document(maGHCT)
+                                            .delete();
+                                }
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (Exception e){
+                        Toast.makeText(getContext(), "Error getAllYeuThich"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 }

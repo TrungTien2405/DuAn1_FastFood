@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public class MonAnCTFragment extends Fragment {
     private RecyclerView rcv_monAnThem;
@@ -337,9 +338,8 @@ public class MonAnCTFragment extends Fragment {
     private void themGioHangCTToFireStore(String _maGH){
         final CollectionReference collectionReference = db.collection("GIOHANGCT");
 
-        Random random =  new Random();
-        int x = random.nextInt((50000-1+1)+1);
-        String maGHCT = "GHCT" + x;
+        UUID uuid = UUID.randomUUID();
+        String maGHCT = String.valueOf(uuid);
 
         Map<String, Object> data = new HashMap<>();
         data.put("MaGH", _maGH);

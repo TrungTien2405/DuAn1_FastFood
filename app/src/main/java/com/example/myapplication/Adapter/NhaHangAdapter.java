@@ -80,7 +80,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         if(!nhaHang.getMaYT().isEmpty() && !nhaHang.getMaYT().isEmpty()) holder.tgb_yeuThich.setChecked(true);
 
         if(nhaHang.getHinhAnh().isEmpty()){
-            holder.imvHinh.setImageResource(R.drawable.im_food);
+            holder.imvHinh.setImageResource(R.drawable.ic_addimage);
         }else{
             Picasso.with(context).load(nhaHang.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvHinh);
         }

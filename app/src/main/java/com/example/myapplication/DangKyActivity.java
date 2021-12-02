@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class DangKyActivity extends AppCompatActivity {
@@ -151,9 +152,12 @@ public class DangKyActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Chưa được thêm hình ảnh", Toast.LENGTH_SHORT).show();
                         }else {
                             //Thêm tài khoản vào database
-                            Random random = new Random();
-                            int x = random.nextInt((1000-1+1)+1);
-                            String maTK = "TK" + x;
+//                            Random random = new Random();
+//                            int x = random.nextInt((1000-1+1)+1);
+//                            String maTK = "TK" + x;
+                            UUID uuid = UUID.randomUUID();
+                            String maTK = String.valueOf(uuid);
+
                             taiKhoan = new TaiKhoan(maTK, hoTen, soDT, soDT, diaChi, 2, imageFileName,1000000);
 
                             db = FirebaseFirestore.getInstance();
