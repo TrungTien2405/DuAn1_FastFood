@@ -51,7 +51,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         holder.tv_tenMon.setText(gioHangCT.getTenMA());
 
         if(gioHangCT.getHinhAnh().isEmpty()){
-            holder.imv_hinh.setImageResource(R.drawable.im_food);
+            holder.imv_hinh.setImageResource(R.drawable.ic_addimage);
         }else Picasso.with(context).load(gioHangCT.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imv_hinh);
 
 

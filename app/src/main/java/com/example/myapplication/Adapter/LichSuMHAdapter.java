@@ -60,7 +60,7 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
             holder.tvGia.setText(formatNumber(gioHangCT.getGiaMA() * gioHangCT.getSoLuong()) + " VND");
 
             if (gioHangCT.getHinhAnh().isEmpty()) {
-                holder.imvHinhMA.setImageResource(R.drawable.im_food);
+                holder.imvHinhMA.setImageResource(R.drawable.ic_addimage);
             } else Picasso.with(context).load(gioHangCT.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvHinhMA);
 
             holder.chkChon.setVisibility(View.INVISIBLE);
