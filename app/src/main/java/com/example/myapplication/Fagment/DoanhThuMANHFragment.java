@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class DoanhThuMANHFragment extends Fragment {
@@ -193,7 +194,8 @@ public class DoanhThuMANHFragment extends Fragment {
         Collections.sort(listDoanhThu, new Comparator<DoanhThuMA>() {
             @Override
             public int compare(DoanhThuMA o1, DoanhThuMA o2) {
-                return String.valueOf(o1.getTongDT()).compareTo(String.valueOf(o2.getTongDT()));
+                return String.valueOf(o2.getTongDT()).compareTo(String.valueOf(o1.getTongDT()));
+
             }
         });
 
@@ -261,9 +263,13 @@ public class DoanhThuMANHFragment extends Fragment {
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
 
                             DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                            Date dateNow = format.parse(format.format(thoiGian.toDate()));
+                            Date date1 = format.parse(ngayDau);
+                            Date date2 = format.parse(ngayCuoi);
+
                             String ngayMua = format.format(thoiGian.toDate());
 
-                            if(trangThai==1 && ngayMua.compareTo(ngayCuoi) < 0 && ngayMua.compareTo(ngayDau) > 0) {
+                            if(trangThai==1 && dateNow.getTime() >= date1.getTime() &&  dateNow.getTime() <= date2.getTime()) {
                                 gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false);
                                 listGioHangCT.add(gioHangCT);
                             }

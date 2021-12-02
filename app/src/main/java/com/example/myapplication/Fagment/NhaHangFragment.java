@@ -35,7 +35,9 @@ import android.widget.Toast;
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.NhaHangAdapter;
 import com.example.myapplication.Model.DanhGiaNH;
+import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.LoaiNhaHang;
+import com.example.myapplication.Model.MonAnNH;
 import com.example.myapplication.Model.NhaHang;
 import com.example.myapplication.Model.YeuThich;
 import com.example.myapplication.R;
@@ -77,6 +79,8 @@ public class    NhaHangFragment extends Fragment {
     private List<LoaiNhaHang> listLoaiNhaHang;
     private List<NhaHang> listNHSearch;
     private List<YeuThich> listYeuThich;
+    private List<MonAnNH> listMonAn;
+    private List<GioHangCT> listGioHangCT;
 
     //List cho spinner
     private List<String> listMaLoaiNH;
@@ -163,6 +167,12 @@ public class    NhaHangFragment extends Fragment {
 
         // Lấy danh yêu thích
         getAllYeuThich(getContext());
+
+        //Lấy danh sách món ăn
+        getAllMonAn();
+
+        //Lấy danh sách giỏ hàng từ firebase
+        getAllGioHangCT();
 
         //Lấy danh sách đánh giá xuống
         getAllDanhGia(getContext());
@@ -312,14 +322,14 @@ public class    NhaHangFragment extends Fragment {
                     if(task.isSuccessful()){
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot){
-                            String MaNH = doc.get("MaNH").toString();
-                            String MaLoaiNH = doc.get("MaLoaiNH").toString();
-                            String MaTK = doc.get("MaTK").toString();
-                            String TenNH = doc.get("TenNH").toString();
-                            String ThoiGian = doc.get("ThoiGian").toString();
+                            String MaNH = doc.get("MaNH").toString().trim();
+                            String MaLoaiNH = doc.get("MaLoaiNH").toString().trim();
+                            String MaTK = doc.get("MaTK").toString().trim();
+                            String TenNH = doc.get("TenNH").toString().trim();
+                            String ThoiGian = doc.get("ThoiGian").toString().trim();
                             int PhiVanChuyen = Integer.parseInt(doc.get("PhiVanChuyen").toString());
                             String HinhAnh = doc.get("HinhAnh").toString();
-                            String MaDG = doc.get("MaDG").toString();
+                            String MaDG = doc.get("MaDG").toString().trim();
 
                             Double danhGia = tinhDanhGiaTB(MaNH);
                             nhaHang = new NhaHang(MaNH, MaLoaiNH, MaTK, TenNH, ThoiGian, PhiVanChuyen, HinhAnh, danhGia, MaDG, "");
@@ -507,6 +517,84 @@ public class    NhaHangFragment extends Fragment {
 
     }
 
+
+    //
+    public void getAllMonAn(){
+        listMonAn = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("MONANNH");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        MonAnNH monAnNH;
+
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String maMA = doc.get("MaMA").toString();
+                            String maNH = doc.get("MaNH").toString();
+                            String tenMon = doc.get("TenMon").toString();
+                            String maMenuNH = doc.get("MaMenuNH").toString();
+                            String chiTiet = doc.get("ChiTiet").toString();
+                            int gia = Integer.parseInt(doc.get("Gia").toString());
+                            String hinhAnh = doc.get("HinhAnh").toString();
+
+                            monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, gia, hinhAnh);
+                            listMonAn.add(monAnNH);
+
+                        }
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+    // Lấy danh sách giỏ hàng chi tiết từ Firebase xuống
+    public void getAllGioHangCT(){
+        listGioHangCT = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("GIOHANGCT");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        GioHangCT gioHangCT;
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String maMA = doc.get("MaMA").toString();
+                            String maGHCT = doc.get("MaGHCT").toString();
+                            String maGH = doc.get("MaGH").toString();
+                            int soLuong = Integer.parseInt(doc.get("SoLuong").toString());
+                            String tenMonThem = doc.get("TenMonThem").toString();
+                            String thoiGian = doc.get("ThoiGian").toString();
+                            int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+
+                            if(trangThai == 1) {
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
+                                listGioHangCT.add(gioHangCT);
+                            }
+                        }
+
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", e.getMessage());
+                }
+            }
+        });
+    }
+
     //Dialog thêm loại nhà hàng
     private void dialog_themLoaiNH(int positon){
         dialogThemLoaiNH =  new Dialog(getContext());
@@ -625,9 +713,8 @@ public class    NhaHangFragment extends Fragment {
                 if(!kiemLoiONhap(tenNH, thoiGian, phiVanChuyen).isEmpty()){
                     Toast.makeText(getContext(), kiemLoiONhap(tenNH, thoiGian, phiVanChuyen), Toast.LENGTH_SHORT).show();
                 }else{
-                    Random random =  new Random();
-                    int x = random.nextInt((10000-1+1)+1);
-                    String maNH = "NH" + x;
+                    UUID uuid = UUID.randomUUID();
+                    String maNH = String.valueOf(uuid);
 
                     int ship = Integer.parseInt(phiVanChuyen);
                     //Thêm đánh giá và thêm nhà hàng lên Firebase
@@ -871,30 +958,47 @@ public class    NhaHangFragment extends Fragment {
     //Tìm kiếm nhà hàng
 
     private void search(){
-        svNhaHang.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                String text_search = svNhaHang.getQuery()+"";
-                listNHSearch = new ArrayList<>();
+        try {
+            svNhaHang.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    try {
+                        listNHSearch = new ArrayList<>();
 
-                for(NhaHang nh: listNhaHangTheoLoai){
-                    String tenNh =String.valueOf(nh.getTenNH());
+                        for (NhaHang nh : listNhaHangTheoLoai) {
+                            String tenNh = nh.getTenNH();
 
-                    if(text_search.contains(tenNh)){
-                        listNHSearch.add(nh);
-                    }
+                            if (tenNh.contains(query)) {
+                                listNHSearch.add(nh);
+                            }
+                        }
+
+                        getNhaHangSearch(listNHSearch);
+                    }catch (Exception e){ Toast.makeText(getContext(), "Lỗi: chưa có dữ liệu", Toast.LENGTH_SHORT).show();}
+                    return false;
                 }
 
-                getNhaHangSearch(listNHSearch);
-                return false;
-            }
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    try {
+                        listNHSearch = new ArrayList<>();
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                getNhaHangSearch(listNhaHangTheoLoai);
-                return false;
-            }
-        });
+                        for (NhaHang nh : listNhaHangTheoLoai) {
+                            String tenNh = nh.getTenNH();
+
+                            if (tenNh.contains(newText)) {
+                                listNHSearch.add(nh);
+                            }
+                        }
+
+                        getNhaHangSearch(listNHSearch);
+                    }catch (Exception e){ Toast.makeText(getContext(), "Lỗi: chưa có dữ liệu", Toast.LENGTH_SHORT).show();}
+                    return false;
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getNhaHangSearch(List<NhaHang> list){
@@ -1082,7 +1186,18 @@ public class    NhaHangFragment extends Fragment {
             collectionReference.document(loaiNhaHang.getMaLoaiNH() + "").set(data);
             dialogThemLoaiNH.dismiss();
             Toast.makeText(getContext(), "Thêm loại nhà hàng thành công", Toast.LENGTH_SHORT).show();
-            getAllLoaiNhaHang(getContext());
+
+            // Lấy danh yêu thích
+            getAllYeuThich(getContext());
+
+            //Lấy danh sách món ăn
+            getAllMonAn();
+
+            //Lấy danh sách giỏ hàng từ firebase
+            getAllGioHangCT();
+
+            //Lấy danh sách đánh giá xuống
+            getAllDanhGia(getContext());
         }catch (Exception e){
             Log.d("Error_addTKFirebase", e.getMessage());
         }
@@ -1092,9 +1207,8 @@ public class    NhaHangFragment extends Fragment {
     private void themDanhGiaNHToFireStore(String maNH, String tenNH, String thoiGian, int phiVanChuyen){
         final CollectionReference collectionReference = db.collection("DANHGIANH");
 
-        Random random =  new Random();
-        int x = random.nextInt((10000-1+1)+1);
-        String MaDG = "DG" + x;
+        UUID uuid = UUID.randomUUID();
+        String MaDG = String.valueOf(uuid);
 
         Map<String, Object> data = new HashMap<>();
         data.put("MaDanhGia", MaDG);
@@ -1115,7 +1229,6 @@ public class    NhaHangFragment extends Fragment {
 
     // Thêm object nhà hàng lên Firebase
     private void themNHToFireStore(){
-        UUID uuid = UUID.randomUUID();
 
         final CollectionReference collectionReference = db.collection("NHAHANG");
 
@@ -1123,7 +1236,7 @@ public class    NhaHangFragment extends Fragment {
         data.put("MaLoaiNH", nhaHang.getMaLoaiNH());
         data.put("MaTK", nhaHang.getMaTK());
         data.put("HinhAnh", nhaHang.getHinhAnh());
-        data.put("MaNH", String.valueOf(uuid));
+        data.put("MaNH", nhaHang.getMaNH());
         data.put("PhiVanChuyen", nhaHang.getPhiVanChuyen());
         data.put("ThoiGian", nhaHang.getThoiGian());
         data.put("TenNH", nhaHang.getTenNH());
@@ -1137,7 +1250,7 @@ public class    NhaHangFragment extends Fragment {
                             "Quyen", 1
                     );
 
-            collectionReference.document(String.valueOf(uuid)).set(data);
+            collectionReference.document(nhaHang.getMaNH()).set(data);
             dialogThemNH.dismiss();
             Toast.makeText(getContext(), "Thêm mã nhà hàng thành công", Toast.LENGTH_SHORT).show();
             getAllNhaHang(getContext());
@@ -1169,6 +1282,19 @@ public class    NhaHangFragment extends Fragment {
         }
     }
 
+    //Kiểm tra món ăn đã được mua chưa, nếu chua thì
+    private Boolean KiemTraMonAnTrongGioHang(String _maNH){
+        for(MonAnNH ma: listMonAn){
+            if(ma.getMaNH().equals(_maNH)){
+                for(GioHangCT gh: listGioHangCT){
+                    if(ma.getMaMA().equals(gh.getMaMA())){
+                        return true; // có món ăn trong giỏ hàng, không đc xóa
+                    }
+                }
+            }
+        }
+        return false;// Được xóa
+    }
 
     // Delete nhà hàng
     private void deleteNhaHangFireBase(int positon){
@@ -1180,31 +1306,40 @@ public class    NhaHangFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         try {
-                            // Delete bảng nhà hàng
-                            db.collection("NHAHANG").document(listNhaHangTheoLoai.get(positon).getMaNH() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    getAllNhaHangTheoLoai(viTriLoaiNH);
-                                    Toast.makeText(getContext(), "Xóa nhà hàng thành công", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            if(!KiemTraMonAnTrongGioHang(listNhaHangTheoLoai.get(positon).getMaNH())) {
+                                try {
+                                    // Delete bảng nhà hàng
+                                    db.collection("NHAHANG").document(listNhaHangTheoLoai.get(positon).getMaNH() + "")
+                                            .delete();
 
-                            //Delete bảng dánh giá nhà hàng có mã nhà hàng vừa xóa
-                            db.collection("DANHGIANH").document(listNhaHangTheoLoai.get(positon).getMaDG() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                }
-                            });
+                                    //Delete bảng dánh giá nhà hàng có mã nhà hàng vừa xóa
+                                    db.collection("DANHGIANH").document(listNhaHangTheoLoai.get(positon).getMaDG() + "")
+                                            .delete();
 
-                            //Delete bảng YEUTHICH có cùng mã nhà hàng vừa xóa
-                            db.collection("YEUTHICH").document(listNhaHangTheoLoai.get(positon).getMaYT() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                                    //Delete bảng YEUTHICH có cùng mã nhà hàng vừa xóa
+                                    db.collection("YEUTHICH").document(listNhaHangTheoLoai.get(positon).getMaYT() + "")
+                                            .delete();
+                                }catch (Exception e){
+                                    Log.d("===> ", e.getMessage());
                                 }
-                            });
+
+                                //Xóa món ăn của nhà hàng
+                                deleteMonAnNHFireBase(listNhaHangTheoLoai.get(positon).getMaNH());
+
+                                // Lấy danh yêu thích
+                                getAllYeuThich(getContext());
+
+                                //Lấy danh sách món ăn
+                                getAllMonAn();
+
+                                //Lấy danh sách giỏ hàng từ firebase
+                                getAllGioHangCT();
+
+                                //Lấy danh sách đánh giá xuống
+                                getAllDanhGia(getContext());
+                                Toast.makeText(getContext(), "Xóa nhà hàng thành công", Toast.LENGTH_SHORT).show();
+
+                            }else Toast.makeText(getContext(), "Món ăn đang được mua, không được xóa nhà hàng", Toast.LENGTH_SHORT).show();
                         }catch (Exception e){
                             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -1221,54 +1356,80 @@ public class    NhaHangFragment extends Fragment {
     }
 
 
-    // Delete nhà hàng
-    private void deleteGioHangFireBase(int positon){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Thông báo")
-                .setMessage("Bạn chắn chắn muốn xóa nhà hàng không?")
-                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+    // Delete giỏ hàng từ mã món ăn
+    private void deleteGioHangFireBase(String _maMA){
 
-                        try {
-                            // Delete bảng nhà hàng
-                            db.collection("NHAHANG").document(listNhaHangTheoLoai.get(positon).getMaNH() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    getAllNhaHangTheoLoai(viTriLoaiNH);
-                                    Toast.makeText(getContext(), "Xóa nhà hàng thành công", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+        try {
+            final CollectionReference reference = db.collection("GIOHANGCT");
+            reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    try {
+                        if(task.isSuccessful()){
+                            QuerySnapshot snapshot = task.getResult();
+                            for(QueryDocumentSnapshot doc: snapshot){
+                                String maMA = doc.get("MaMA").toString();
+                                String maGHCT = doc.get("MaGHCT").toString();
+                                int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
 
-                            //Delete bảng dánh giá nhà hàng có mã nhà hàng vừa xóa
-                            db.collection("DANHGIANH").document(listNhaHangTheoLoai.get(positon).getMaDG() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                                if (maMA.equals(_maMA) && trangThai == 0) {
+                                    // Delete bảng nhà hàng
+                                    db.collection("GIOHANGCT").document(maGHCT)
+                                            .delete();
                                 }
-                            });
-
-                            //Delete bảng YEUTHICH có cùng mã nhà hàng vừa xóa
-                            db.collection("YEUTHICH").document(listNhaHangTheoLoai.get(positon).getMaYT() + "")
-                                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                }
-                            });
-                        }catch (Exception e){
-                            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                         }
-
+                    }catch (Exception e){
+                        Toast.makeText(getContext(), "Error getAllYeuThich"+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+                }
+            });
 
-            }
-        });
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
-        builder.show();
+    }
+
+
+    // Delete món ăn từ mã nhà hàng
+    private void deleteMonAnNHFireBase(String _maNH){
+
+        try {
+             final CollectionReference reference = db.collection("MONANNH");
+                reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        try {
+                            if (task.isSuccessful()) {
+                                QuerySnapshot snapshot = task.getResult();
+                                for (QueryDocumentSnapshot doc : snapshot) {
+                                    String maMA = doc.get("MaMA").toString();
+                                    String maNH = doc.get("MaNH").toString();
+
+                                    if (maNH.equals(_maNH)) {
+                                        // Delete bảng nhà hàng
+                                        db.collection("MONANNH").document(maMA)
+                                                .delete();
+
+
+                                        deleteGioHangFireBase(maMA);
+                                    }
+                                }
+
+                            } else {
+                                Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi " + task.getException(), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), "Error getAllYeuThich" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 

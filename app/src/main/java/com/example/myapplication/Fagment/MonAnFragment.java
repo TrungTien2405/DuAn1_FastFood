@@ -160,7 +160,7 @@ public class MonAnFragment extends Fragment {
         gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                dialogXoaMonAn(position);
+                //dialogXoaMonAn(position);
                 return false;
             }
         });
@@ -427,30 +427,48 @@ public class MonAnFragment extends Fragment {
 
    // tìm kiếm món ăn
     private void timKiemMA(){
-        svMonAn.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                String tk_monan = svMonAn.getQuery() + "";
-                listMonAnTimKiem = new ArrayList<>();
+        try {
+            svMonAn.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    try {
+                        listMonAnTimKiem = new ArrayList<>();
 
-                for(MonAnNH monAnNH: listMonAn){
-                    String tenMonAn = String.valueOf(monAnNH.getTenMon());
+                        for (MonAnNH monAnNH : listMonAn) {
+                            String tenMonAn = monAnNH.getTenMon().toLowerCase();
 
-                    if(tk_monan.contains(tenMonAn)){
-                        listMonAnTimKiem.add(monAnNH);
-                    }
+                            if (tenMonAn.contains(query.toLowerCase())) {
+                                listMonAnTimKiem.add(monAnNH);
+                            }
+                        }
+
+                        getMonAnTimKiem(listMonAnTimKiem);
+                    }catch (Exception e){ Toast.makeText(getContext(), "Lỗi: chưa có dữ liệu", Toast.LENGTH_SHORT).show();}
+                    return false;
                 }
 
-                getMonAnTimKiem(listMonAnTimKiem);
-                return false;
-            }
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    try {
+                        listMonAnTimKiem = new ArrayList<>();
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                getMonAnTimKiem(listMonAn);
-                return false;
-            }
-        });
+                        for (MonAnNH monAnNH : listMonAn) {
+                            String tenMonAn = monAnNH.getTenMon().toLowerCase();
+
+                            if (tenMonAn.contains(newText.toLowerCase())) {
+                                listMonAnTimKiem.add(monAnNH);
+                            }
+                        }
+
+                        getMonAnTimKiem(listMonAnTimKiem);
+                    }catch (Exception e){ Toast.makeText(getContext(), "Lỗi: chưa có dữ liệu", Toast.LENGTH_SHORT).show();}
+                    return false;
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     //xuất món ăn tìm kiếm ra danh sách
@@ -849,7 +867,9 @@ public class MonAnFragment extends Fragment {
             dialogThemMonAn.dismiss();
 
             Toast.makeText(getContext(), "Thêm món ăn thành công", Toast.LENGTH_SHORT).show();
-            getAllMonAn(getContext());
+            getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firestore xuống
+            getAllMaNH(getContext());
+            getAllMaMenuNH(getContext());
         }catch (Exception e){
             Log.d("Error add Firebase:", e.getMessage());
         }
