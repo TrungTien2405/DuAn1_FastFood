@@ -76,8 +76,8 @@ public class MonAnFragment extends Fragment {
     private ImageView imv_HinhNenMA, imv_TroVe, imv_danhGiaNH;
 
     private ImageView imv_ThemHinhMA, imv_SuaHinhMA;
-    private TextView tv_dialogSuaMaNH;
-    private Spinner sp_ThemMaNH, sp_ThemMaMenuNH, sp_dialogSuaMaMenuNH;
+    private TextView tv_dialogSuaMaNH, tv_dialogThemMaNH;
+    private Spinner sp_ThemMaMenuNH, sp_dialogSuaMaMenuNH;
     private Dialog dialogThemMonAn, dialogSuaMonAn;
 
     private List<MonAnNH> listMonAn;
@@ -150,6 +150,7 @@ public class MonAnFragment extends Fragment {
                         .commit();
             }
         });
+        
 //        gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -158,6 +159,7 @@ public class MonAnFragment extends Fragment {
 //                return false;
 //            }
 //        });
+
 
         return view;
     }
@@ -530,7 +532,7 @@ public class MonAnFragment extends Fragment {
         EditText ed_ChiTiet = dialogThemMonAn.findViewById(R.id.ed_dialogThemChiTietMA);
         EditText ed_Gia = dialogThemMonAn.findViewById(R.id.ed_dialogThemGiaMA);
         imv_ThemHinhMA = dialogThemMonAn.findViewById(R.id.imv_dialogThemHinhMA);
-        sp_ThemMaNH = dialogThemMonAn.findViewById(R.id.sp_dialogThemMaNH);
+        tv_dialogThemMaNH = dialogThemMonAn.findViewById(R.id.tv_dialogThemMaNH);
         sp_ThemMaMenuNH = dialogThemMonAn.findViewById(R.id.sp_dialogThemMaMenuNH);
         TextView tv_HuyThem = dialogThemMonAn.findViewById(R.id.tv_dialogHuyThemMA);
         TextView tv_XacNhanThem = dialogThemMonAn.findViewById(R.id.tv_dialogXacNhanThemMA);
@@ -567,10 +569,9 @@ public class MonAnFragment extends Fragment {
                     Random random =  new Random();
                     int x = random.nextInt((10000-1+1)+1);
                     String maMA = "MA" + x;
-                    String maNH = sp_ThemMaNH.getSelectedItem().toString();
                     String maMenuNH = sp_ThemMaMenuNH.getSelectedItem().toString();
 
-                    monAnNH = new MonAnNH(maMA, maNH, maMenuNH, tenMon, chiTiet, Integer.parseInt(gia), "");
+                    monAnNH = new MonAnNH(maMA, _maNH, maMenuNH, tenMon, chiTiet, Integer.parseInt(gia), "");
 
                     uploadImageMonAnToFirebase(imageFileName, contenUri, 0);
                 }
@@ -756,7 +757,7 @@ public class MonAnFragment extends Fragment {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             if(chucNang == 0){
-                sp_ThemMaNH.setAdapter(adapter);
+                tv_dialogThemMaNH.setText(_maNH);
             }else{
                 tv_dialogSuaMaNH.setText(_maNH);
             }

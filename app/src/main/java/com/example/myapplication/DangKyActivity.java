@@ -493,6 +493,7 @@ public class DangKyActivity extends AppCompatActivity {
         public void onVerificationFailed(FirebaseException e) {
             Toast.makeText(DangKyActivity.this, "PhoneAuthProvider "+e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
