@@ -48,7 +48,7 @@ public class ThanhToanAdapter extends RecyclerView.Adapter<ThanhToanAdapter.MyVi
         holder.tvSLTongSoTien.setText("Tổng số tiền(" + tt.getSoLuong() + " sản phẩm):");
 
         if(tt.getHinhAnh().isEmpty()){
-            holder.imvMa.setImageResource(R.drawable.avatar);
+            holder.imvMa.setImageResource(R.drawable.ic_addimage);
         }else Picasso.with(context).load(tt.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvMa);
 
     }

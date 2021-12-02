@@ -77,7 +77,7 @@ public class MonAnAdapter extends BaseAdapter{
         holder.tv_GiaMA.setText(formatNumber(monAnNH.getGia())+" VND");
 
         if(monAnNH.getHinhAnh().isEmpty()){
-            holder.imv_hinhMonAn.setImageResource(R.drawable.im_food);
+            holder.imv_hinhMonAn.setImageResource(R.drawable.ic_addimage);
         }else{
             Picasso.with(context).load(monAnNH.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imv_hinhMonAn);
         }
@@ -96,6 +96,13 @@ public class MonAnAdapter extends BaseAdapter{
             }
         });
 
+        holder.imv_hinhMonAn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                fragment.dialogXoaMonAn(position);
+                return false;
+            }
+        });
         return convertView;
     }
 

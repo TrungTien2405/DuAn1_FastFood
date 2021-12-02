@@ -637,6 +637,8 @@ public class     NhaHangFragment extends Fragment {
                     Toast.makeText(getContext(), "Vui lòng nhập tên loại nhà hàng", Toast.LENGTH_SHORT).show();
                 }else if(!kiemKhoangTrang(tenLoai)){
                     Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
+                }else if(kiemTraTrungTenLoaiNH(tenLoai)){
+                    Toast.makeText(getContext(), "Đã tên loại nhà hàng, vui lòng nhập tên khác", Toast.LENGTH_SHORT).show();
                 }else{
 
                     UUID uuid = UUID.randomUUID();
@@ -659,6 +661,14 @@ public class     NhaHangFragment extends Fragment {
         });
 
         dialogThemLoaiNH.show();
+    }
+
+    //Kiểm tra tên loại nhà hàng đã thêm chưa, nếu đã có trả về true
+    private Boolean kiemTraTrungTenLoaiNH(String _tenLoaiNH){
+        for(LoaiNhaHang lnh: listLoaiNhaHang){
+            if(lnh.getTenLoaiNH().equals(_tenLoaiNH)) return true;
+        }
+        return false;
     }
 
 
@@ -1431,6 +1441,5 @@ public class     NhaHangFragment extends Fragment {
             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }
