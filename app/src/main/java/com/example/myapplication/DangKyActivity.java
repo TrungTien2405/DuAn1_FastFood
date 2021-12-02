@@ -80,6 +80,7 @@ public class DangKyActivity extends AppCompatActivity {
     int GALEERY_REQUEST_CODE = 105;
     Uri contenUri;
     String imageFileName = "";
+    private String imageHinhLuu = "";
 
     private List<String> listSoDTKhachHang;
     private List<TaiKhoan> listTaiKhoan;
@@ -377,8 +378,12 @@ public class DangKyActivity extends AppCompatActivity {
 //                            Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
                             // Thêm tài khoản lên firebase
                             taiKhoan.setHinhAnh(uri.toString());
+                            imageHinhLuu = uri.toString();
                             Log.d("=====>", "Lỗi uri: " + uri.toString());
                             themTaiKhoanToFireStore(taiKhoan);
+
+                            //hiển thị dialog thông tin tài khoản
+                            diaLogThongBaoThongTinTK();
                         }
                     });
                 }
@@ -442,11 +447,12 @@ public class DangKyActivity extends AppCompatActivity {
         tv_MatKhauTTDK.setText(soDT);
         tv_DiaChiTTDK.setText(diaChi);
 
-        if(taiKhoan.getHinhAnh().isEmpty()){
-            Log.d("======>", "Hinh ảnh"+taiKhoan.getHinhAnh());
+        Log.d("======>", "Hinh ảnh"+ imageHinhLuu);
+        if(imageHinhLuu.isEmpty()){
+
             imv_HinhTTDK.setImageResource(R.drawable.im_food);
         }else{
-            Picasso.with(getApplication()).load(taiKhoan.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(imv_HinhTTDK);
+            Picasso.with(getApplication()).load(imageHinhLuu).resize(2048, 1600).centerCrop().onlyScaleDown().into(imv_HinhTTDK);
         }
 
         tv_XacNhanTTDK.setOnClickListener(new View.OnClickListener() {
@@ -523,8 +529,6 @@ public class DangKyActivity extends AppCompatActivity {
                             uploadImageToFirebase(imageFileName, contenUri);
                             dialogOTP.dismiss();
 
-                            //hiển thị dialog thông tin tài khoản
-                            diaLogThongBaoThongTinTK();
 
                         } else {
                             //verification unsuccessful.. display an error message
