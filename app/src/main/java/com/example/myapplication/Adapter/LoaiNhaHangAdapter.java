@@ -47,7 +47,6 @@ public class LoaiNhaHangAdapter extends RecyclerView.Adapter<LoaiNhaHangAdapter.
         }else Picasso.with(context).load(loaiNhaHang.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imv_hinh);
 
 
-
         holder.constrain.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

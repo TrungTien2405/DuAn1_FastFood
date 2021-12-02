@@ -44,6 +44,7 @@ public class ChuNhaHangAdapter extends RecyclerView.Adapter<ChuNhaHangAdapter.My
         holder.tvItemSoDTTK.setText((taiKhoan.getSDT()+""));
         holder.tvItemDiaChiTK.setText(taiKhoan.getDiaChi());
 
+        holder.tvXoaItemTK.setVisibility(View.INVISIBLE);
         try {
             if (taiKhoan.getHinhAnh().isEmpty()) {
                 holder.imgv_ItemHinhTK.setImageResource(R.drawable.avatar);
