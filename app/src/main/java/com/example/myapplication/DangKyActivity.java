@@ -87,7 +87,7 @@ public class DangKyActivity extends AppCompatActivity {
     private TaiKhoan taiKhoan;
     private int Quyen = 2;
     private String soDTTT;
-    private String _hinhAnh;
+    private String diaChi, hoTen, soDT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +106,7 @@ public class DangKyActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         getSoDT();
-        getAllTaiKhoan(getApplicationContext());
+        getAllTaiKhoan(getApplication());
 
         imgTrove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,10 +137,10 @@ public class DangKyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    String hoTen = edHoTen.getText().toString();
-                    String soDT = edSoDT.getText().toString().trim();
+                     hoTen = edHoTen.getText().toString();
+                     soDT = edSoDT.getText().toString().trim();
                     //trim() xóa kí tự trắng ở đầu và cuối của số điện thoại
-                    String diaChi = edDiaChi.getText().toString();
+                    diaChi = edDiaChi.getText().toString();
 
                     if(!kiemLoiNhap(hoTen, soDT, diaChi).isEmpty()) {
                         Toast.makeText(getApplicationContext(), kiemLoiNhap(hoTen, soDT, diaChi), Toast.LENGTH_SHORT).show();
@@ -189,6 +189,41 @@ public class DangKyActivity extends AppCompatActivity {
         });
     }
 
+
+    //
+    public void getAllTaiKhoan(Context context){
+        listTaiKhoan = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("TAIKHOAN");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot){
+                            String maTK = doc.get("MaTK").toString();
+                            String hoTen = doc.get("HoTen").toString();
+                            String matKhau = doc.get("MatKhau").toString();
+                            String soDT = doc.get("SDT").toString();
+                            String diaChi = doc.get("DiaChi").toString();
+                            int quyen = Integer.parseInt(doc.get("Quyen").toString());
+                            String hinhAnh = doc.get("HinhAnh").toString();
+                            int soDu = Integer.parseInt(doc.get("SoDu").toString());
+
+                            taiKhoan = new TaiKhoan(maTK, hoTen, matKhau, soDT, diaChi, quyen, hinhAnh, soDu);
+                            listTaiKhoan.add(taiKhoan);
+                        }
+                    }else{
+                        Toast.makeText(DangKyActivity.this, "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Log.d("=====> ", "Lỗi get tài khoản: " + e.getMessage());
+                }
+            }
+        });
+    }
 
     //lấy số điện thoại trong danh sách tài khoản của firestore xuống, lưu vào listSoDTKhachHang
     public void getSoDT(){
@@ -339,9 +374,10 @@ public class DangKyActivity extends AppCompatActivity {
                     image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
+//                            Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
                             // Thêm tài khoản lên firebase
                             taiKhoan.setHinhAnh(uri.toString());
+                            Log.d("=====>", "Lỗi uri: " + uri.toString());
                             themTaiKhoanToFireStore(taiKhoan);
                         }
                     });
@@ -378,57 +414,20 @@ public class DangKyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 verifyCode(edMaOTP.getText().toString());
-
-                diaLogThongBaoThongTinTK.show();
             }
         });
 
         dialogOTP.show();
     }
 
-        public void getAllTaiKhoan(Context context){
-            listTaiKhoan = new ArrayList<>();
 
-            final CollectionReference reference = db.collection("TAIKHOAN");
-
-            reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    try {
-                        if(task.isSuccessful()){
-                            QuerySnapshot snapshot = task.getResult();
-                            for(QueryDocumentSnapshot doc: snapshot){
-                                String maTK = doc.get("MaTK").toString();
-                                String hoTen = doc.get("HoTen").toString();
-                                String matKhau = doc.get("MatKhau").toString();
-                                String soDT = doc.get("SDT").toString();
-                                String diaChi = doc.get("DiaChi").toString();
-                                int quyen = Integer.parseInt(doc.get("Quyen").toString());
-                                String hinhAnh = doc.get("HinhAnh").toString();
-                                int soDu = Integer.parseInt(doc.get("SoDu").toString());
-
-                                taiKhoan = new TaiKhoan(maTK, hoTen, matKhau, soDT, diaChi, quyen, hinhAnh, soDu);
-                                listTaiKhoan.add(taiKhoan);
-
-                            }
-                        }else{
-                            Toast.makeText(DangKyActivity.this, "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
-                        }
-                    }catch (Exception e){
-//                    Toast.makeText(getContext(), "Lỗi get nhà hàng: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("=====> ", "Lỗi get nhà hàng: " + e.getMessage());
-                    }
-                }
-            });
-        }
-
-    private void diaLogThongBaoThongTinTK(int position){
+    private void diaLogThongBaoThongTinTK(){
         diaLogThongBaoThongTinTK = new Dialog(DangKyActivity.this);
         diaLogThongBaoThongTinTK.setContentView(R.layout.dialog_thongtin_taikhoan);
 
         diaLogThongBaoThongTinTK.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.8);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.6);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.7);
         diaLogThongBaoThongTinTK.getWindow().setLayout(width, height);
 
         TextView tv_HoTenTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.tv_dialogHoTenTTDK);
@@ -438,24 +437,25 @@ public class DangKyActivity extends AppCompatActivity {
         ImageView imv_HinhTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.imv_dialogHinhTTDK);
         TextView tv_XacNhanTTDK = diaLogThongBaoThongTinTK.findViewById(R.id.tv_dialogXacNhanTTDK);
 
-        tv_HoTenTTDK.setText(listTaiKhoan.get(position).getHoTen());
-        tv_SoDTTTDK.setText(listTaiKhoan.get(position).getSDT());
-        tv_MatKhauTTDK.setText(listTaiKhoan.get(position).getMatKhau());
-        tv_DiaChiTTDK.setText(listTaiKhoan.get(position).getDiaChi());
+        tv_HoTenTTDK.setText(hoTen);
+        tv_SoDTTTDK.setText(soDT);
+        tv_MatKhauTTDK.setText(soDT);
+        tv_DiaChiTTDK.setText(diaChi);
 
-        _hinhAnh = listTaiKhoan.get(position).getHinhAnh();
-
-        if(_hinhAnh.isEmpty()){
+        if(taiKhoan.getHinhAnh().isEmpty()){
+            Log.d("======>", "Hinh ảnh"+taiKhoan.getHinhAnh());
             imv_HinhTTDK.setImageResource(R.drawable.im_food);
         }else{
-            Picasso.with(getApplicationContext()).load(listTaiKhoan.get(position).getHinhAnh()).into(imv_HinhTTDK);
+            Picasso.with(getApplication()).load(taiKhoan.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(imv_HinhTTDK);
         }
-
 
         tv_XacNhanTTDK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+               diaLogThongBaoThongTinTK.dismiss();
+
+                Intent intent = new Intent(DangKyActivity.this, DangNhapActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -521,11 +521,11 @@ public class DangKyActivity extends AppCompatActivity {
                             Toast.makeText(DangKyActivity.this, "Xác thực thành công", Toast.LENGTH_SHORT).show();
                             // Load avatar lên firebase
                             uploadImageToFirebase(imageFileName, contenUri);
-
-                            Intent intent = new Intent(DangKyActivity.this, DangNhapActivity.class);
-                            startActivity(intent);
-
                             dialogOTP.dismiss();
+
+                            //hiển thị dialog thông tin tài khoản
+                            diaLogThongBaoThongTinTK();
+
                         } else {
                             //verification unsuccessful.. display an error message
                             String message = "Somthing is wrong, we will fix it soon...";
