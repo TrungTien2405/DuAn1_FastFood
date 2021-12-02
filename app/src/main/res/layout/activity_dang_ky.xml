@@ -76,14 +76,16 @@
                 android:id="@+id/ed_HoTen"
                 android:padding="10dp"
                 android:hint="Nhập họ tên"/>
+
             <EditText
+                android:id="@+id/ed_SDT"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/custom_edt"
                 android:layout_margin="10dp"
-                android:id="@+id/ed_SDT"
-                android:padding="10dp"
-                android:hint="Nhập số điện thoại"/>
+                android:background="@drawable/custom_edt"
+                android:hint="Nhập số điện thoại"
+                android:inputType="number"
+                android:padding="10dp" />
         </LinearLayout>
     </LinearLayout>
     <EditText
