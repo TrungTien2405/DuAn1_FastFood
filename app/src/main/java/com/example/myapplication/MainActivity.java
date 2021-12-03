@@ -8,8 +8,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity{
 
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        hideNavigation();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -111,6 +114,16 @@ public class MainActivity extends AppCompatActivity{
                     .replace(R.id.nav_FrameFragment, fragment)
                     .addToBackStack(null)
                     .commit();
+        }
+    }
+
+    // Ẩn các tác vụ khách hàng và chủ nhà hàng không có quyền
+    private void hideNavigation(){
+        Intent intent = getIntent();
+        int quyen = intent.getIntExtra("Quyen", 2);
+
+        if(quyen==1 || quyen == 2) {
+            bottomNavigation.getMenu().removeItem(R.id.mn_users);
         }
     }
 

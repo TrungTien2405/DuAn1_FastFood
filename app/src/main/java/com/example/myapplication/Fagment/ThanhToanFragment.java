@@ -14,10 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.Adapter.ThanhToanAdapter;
+import com.example.myapplication.Model.GioHang;
 import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.R;
@@ -45,6 +47,7 @@ public class ThanhToanFragment extends Fragment {
 
     private TextView tvDiaChi, tvHoTenSDT, tvTongTienHang, tvTongPhiVC, tvTongThanhToan1, tvTongThanhToan2;
     private Button btnDatHang;
+    private ImageView btnTroVe;
 
     private FirebaseFirestore db;
 
@@ -74,6 +77,17 @@ public class ThanhToanFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 clickDatHang();
+            }
+        });
+
+        btnTroVe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_out, R.anim.fade_out, R.anim.fade_in, R.anim.slide_in)
+                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -164,6 +178,7 @@ public class ThanhToanFragment extends Fragment {
         tvTongThanhToan1 = view.findViewById(R.id.tv_tongThanhToanTT1);
         tvTongThanhToan2 = view.findViewById(R.id.tv_tongThanhToanTT2);
         btnDatHang = view.findViewById(R.id.btn_datHangTT);
+        btnTroVe = view.findViewById(R.id.imv_TroveTrongDTNH);
     }
 
     private void tinhTong(){
@@ -192,4 +207,6 @@ public class ThanhToanFragment extends Fragment {
 
         return en.format(number);
     }
+
+
 }
