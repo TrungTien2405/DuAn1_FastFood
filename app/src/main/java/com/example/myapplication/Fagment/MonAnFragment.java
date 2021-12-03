@@ -156,7 +156,7 @@ public class MonAnFragment extends Fragment {
 //        gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                //dialogXoaMonAn(position);
+//                //  (position);
 //                Toast.makeText(getContext(), "Hihi", Toast.LENGTH_SHORT).show();
 //                return false;
 //            }
