@@ -98,6 +98,8 @@ public class MonAnFragment extends Fragment {
     private String MaDanhGia = "";
 
     private String _maNH, _tenNH;
+    public String maTKDangNhap, maTKChuNH;
+    public int quyenTKDN;
 
     //Firestore
     private FirebaseFirestore db;
@@ -144,13 +146,13 @@ public class MonAnFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .setCustomAnimations(R.anim.slide_out, R.anim.fade_out, R.anim.fade_in, R.anim.slide_in)
                         .replace(R.id.nav_FrameFragment, new NhaHangFragment())
                         .addToBackStack(null)
                         .commit();
             }
         });
-        
+
 //        gv_MonAn.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -184,6 +186,17 @@ public class MonAnFragment extends Fragment {
         danhGia = bundle.getDouble("DanhGia");
         phiVanChuyen = bundle.getInt("PhiVanChuyen");
         MaDanhGia = bundle.getString("MaDanhGia");
+        maTKChuNH = bundle.getString("MaTK");
+
+        Intent intent = getActivity().getIntent();
+        maTKDangNhap = intent.getStringExtra("MaTK");
+        quyenTKDN = intent.getIntExtra("Quyen", 2);
+
+        if(quyenTKDN == 2){
+            flBtnThemMA.setVisibility(View.INVISIBLE);
+        }else if(!maTKDangNhap.equals(maTKChuNH) && quyenTKDN != 0){
+            flBtnThemMA.setVisibility(View.INVISIBLE);
+        }
 
         tv_TenNhaHangMA.setText(tenNhaHang);
         tv_PhiVanChuyenMA.setText(formatNumber(phiVanChuyen) + " VND");

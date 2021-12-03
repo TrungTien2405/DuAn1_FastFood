@@ -42,7 +42,7 @@
             android:layout_marginTop="37dp"
             android:layout_marginEnd="104dp"
             android:fontFamily="@font/asap_medium"
-            android:text="Mã loại nhà hàng"
+            android:text="Tên loại nhà hàng"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,9 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="129dp"
+            android:layout_marginEnd="132dp"
             android:fontFamily="@font/asap_medium"
-            android:text="Mã tài khoản"
+            android:text="Số điện thoại"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sp_dialogMaLoaiNHSuaNH" />
 
