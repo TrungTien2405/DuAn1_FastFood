@@ -58,6 +58,7 @@ public class GioHangFragment extends Fragment {
     public TextView tvTongTienGH; // Hiện thông tin tổng tiền từ các món khách hàng đã chọn
     private TextView tvXoaGH; // Hiện thông tin tổng tiền từ các món khách hàng đã chọn
     private Button btnThanhToanGH; // Nhấn thanh toán giỏ hàng
+    private ImageView btnTroVe; // Nhấn thanh toán giỏ hàng
 
     //List chứa danh sách
     private List<MonAnNH> listMonAn;
@@ -115,6 +116,17 @@ public class GioHangFragment extends Fragment {
             }
         });
 
+        //Trở về màn hình
+        btnTroVe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_out, R.anim.fade_out, R.anim.fade_in, R.anim.slide_in)
+                        .replace(R.id.nav_FrameFragment, new NhaHangFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         return view;
     }
 
@@ -122,6 +134,7 @@ public class GioHangFragment extends Fragment {
         tvTongTienGH = v.findViewById(R.id.tv_tongTienGH);
         tvXoaGH = v.findViewById(R.id.tv_xoaGioHang);
         btnThanhToanGH = v.findViewById(R.id.btn_thanhToanGH);
+        btnTroVe = v.findViewById(R.id.imv_TroveTrongGH);
         rcv_GioHang = v.findViewById(R.id.rcv_GioHang);
     }
 
@@ -185,7 +198,6 @@ public class GioHangFragment extends Fragment {
             }
 
         }
-
 
         if(duyet == 0){
             Toast.makeText(getContext(), "Bạn chưa chọn món ăn nào!!", Toast.LENGTH_SHORT).show();
@@ -409,6 +421,12 @@ public class GioHangFragment extends Fragment {
                             }
 
                             if(ktCheck == 0) Toast.makeText(getContext(), "Bạn chưa chọn món ăn nào!!", Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast.makeText(getContext(), "Bạn đã xóa thành công", Toast.LENGTH_SHORT).show();
+
+                                getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống, sau đó đưa danh sách giỏ hàng lên rcv
+                                getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firebase xuống
+                            }
                         }catch (Exception e){
                             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -426,18 +444,10 @@ public class GioHangFragment extends Fragment {
 
     // Xóa món ăn trong giỏ hàng
     public void deleteGioHangGioHangCTFirestore(String _maGH, String _maGHCT){
-//        db.collection("GIOHANG").document(_maGH)
-//                .delete();
-
         try {
-
             db.collection("GIOHANGCT").document(_maGHCT)
                     .delete();
 
-            Toast.makeText(getContext(), "Bạn đã xóa thành công", Toast.LENGTH_SHORT).show();
-
-            getAllGioHang(getContext()); //Lấy danh tất cả danh sách giỏ hàng từ Firebase xuống, sau đó đưa danh sách giỏ hàng lên rcv
-            getAllMonAn(getContext()); // Lấy tất cả món ăn từ Firebase xuống
         }catch (Exception e){
             Log.d("===> ", e.getMessage());
         }

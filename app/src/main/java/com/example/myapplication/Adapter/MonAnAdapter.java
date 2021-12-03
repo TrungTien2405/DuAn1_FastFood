@@ -103,6 +103,9 @@ public class MonAnAdapter extends BaseAdapter{
                 return false;
             }
         });
+
+        kiemTraQuyenDangNhap(holder);
+
         return convertView;
     }
 
@@ -117,5 +120,15 @@ public class MonAnAdapter extends BaseAdapter{
         NumberFormat en = NumberFormat.getInstance(localeEN);
 
         return en.format(number);
+    }
+
+    // Ẩn các tác vụ người dùng không được sủ dụng
+    private void kiemTraQuyenDangNhap(MonAnAdapter.ViewHolder holder){
+
+        if(fragment.quyenTKDN == 2){
+            holder.tv_ChinhSuaMA.setVisibility(View.INVISIBLE);
+        }else if(!fragment.maTKDangNhap.equals(fragment.maTKChuNH) && fragment.quyenTKDN == 1){
+            holder.tv_ChinhSuaMA.setVisibility(View.INVISIBLE);
+        }
     }
 }

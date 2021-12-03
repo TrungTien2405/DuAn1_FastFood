@@ -39,6 +39,7 @@ import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.LoaiNhaHang;
 import com.example.myapplication.Model.MonAnNH;
 import com.example.myapplication.Model.NhaHang;
+import com.example.myapplication.Model.TaiKhoan;
 import com.example.myapplication.Model.YeuThich;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -72,7 +73,7 @@ import java.util.UUID;
 import static android.app.Activity.RESULT_OK;
 
 
-public class     NhaHangFragment extends Fragment {
+public class        NhaHangFragment extends Fragment {
     private List<NhaHang> listNhaHang;
     private List<NhaHang> listNhaHangTheoLoai;
     private List<DanhGiaNH> listDanhGia;
@@ -81,6 +82,7 @@ public class     NhaHangFragment extends Fragment {
     private List<YeuThich> listYeuThich;
     private List<MonAnNH> listMonAn;
     private List<GioHangCT> listGioHangCT;
+    private List<TaiKhoan> listTaiKhoan;
 
     //List cho spinner
     private List<String> listMaLoaiNH;
@@ -230,7 +232,7 @@ public class     NhaHangFragment extends Fragment {
         return _maTK;
     }
 
-    public void chuyenDenFragmentMonAN(String _maNH, String _tenNH, String _hinhNH, int _phiVanChuyen, String _thoiGian, Double _danhGia, String _maDG){
+    public void chuyenDenFragmentMonAN(String _maNH, String _tenNH, String _hinhNH, int _phiVanChuyen, String _thoiGian, Double _danhGia, String _maDG, String _maTK){
         Bundle bundle = new Bundle();
         bundle.putString("MaNH", _maNH);
         bundle.putString("TenNH", _tenNH);
@@ -239,6 +241,7 @@ public class     NhaHangFragment extends Fragment {
         bundle.putString("ThoiGian", _thoiGian);
         bundle.putDouble("DanhGia", _danhGia);
         bundle.putString("MaDanhGia", _maDG);
+        bundle.putString("MaTK", _maTK);
         MonAnFragment monAnFragment = new MonAnFragment();
         monAnFragment.setArguments(bundle);
 
@@ -504,7 +507,7 @@ public class     NhaHangFragment extends Fragment {
             // Lấy danh sách mã loại nhà hàng để đẩy lên spinner
             listMaLoaiNH = new ArrayList<>();
             for (LoaiNhaHang lnh : listLoaiNhaHang) {
-                if(!lnh.getMaLoaiNH().equals("LNH01")) listMaLoaiNH.add(lnh.getMaLoaiNH());
+                if(!lnh.getMaLoaiNH().equals("LNH01")) listMaLoaiNH.add(lnh.getTenLoaiNH()  );
             }
 
             NhaHangAdapter adapter = new NhaHangAdapter(listNhaHangTheoLoai, getContext(), this);
@@ -517,6 +520,21 @@ public class     NhaHangFragment extends Fragment {
 
     }
 
+    //Tìm mã từ tên loại nhà hàng đã chọn
+    private String timMaTuTen(String _tenLoaiNH){
+        for(LoaiNhaHang lnh: listLoaiNhaHang){
+            if(lnh.getTenLoaiNH().equalsIgnoreCase(_tenLoaiNH)) return lnh.getMaLoaiNH();
+        }
+        return "";
+    }
+
+    //Tìm mã từ tên loại nhà hàng đã chọn
+    private String timMaTKTuSDT(String _sdt){
+        for(TaiKhoan tk: listTaiKhoan){
+            if(tk.getSDT().equalsIgnoreCase(_sdt)) return tk.getMaTK();
+        }
+        return "";
+    }
 
     //
     public void getAllMonAn(){
@@ -638,7 +656,9 @@ public class     NhaHangFragment extends Fragment {
                 }else if(!kiemKhoangTrang(tenLoai)){
                     Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
                 }else if(kiemTraTrungTenLoaiNH(tenLoai)){
-                    Toast.makeText(getContext(), "Đã tên loại nhà hàng, vui lòng nhập tên khác", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Đã tồn tại tên loại nhà hàng, vui lòng nhập tên khác", Toast.LENGTH_SHORT).show();
+                }else if(tenLoai.length() < 5){
+                    Toast.makeText(getContext(), "Tên loại quá ngắn", Toast.LENGTH_SHORT).show();
                 }else{
 
                     UUID uuid = UUID.randomUUID();
@@ -666,7 +686,7 @@ public class     NhaHangFragment extends Fragment {
     //Kiểm tra tên loại nhà hàng đã thêm chưa, nếu đã có trả về true
     private Boolean kiemTraTrungTenLoaiNH(String _tenLoaiNH){
         for(LoaiNhaHang lnh: listLoaiNhaHang){
-            if(lnh.getTenLoaiNH().equals(_tenLoaiNH)) return true;
+            if(lnh.getTenLoaiNH().equalsIgnoreCase(_tenLoaiNH)) return true;
         }
         return false;
     }
@@ -751,15 +771,20 @@ public class     NhaHangFragment extends Fragment {
             else if (!kiemKhoangTrang(tenNh))
                 loi += "\nTên nhà hàng không được nhập khoảng trằng";
 
+            if(tenNh.length() < 5) loi += "\nTên nhà hàng quá ngắn";
+
             if (thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng";
             else if (!kiemKhoangTrang(thoiGian))
                 loi += "\nThời gian không được nhập khoảng trắng";
 
             int _thoiGian = Integer.parseInt(thoiGian);
             if (_thoiGian <= 1) loi += "\nThời gian giao hàng phải lớn hơn một";
+            else if(_thoiGian > 240) loi += "\n Thời gian giao hàng không được quá 240 phút" ;
 
-
+            int _phiVC = Integer.parseInt(phiVC);
             if (phiVC.isEmpty()) loi += "\nBạn chưa nhập phí vận chuyển";
+            else if(_phiVC > 2000000) loi += "\n Phí vận chuyển không được vượt quá 2,000,000 VND";
+
         }catch (Exception e){
             loi += "\n" + e.getMessage();
         }
@@ -807,6 +832,7 @@ public class     NhaHangFragment extends Fragment {
     private void getMaLoaiTKToSpiner(int chucNang){
 
         listMaTK = new ArrayList<>();
+        listTaiKhoan = new ArrayList<>();
 
         final CollectionReference reference = db.collection("TAIKHOAN");
 
@@ -815,13 +841,23 @@ public class     NhaHangFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 try {
                     if(task.isSuccessful()){
+                        TaiKhoan taiKhoan;
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot){
                             String MaTK = doc.get("MaTK").toString();
                             String _quyen = doc.get("Quyen").toString();
+                            String diaChi = doc.get("DiaChi").toString();
+                            String hinhAnh = doc.get("HinhAnh").toString();
+                            String soDT = doc.get("SDT").toString();
+                            int soDu = Integer.parseInt(doc.get("SoDu").toString());
+                            String matKhau = doc.get("MatKhau").toString();
+                            int quyen = Integer.parseInt(doc.get("Quyen").toString());
+
+                            taiKhoan = new TaiKhoan(MaTK, "", matKhau, soDT, diaChi, quyen, hinhAnh, soDu);
+                            listTaiKhoan.add(taiKhoan);
 
                             //Không cho admin làm chủ hàng hàng
-                            if(!_quyen.equals("0")) listMaTK.add(MaTK);
+                            if(!_quyen.equals("0")) listMaTK.add(soDT);
                         }
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
@@ -924,7 +960,11 @@ public class     NhaHangFragment extends Fragment {
                     String maYT = listNhaHangTheoLoai.get(positon).getMaYT();
                     Double danhGia = listNhaHangTheoLoai.get(positon).getDanhGia();
 
-                    nhaHang  = new NhaHang(maNH, spMaLoaiNHSuaNH.getSelectedItem().toString(), spMaTKSuaNH.getSelectedItem().toString(), tenNH, thoiGian, Integer.parseInt(phiVanChuyen), "", danhGia, maDG, maYT);
+                    String maLNH = timMaTuTen(spMaLoaiNH.getSelectedItem().toString());
+                    String maTK = timMaTKTuSDT(spMaTK.getSelectedItem().toString());
+
+
+                    nhaHang  = new NhaHang(maNH, maLNH, maTK, tenNH, thoiGian, Integer.parseInt(phiVanChuyen), "", danhGia, maDG, maYT);
                     //Đẩy hình ảnh lên firebase sau đó cập nhật tất cả dũ liệu lên Firebase
                     uploadImageNHToFirebase(imageFileName, contenUri, 1); // Số 0 là thêm nhà hàng, số 1 là sửa nhà hàng
                     dialogSuaNH.dismiss();
@@ -1229,7 +1269,10 @@ public class     NhaHangFragment extends Fragment {
         try {
             collectionReference.document(MaDG).set(data);
 
-            nhaHang = new NhaHang(maNH, spMaLoaiNH.getSelectedItem().toString(), spMaTK.getSelectedItem().toString(), tenNH, thoiGian, phiVanChuyen, imageFileName, 0.0, MaDG, "");
+            String maLNH = timMaTuTen(spMaLoaiNH.getSelectedItem().toString());
+            String maTK = timMaTKTuSDT(spMaTK.getSelectedItem().toString());
+
+            nhaHang = new NhaHang(maNH, maLNH, maTK, tenNH, thoiGian, phiVanChuyen, imageFileName, 0.0, MaDG, "");
             uploadImageNHToFirebase(imageFileName, contenUri, 0); // Số 0 là thêm nhà hàng, số 1 là sửa nhà hàng
         }catch (Exception e){
             Log.d("Error_addTKFirebase", e.getMessage());
