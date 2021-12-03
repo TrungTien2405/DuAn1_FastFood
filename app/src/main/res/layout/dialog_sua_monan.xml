@@ -113,13 +113,25 @@
             android:background="@drawable/custom_edt"
             android:ems="10"
             android:fontFamily="@font/asap_medium"
-            android:hint="Nhập tên món ăn"
+            android:hint="..."
+            android:paddingLeft="85dp"
             android:inputType="textPersonName"
-            android:paddingLeft="10dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+        </EditText>
+
+        <TextView
+            android:id="@+id/tv_dialogSuaTenMA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="14dp"
+            android:text="Tên món ăn"
+            android:fontFamily="@font/asap_medium"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogSuaTenMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaTenMA" />
 
         <EditText
             android:id="@+id/ed_dialogSuaChiTietMA"
@@ -130,13 +142,24 @@
             android:background="@drawable/custom_edt"
             android:ems="10"
             android:fontFamily="@font/asap_medium"
-            android:hint="Nhập chi tiết món ăn"
+            android:hint="..."
             android:inputType="textPersonName"
-            android:paddingLeft="10dp"
+            android:paddingLeft="105dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogSuaTenMA" />
+
+        <TextView
+            android:id="@+id/tv_dialogSuaChiTietMA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Chi tiết món ăn"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogSuaChiTietMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaChiTietMA" />
 
         <EditText
             android:id="@+id/ed_dialogSuaGiaMA"
@@ -147,13 +170,24 @@
             android:background="@drawable/custom_edt"
             android:ems="10"
             android:fontFamily="@font/asap_medium"
-            android:hint="Nhập giá món ăn"
+            android:hint="..."
             android:inputType="number"
-            android:paddingLeft="10dp"
+            android:paddingLeft="35dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogSuaChiTietMA" />
+
+        <TextView
+            android:id="@+id/tv_dialogSuaGiaMA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Giá"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogSuaGiaMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaGiaMA" />
 
         <ImageView
             android:id="@+id/imageView15"
