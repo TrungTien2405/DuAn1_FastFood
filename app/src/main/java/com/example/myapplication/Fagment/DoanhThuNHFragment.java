@@ -62,6 +62,7 @@ public class DoanhThuNHFragment extends Fragment {
     private List<NhaHang> listNhaHang;
     private List<DoanhThuNH> listDoanhThu;
     private List<DanhGiaNH> listDanhGia;
+    private List<DoanhThuNH> listDoanhThuTimKiem;
 
     private List<Integer> listDoanhThuThang;
 
@@ -178,11 +179,11 @@ public class DoanhThuNHFragment extends Fragment {
     // tìm kiếm nhà hàng
     private void timKiemNH(){
         try {
-            List<DoanhThuNH> listDoanhThuTimKiem = new ArrayList<>();
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     try {
+                        listDoanhThuTimKiem = new ArrayList<>();
                         for (DoanhThuNH dt : listDoanhThu) {
                             String tenNH = dt.getTenNH().toLowerCase();
 
@@ -200,6 +201,7 @@ public class DoanhThuNHFragment extends Fragment {
                 public boolean onQueryTextChange(String newText) {
 
                     try {
+                        listDoanhThuTimKiem = new ArrayList<>();
                         for (DoanhThuNH dt : listDoanhThu) {
                             String tenNH = dt.getTenNH().toLowerCase();
 

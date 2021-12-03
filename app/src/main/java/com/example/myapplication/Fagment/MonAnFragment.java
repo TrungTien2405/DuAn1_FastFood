@@ -865,7 +865,8 @@ public class MonAnFragment extends Fragment {
             });
         }catch (Exception e){
             if(congViec == 0) {
-                themMonAnToFireStore(monAnNH);
+//                themMonAnToFireStore(monAnNH);
+                Toast.makeText(getContext(), "Bạn chưa chọn hình", Toast.LENGTH_SHORT).show();
             }else{
                 monAnNH.setHinhAnh(_hinhAnh);
                 capnhatMonAnToFireStore(monAnNH);

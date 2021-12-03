@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class DoanhThuMANHFragment extends Fragment {
     private List<NhaHang> listNhaHang;
     private List<DanhGiaNH> listDanhGia;
     private List<DoanhThuMA> listDoanhThu;
+    private List<DoanhThuMA> listDoanhThuTimKiem;
 
     //Model
     private MonAnNH monAnNH;
@@ -59,6 +61,7 @@ public class DoanhThuMANHFragment extends Fragment {
     private RecyclerView rcv_doanhThuMA; // hiện thôn tin các món ăn trong giỏ hàng
     private TextView tvChonNgay1, tvChonNgay2;
     private ImageView imvTroVe;
+    private SearchView svTimKiemMA;
 
     private int lastSelectedYear; // Lưu năm để hiện lên ngày chọn
     private int lastSelectedMonth; // Lưu tháng để hiện lên ngày chọn
@@ -111,6 +114,8 @@ public class DoanhThuMANHFragment extends Fragment {
             }
         });
 
+        timKiemMA();
+
         return v;
     }
 
@@ -119,12 +124,56 @@ public class DoanhThuMANHFragment extends Fragment {
         tvChonNgay1 = v.findViewById(R.id.tv_chonNgay1DTMA);
         tvChonNgay2 = v.findViewById(R.id.tv_chonNgay2DTMA);
         imvTroVe  = v.findViewById(R.id.imv_TroveTrongDTMA);
+        svTimKiemMA  = v.findViewById(R.id.sv_searchDTMA);
 
         //lấy dữ liệu từ fragment nhà hàng
         Bundle bundle = this.getArguments();
         maNHBund = bundle.getString("MaNH");
     }
 
+
+    // tìm kiếm món ăn
+    private void timKiemMA(){
+        try {
+            svTimKiemMA.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    try {
+                        listDoanhThuTimKiem = new ArrayList<>();
+                        for (DoanhThuMA dt : listDoanhThu) {
+                            String tenNH = dt.getTenMA().toLowerCase();
+
+                            if (tenNH.contains(query.toLowerCase())) {
+                                listDoanhThuTimKiem.add(dt);
+                            }
+                        }
+
+                        adapter_gioHang(listDoanhThuTimKiem);
+                    }catch (Exception e){ Toast.makeText(getContext(), "Lỗi: chưa có dữ liệu", Toast.LENGTH_SHORT).show();}
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    try {
+                        listDoanhThuTimKiem = new ArrayList<>();
+                        for (DoanhThuMA dt : listDoanhThu) {
+                            String tenNH = dt.getTenMA().toLowerCase();
+
+                            if (tenNH.contains(newText.toLowerCase())) {
+                                listDoanhThuTimKiem.add(dt);
+                            }
+                        }
+
+                        adapter_gioHang(listDoanhThuTimKiem);
+                    }catch (Exception e){ Toast.makeText(getContext(), "Lỗi: chưa có dữ liệu", Toast.LENGTH_SHORT).show();}
+                    return false;
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
     //Hiện lên DatePickerDialog để chọn ngày
     private void chonNgayDatePicker(int vitri){
@@ -202,7 +251,7 @@ public class DoanhThuMANHFragment extends Fragment {
 
 
         //Đẩy list lên adapter giỏ hàng
-        adapter_gioHang();
+        adapter_gioHang(listDoanhThu);
     }
 
     // Lấy danh sách món ăn từ Firebase xuống
@@ -291,8 +340,8 @@ public class DoanhThuMANHFragment extends Fragment {
 
 
     //Set Adapter giỏ hàng
-    private void adapter_gioHang(){
-        DoanhThuMAAdapter adapter  = new DoanhThuMAAdapter(listDoanhThu, getContext());
+    private void adapter_gioHang(List<DoanhThuMA> list){
+        DoanhThuMAAdapter adapter  = new DoanhThuMAAdapter(list, getContext());
         rcv_doanhThuMA.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv_doanhThuMA.setAdapter(adapter);
     }
