@@ -266,8 +266,8 @@ public class DangKyActivity extends AppCompatActivity {
             loi += "Bạn chưa nhập họ tên";
         else if (!kiemKhoangTrang(_hoTen))
             loi += "Không được nhập khoảng trắng";
-        else if (_hoTen.length()<5)
-            loi += "Họ tên quá ngắn";
+        else if (_hoTen.length()<5 || _hoTen.length()>30)
+            loi += "Họ tên bao gồm 5 đến 30 kí tự";
 
 
         if(_SDT.isEmpty()) {
@@ -282,8 +282,8 @@ public class DangKyActivity extends AppCompatActivity {
             loi += "\nBạn chưa nhập địa chỉ";
         else if (!kiemKhoangTrang(_hoTen))
             loi += "Không được nhập khoảng trắng";
-        else if(_diaChi.length()<5)
-            loi += "\nĐịa chỉ quá ngắn";
+        else if(_diaChi.length()<5 || _diaChi.length()>30)
+            loi += "\nĐịa chỉ bao gồm 5 đến 30 kí tự";
 
         return loi;
     }
