@@ -138,7 +138,8 @@ public class DoanhThuNHFragment extends Fragment {
                         .setCustomAnimations(R.anim.slide_out, R.anim.fade_out, R.anim.fade_in, R.anim.slide_in)
                         .replace(R.id.nav_FrameFragment, new CaiDatFragment())
                         .addToBackStack(null)
-                        .commit();            }
+                        .commit();
+            }
         });
 
         rcv_doanhThuNH.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_doanhThuNH, new RecyclerTouchListener.ClickListener() {
