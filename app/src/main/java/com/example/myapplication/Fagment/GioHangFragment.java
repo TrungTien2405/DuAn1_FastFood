@@ -406,7 +406,7 @@ public class GioHangFragment extends Fragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
-                .setMessage("Bạn chắn chắn muốn xóa nhà hàng không?")
+                .setMessage("Bạn chắn chắn muốn xóa món hàng không?")
                 .setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
