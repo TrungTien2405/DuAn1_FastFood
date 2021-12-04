@@ -9,7 +9,7 @@
     android:orientation="vertical">
     <TextView
         android:layout_width="70dp"
-        android:fontFamily="@font/vollkorn_variablefont_wght"
+        android:fontFamily="@font/asap_medium"
         android:layout_height="wrap_content"
         android:id="@+id/tv_xoaGioHang"
         android:textSize="20dp"

@@ -145,7 +145,7 @@ public class DangKyActivity extends AppCompatActivity {
                     diaChi = edDiaChi.getText().toString();
 
                     if(!kiemLoiNhap(hoTen, soDT, diaChi).isEmpty()) {
-                        Toast.makeText(getApplicationContext(), kiemLoiNhap(hoTen, soDT, diaChi), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplication(), kiemLoiNhap(hoTen, soDT, diaChi), Toast.LENGTH_SHORT).show();
                     }else{
                         //Load hình ảnh lên firebase
                         if(imageFileName.isEmpty()){
@@ -181,14 +181,14 @@ public class DangKyActivity extends AppCompatActivity {
                                             //Mở dialog xác thực OTP
                                             diaLogOpenOTP();
                                         }else
-                                            Toast.makeText(getApplicationContext(), "Mã tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplication(), "Mã tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                         }
                     }
                 }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), "Lỗi " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), "Lỗi " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
