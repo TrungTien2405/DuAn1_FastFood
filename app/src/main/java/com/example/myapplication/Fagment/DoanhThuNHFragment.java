@@ -64,7 +64,7 @@ public class DoanhThuNHFragment extends Fragment {
     private List<DanhGiaNH> listDanhGia;
     private List<DoanhThuNH> listDoanhThuTimKiem;
 
-    private List<Integer> listDoanhThuThang;
+    private List<Long> listDoanhThuThang;
 
     //Model
     private MonAnNH monAnNH;
@@ -294,7 +294,8 @@ public class DoanhThuNHFragment extends Fragment {
             //Tính doanh thu nhà hàng theo mã nhà hàng
             for(GioHangCT gh: listGioHangCT){
                 if(gh.getMaTK().equals(nh.getMaNH())){ // Mã tài khoản ở đây, tôi đang để nhờ, thực ra đó là mã nhà hàng.
-                    tongDT += (gh.getGiaMA() * gh.getSoLuong());
+//                    tongDT += (gh.getGiaMA() * gh.getSoLuong());
+                    tongDT += gh.getTongGiaDH();
                     demDH += 1; //Đếm tổng đơn hàng
                 }
             }
@@ -373,6 +374,7 @@ public class DoanhThuNHFragment extends Fragment {
                             String tenMonThem = doc.get("TenMonThem").toString();
                             Timestamp thoiGian = (Timestamp) doc.get("ThoiGian");
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+                            long tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
 
                             DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             Date dateNow = format.parse(format.format(thoiGian.toDate()));
@@ -382,19 +384,17 @@ public class DoanhThuNHFragment extends Fragment {
                             String ngayMua = format.format(thoiGian.toDate());
 
                             if(trangThai==1 && dateNow.getTime() >= date1.getTime() &&  dateNow.getTime() <= date2.getTime()) {
-                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false);
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false, tongGiaDH);
                                 listGioHangCT.add(gioHangCT);
                             }
 
-//                            //Tính doanh thu trong năm
-//                            if(trangThai == 1) {
-//                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false);
-//                                listGioHangCTNam.add(gioHangCT);
-//                            }
                         }
 
                         // Thêm đầy đủ thông tin vào giỏ hàng chi tiét
                         getAllDetail_gioHang();
+
+                        //Tính doanh thu của từng nhà hàng
+                        //tinhDoanhThuNH();
 
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -428,19 +428,23 @@ public class DoanhThuNHFragment extends Fragment {
                             String tenMonThem = doc.get("TenMonThem").toString();
                             Timestamp thoiGian = (Timestamp) doc.get("ThoiGian");
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+                            long tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
 
                             DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             String ngayMua = format.format(thoiGian.toDate());
 
                             //Tính doanh thu trong năm
                             if(trangThai == 1) {
-                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false);
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false, tongGiaDH);
                                 listGioHangCTNam.add(gioHangCT);
                             }
                         }
 
                         // Thêm đầy đủ thông tin vào giỏ hàng chi tiét
                         getAllDetail_gioHangTinhDoanhThuNam();
+
+                        //Tính doanh thu món ăn của năm
+                        //tinhDoanhThuNHNam();
 
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -604,7 +608,7 @@ public class DoanhThuNHFragment extends Fragment {
 
     private void tinhDoanhThuNHNam() throws ParseException {
         listDoanhThuThang = new ArrayList<>();
-        for(int i=0; i<12;i++) listDoanhThuThang.add(0);
+        for(int i=0; i<12;i++) listDoanhThuThang.add((long) 0);
 
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         Date date1 = format.parse("01-02-2021");
@@ -625,7 +629,8 @@ public class DoanhThuNHFragment extends Fragment {
             try {
                 Date dateNow = format.parse(listGioHangCTNam.get(i).getThoiGian());
 
-                int giaMA =  listGioHangCTNam.get(i).getGiaMA() * listGioHangCTNam.get(i).getSoLuong();
+//                int giaMA =  listGioHangCTNam.get(i).getGiaMA() * listGioHangCTNam.get(i).getSoLuong();
+                long giaMA =  listGioHangCTNam.get(i).getTongGiaDH();
 
                 if(dateNow.before(date1)){
                     listDoanhThuThang.set(0, listDoanhThuThang.get(0) + giaMA);

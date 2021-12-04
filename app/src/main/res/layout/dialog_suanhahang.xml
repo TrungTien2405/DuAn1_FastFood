@@ -108,7 +108,7 @@
             android:fontFamily="@font/asap_medium"
             android:hint="...."
             android:inputType="number"
-            android:paddingLeft="140dp"
+            android:paddingLeft="180dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
@@ -125,7 +125,7 @@
             android:hint="...."
             android:fontFamily="@font/asap_medium"
             android:inputType="number"
-            android:paddingLeft="110dp"
+            android:paddingLeft="130dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
@@ -181,7 +181,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="13dp"
             android:fontFamily="@font/asap_medium"
-            android:text="Thời gian giao hàng"
+            android:text="Thời gian giao hàng(phút)"
             app:layout_constraintStart_toStartOf="@+id/ed_dialogThoiGianGiaoSuaNH"
             app:layout_constraintTop_toTopOf="@+id/ed_dialogThoiGianGiaoSuaNH" />
 
@@ -192,7 +192,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="13dp"
             android:fontFamily="@font/asap_medium"
-            android:text="Phí vận chuyển"
+            android:text="Phí vận chuyển(đ)"
             app:layout_constraintStart_toStartOf="@+id/ed_dialogPhiVCSuaNH"
             app:layout_constraintTop_toTopOf="@+id/ed_dialogPhiVCSuaNH" />
 

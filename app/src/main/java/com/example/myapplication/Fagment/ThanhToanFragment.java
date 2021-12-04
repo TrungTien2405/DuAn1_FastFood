@@ -115,7 +115,8 @@ public class ThanhToanFragment extends Fragment {
                     db.collection("GIOHANGCT").document(gh.getMaGHCT())
                             .update(
                                     "TrangThai", 1,
-                                    "ThoiGian", FieldValue.serverTimestamp()
+                                    "ThoiGian", FieldValue.serverTimestamp(),
+                                    "TongTien", gh.getGiaMA() * gh.getSoLuong()
                             );
 
                     //Cập nhật thông tin

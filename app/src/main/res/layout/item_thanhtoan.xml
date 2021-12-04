@@ -37,7 +37,7 @@
 
         <TextView
             android:id="@+id/tv_itemTenMAThanhToanFra"
-            android:layout_width="wrap_content"
+            android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
             android:layout_marginTop="11dp"
@@ -50,7 +50,8 @@
 
         <TextView
             android:id="@+id/tv_itemTenMonThemThanhToanFra"
-            android:layout_width="65dp"
+            android:layout_width="290dp"
+            android:lines="1"
             android:layout_height="15dp"
             android:layout_marginStart="17dp"
             android:layout_marginTop="15dp"
@@ -63,7 +64,8 @@
 
         <TextView
             android:id="@+id/tv_itemGiaMAThanhToanFra"
-            android:layout_width="wrap_content"
+            android:layout_width="290dp"
+            android:lines="1"
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
             android:layout_marginTop="15dp"
@@ -180,7 +182,9 @@
 
         <TextView
             android:id="@+id/tv_itemTongSoTienSPThanhToan"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
+            android:gravity="right"
+            android:lines="1"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_marginEnd="10dp"

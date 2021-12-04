@@ -417,7 +417,7 @@ public class MonAnFragment extends Fragment {
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
 
                             if(trangThai == 1) {
-                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false, 0);
                                 listGioHangCT.add(gioHangCT);
                             }
                         }
