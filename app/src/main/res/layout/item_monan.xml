@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Chicken Katsu Curry"
+        android:lines="1"
         android:id="@+id/tv_TenMonAn"
         android:fontFamily="@font/vollkorn_variablefont_wght"
         android:textSize="18dp"

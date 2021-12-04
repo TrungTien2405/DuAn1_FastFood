@@ -231,7 +231,8 @@ public class DoanhThuMANHFragment extends Fragment {
             //Tính doanh thu nhà hàng theo mã nhà hàng
             for(GioHangCT gh: listGioHangCT){
                 if(gh.getMaMA().equals(ma.getMaMA())){
-                    tongDT += (gh.getGiaMA() * gh.getSoLuong());
+//                    tongDT += (gh.getGiaMA() * gh.getSoLuong());
+                    tongDT +=gh.getTongGiaDH();
                     demDH += gh.getSoLuong(); //Đếm tổng đơn hàng
                 }
             }
@@ -284,7 +285,7 @@ public class DoanhThuMANHFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -310,6 +311,7 @@ public class DoanhThuMANHFragment extends Fragment {
                             String tenMonThem = doc.get("TenMonThem").toString();
                             Timestamp thoiGian = (Timestamp) doc.get("ThoiGian");
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+                            long tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
 
                             DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             Date dateNow = format.parse(format.format(thoiGian.toDate()));
@@ -319,7 +321,7 @@ public class DoanhThuMANHFragment extends Fragment {
                             String ngayMua = format.format(thoiGian.toDate());
 
                             if(trangThai==1 && dateNow.getTime() >= date1.getTime() &&  dateNow.getTime() <= date2.getTime()) {
-                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false);
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false, tongGiaDH);
                                 listGioHangCT.add(gioHangCT);
                             }
                         }
@@ -331,7 +333,7 @@ public class DoanhThuMANHFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.d("=====>", e.getMessage());
                 }
             }

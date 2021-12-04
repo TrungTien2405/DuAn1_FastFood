@@ -75,13 +75,15 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
             public void onClick(View v) {
                 int soLuong = gioHangCT.getSoLuong() + 1;
 
-                holder.tv_SoLuong.setText(soLuong+"");
-                holder.tv_giaGH.setText((formatNumber(soLuong * gioHangCT.getGiaMA())));
-                fragment.updateSoLuongGH(gioHangCT.getMaGHCT(), soLuong, position);
+                if(soLuong<=100) {
+                    holder.tv_SoLuong.setText(soLuong + "");
+                    holder.tv_giaGH.setText((formatNumber(soLuong * gioHangCT.getGiaMA())));
+                    fragment.updateSoLuongGH(gioHangCT.getMaGHCT(), soLuong, position);
 
-                if(holder.chk_chonItemGH.isChecked()){
-                    fragment.TongTienGH += gioHangCT.getGiaMA();
-                    fragment.tvTongTienGH.setText(formatNumber(fragment.TongTienGH));
+                    if (holder.chk_chonItemGH.isChecked()) {
+                        fragment.TongTienGH += gioHangCT.getGiaMA();
+                        fragment.tvTongTienGH.setText(formatNumber(fragment.TongTienGH));
+                    }
                 }
             }
         });

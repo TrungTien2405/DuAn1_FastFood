@@ -207,7 +207,7 @@
     <GridView
         android:id="@+id/gv_MonAn"
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="480dp"
         android:layout_margin="10dp"
         android:horizontalSpacing="20dp"
         android:verticalSpacing="20dp"

@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -194,7 +195,7 @@ public class NhaHangFragment extends Fragment {
 
             @Override
             public void onLongClick(View view, int position) {
-                xoaLoaiNhaHang(listLoaiNhaHang.get(position).getMaLoaiNH());
+                xoaLoaiNhaHang(listLoaiNhaHang.get(position).getMaLoaiNH(), listLoaiNhaHang.get(position).getTenLoaiNH());
                 Log.d("===> ", "Mã loại nhà hàng đầu vào: " + listLoaiNhaHang.get(position).getMaLoaiNH());
             }
         }));
@@ -301,7 +302,93 @@ public class NhaHangFragment extends Fragment {
     }
 
     //Delete xóa loại nhà hàng
-    private void xoaLoaiNhaHang(String _maLNH){
+    private void xoaLoaiNhaHang(String _maLNH, String _tenLNH){
+        Dialog dialog =  new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_chonsuaxoalnh);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.9);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.2);
+        dialog.getWindow().setLayout(width,height);
+
+        Button btnXoa = dialog.findViewById(R.id.btn_dialogXoaLNH);
+        Button btnSua = dialog.findViewById(R.id.btn_dialogSuaLNH);
+
+        btnXoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialogXoaNH(_maLNH);
+                dialog.dismiss();
+            }
+        });
+
+        btnSua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                suaLoaiNH(_maLNH, _tenLNH);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+
+
+    }
+
+
+    //Delete sủa loại nhà hàng
+    private void suaLoaiNH(String _maLNH, String _tenLNH){
+        Dialog dialog =  new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_suatenlnh);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.9);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.3);
+        dialog.getWindow().setLayout(width,height);
+
+        Button btnSua = dialog.findViewById(R.id.btn_dialogXacNhanSuaLNH);
+        EditText edtTenLNH = dialog.findViewById(R.id.edt_dialogSuaTenLNH);
+
+        edtTenLNH.setText(_tenLNH);
+
+        btnSua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String tenLNH = edtTenLNH.getText().toString().trim();
+                if(!kiemKhoangTrang(tenLNH)){
+                    Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
+                }else if(tenLNH.length() < 4 || tenLNH.length() > 15){
+                    Toast.makeText(getContext(), "Tên loại nhà hàng quá dài hoặc quá ngắn", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Cho tài khoản thành quyền chủ nhà hàng
+                    db.collection("LOAINHAHANG").document(_maLNH)
+                            .update(
+                                    "TenLoaiNH", tenLNH
+                            ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            dialog.dismiss();
+                            getAllLoaiNhaHang(getContext());
+                        }
+                    });
+
+                }
+
+
+            }
+        });
+
+        dialog.show();
+
+
+
+    }
+
+    //Hỏi người dùng có chắc muốn xóa loại nhà hàng không
+    private void alertDialogXoaNH(String _maLNH){
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
                 .setMessage("Bạn chắn chắn muốn xóa loại nhà hàng không?")
@@ -339,7 +426,6 @@ public class NhaHangFragment extends Fragment {
         });
 
         builder.show();
-
     }
 
     //Kiểm tra quyền đăng nhập phù hợp với người dùng
@@ -644,7 +730,7 @@ public class NhaHangFragment extends Fragment {
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
 
                             if(trangThai == 1) {
-                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false, 0);
                                 listGioHangCT.add(gioHangCT);
                             }
                         }
@@ -704,8 +790,8 @@ public class NhaHangFragment extends Fragment {
                     Toast.makeText(getContext(), "Không được nhập khoảng trắng", Toast.LENGTH_SHORT).show();
                 }else if(kiemTraTrungTenLoaiNH(tenLoai)){
                     Toast.makeText(getContext(), "Đã tồn tại tên loại nhà hàng, vui lòng nhập tên khác", Toast.LENGTH_SHORT).show();
-                }else if(tenLoai.length() < 5){
-                    Toast.makeText(getContext(), "Tên loại quá ngắn", Toast.LENGTH_SHORT).show();
+                }else if(tenLoai.length() < 4 || tenLoai.length() >15){
+                    Toast.makeText(getContext(), "Tên loại quá dài hoặc quá ngắn", Toast.LENGTH_SHORT).show();
                 }else{
 
                     UUID uuid = UUID.randomUUID();

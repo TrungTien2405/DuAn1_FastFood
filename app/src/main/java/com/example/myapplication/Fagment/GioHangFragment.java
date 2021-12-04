@@ -125,6 +125,13 @@ public class GioHangFragment extends Fragment {
                         .replace(R.id.nav_FrameFragment, new NhaHangFragment())
                         .addToBackStack(null)
                         .commit();
+
+                try {
+                    ((MainActivity) getActivity()).bottomNavigation.setSelectedItemId(R.id.mn_main);
+                }catch (Exception e){
+                    Log.d("===> ", "Bottom navigaion :" + e.getMessage());
+
+                }
             }
         });
         return view;
@@ -346,9 +353,10 @@ public class GioHangFragment extends Fragment {
                             String tenMonThem = doc.get("TenMonThem").toString();
                             String thoiGian = doc.get("ThoiGian").toString();
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+//                            long tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
 
                             if(_maGH.equals(maGH) && trangThai==0) {
-                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false, 0);
                                 listGioHangCT.add(gioHangCT);
                             }
                         }

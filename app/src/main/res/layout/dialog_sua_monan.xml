@@ -172,7 +172,7 @@
             android:fontFamily="@font/asap_medium"
             android:hint=". . ."
             android:inputType="number"
-            android:paddingLeft="90dp"
+            android:paddingLeft="100dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -185,7 +185,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="14dp"
             android:fontFamily="@font/asap_medium"
-            android:text="Giá món ăn "
+            android:text="Giá món ăn(đ)"
             app:layout_constraintStart_toStartOf="@+id/ed_dialogSuaGiaMA"
             app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaGiaMA" />
 

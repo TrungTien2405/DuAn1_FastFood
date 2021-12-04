@@ -239,7 +239,7 @@ public class MonAnCTFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         String maTK = intent.getStringExtra("MaTK");
         //Lấy model để thêm giỏ hàng mới
-        gioHangCT = new GioHangCT("", "", maMA, maTK, SoLuongMA, gia, tenMon, "", "", 0, hinhAnh, false);
+        gioHangCT = new GioHangCT("", "", maMA, maTK, SoLuongMA, gia, tenMon, "", "", 0, hinhAnh, false, 0);
 
         tv_tenMonCT.setText(tenMon);
         tv_giaMonCT.setText(formatNumber(gia) + " VND");
@@ -501,7 +501,7 @@ public class MonAnCTFragment extends Fragment {
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
 
                             if(_maGH.equals(maGH) && trangThai==0) {
-                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false);
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false, 0);
                                 listGioHangCT.add(gioHangCT);
                             }
                         }
