@@ -42,7 +42,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_doanhThuNH"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="330dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
         android:background="@color/mauchinh"

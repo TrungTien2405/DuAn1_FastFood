@@ -41,14 +41,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="670dp"
+        android:layout_height="615dp"
         android:id="@+id/rcv_GioHang"
         android:layout_margin="10dp"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="50dp">
 
         <Button
             android:id="@+id/btn_thanhToanGH"

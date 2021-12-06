@@ -59,6 +59,7 @@ public class DoanhThuNHFragment extends Fragment {
     private List<MonAnNH> listMonAn;
     private List<GioHangCT> listGioHangCT;
     private List<GioHangCT> listGioHangCTNam;
+    private List<GioHang> listGioHang;
     private List<NhaHang> listNhaHang;
     private List<DoanhThuNH> listDoanhThu;
     private List<DanhGiaNH> listDanhGia;
@@ -109,10 +110,9 @@ public class DoanhThuNHFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        getAllDanhGia(getContext()); // Lấy danh sách đánh giá từ nhà hàng xuống
+        getAllGioHang();
         getAllMonAn(getContext()); // Lấy danh sách móm ăn từ Firestore xuống
-        getAllNhaHang(getContext()); // Lấy danh sách nhà hàng từ Firestore xuống
-
+        //getAllDanhGia(getContext());
 
 
         //Chọn ngày đầu để hiển thị doanh thu
@@ -342,16 +342,51 @@ public class DoanhThuNHFragment extends Fragment {
                             listMonAn.add(monAnNH);
                         }
 
-                        getAllGioHangCTThongKeNam(getContext()); //Lấy thông tin để hiện doanh thu nhà hàng
+                        getAllGioHangCTThongKeNam(); //Lấy thông tin để hiện doanh thu nhà hàng
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
+
+    // Lấy danh sách giỏ hàng từ Firebase xuống
+    public void getAllGioHang(){
+        listGioHang = new ArrayList<>();
+//        listGioHangCTNam = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("GIOHANG");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String maGH = doc.get("MaGH").toString();
+                            String maTK = doc.get("MaTK").toString();
+
+                            listGioHang.add(new GioHang(maGH, maTK));
+                        }
+
+                        getAllDanhGia(getContext()); // Lấy danh sách đánh giá từ nhà hàng xuống
+
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+//                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", "getAllGioHangCT " + e.getMessage());
+                }
+            }
+        });
+    }
+
 
     // Lấy danh sách giỏ hàng chi tiết từ Firebase xuống
     public void getAllGioHangCT(Context context){
@@ -374,7 +409,10 @@ public class DoanhThuNHFragment extends Fragment {
                             String tenMonThem = doc.get("TenMonThem").toString();
                             Timestamp thoiGian = (Timestamp) doc.get("ThoiGian");
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
-                            long tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
+                            long tongGiaDH = 0;
+                            try {
+                                tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
+                            }catch (Exception e){}
 
                             DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             Date dateNow = format.parse(format.format(thoiGian.toDate()));
@@ -400,8 +438,8 @@ public class DoanhThuNHFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("=====>", e.getMessage());
+//                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", "getAllGioHangCT " + e.getMessage());
                 }
             }
         });
@@ -409,7 +447,7 @@ public class DoanhThuNHFragment extends Fragment {
 
 
     // Lấy danh sách giỏ hàng chi tiết từ Firebase xuống, để thống kê theo năm
-    public void getAllGioHangCTThongKeNam(Context context){
+    public void getAllGioHangCTThongKeNam(){
         listGioHangCTNam = new ArrayList<>();
 
         final CollectionReference reference = db.collection("GIOHANGCT");
@@ -428,13 +466,21 @@ public class DoanhThuNHFragment extends Fragment {
                             String tenMonThem = doc.get("TenMonThem").toString();
                             Timestamp thoiGian = (Timestamp) doc.get("ThoiGian");
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
-                            long tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
+
+                            long tongGiaDH = 0;
+                            try {
+                                tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
+                            }catch (Exception e){
+                            }
 
                             DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             String ngayMua = format.format(thoiGian.toDate());
 
                             //Tính doanh thu trong năm
-                            if(trangThai == 1) {
+                            if(trangThai == 1 && QuyenDN == 0) {
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false, tongGiaDH);
+                                listGioHangCTNam.add(gioHangCT);
+                            }else if(kiemTraMaTKGH(maGH)){
                                 gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, ngayMua, trangThai, "", false, tongGiaDH);
                                 listGioHangCTNam.add(gioHangCT);
                             }
@@ -450,8 +496,8 @@ public class DoanhThuNHFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("=====>", e.getMessage());
+//                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", "getAllGioHangCTThongKeNam " + e.getMessage());
                 }
             }
         });
@@ -481,7 +527,7 @@ public class DoanhThuNHFragment extends Fragment {
                             String HinhAnh = doc.get("HinhAnh").toString();
                             String MaDG = doc.get("MaDG").toString();
 
-                            if(MaTK.equals(_maTK) || QuyenDN == 0) {
+                            if(MaTK.equals(_maTK) || QuyenDN == 0) { // Nếu chủ nhà hàng đăng nhập hoặc nếu là admin đăng nhập
                                 Double danhGia = tinhDanhGiaTB(MaNH);
                                 nhaHang = new NhaHang(MaNH, MaLoaiNH, MaTK, TenNH, ThoiGian, PhiVanChuyen, HinhAnh, danhGia, MaDG, "");
                                 listNhaHang.add(nhaHang);
@@ -521,15 +567,26 @@ public class DoanhThuNHFragment extends Fragment {
                             DanhGiaNH danhGiaNH = new DanhGiaNH(MaDanhGia, MaNH, LuotDG, TongDG);
                             listDanhGia.add(danhGiaNH);
                         }
+                        getAllNhaHang(getContext()); // Lấy danh sách nhà hàng từ Firestore xuống
 
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(),"Error getAllDanhGia: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(),"Error getAllDanhGia: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    //Kiểm tra mã tài khoản của mã giỏ hàng có trùng với mã tài khoản đăng nhập không
+    private Boolean kiemTraMaTKGH(String _maGH){
+        for(GioHang gh: listGioHang){
+            if(gh.getMaGH().equals(_maGH) && gh.getMaTK().equals(_maTK)){
+                return true;
+            }
+        }
+        return false;
     }
 
 

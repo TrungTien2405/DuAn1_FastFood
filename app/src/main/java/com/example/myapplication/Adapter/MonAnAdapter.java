@@ -99,7 +99,10 @@ public class MonAnAdapter extends BaseAdapter{
         holder.imv_hinhMonAn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                fragment.dialogXoaMonAn(position);
+                if(kiemTraQuyenDangNhapLongClick()){
+                    fragment.dialogXoaMonAn(position);
+                }
+
                 return false;
             }
         });
@@ -131,4 +134,15 @@ public class MonAnAdapter extends BaseAdapter{
             holder.tv_ChinhSuaMA.setVisibility(View.INVISIBLE);
         }
     }
+
+    // Kiểm tra tài khoản được nhấn longClick để xóa các tác vụ không
+    private Boolean kiemTraQuyenDangNhapLongClick(){
+        if(fragment.quyenTKDN == 0){
+            return true; // Tài khoản có quyền nhấn xóa
+        }else if(fragment.maTKDangNhap.equals(fragment.maTKChuNH) && fragment.quyenTKDN == 1){
+            return true;
+        }
+        return false;
+    }
+
 }
