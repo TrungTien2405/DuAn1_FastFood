@@ -77,7 +77,7 @@ public class MonAnAdapter extends BaseAdapter{
         holder.tv_GiaMA.setText(formatNumber(monAnNH.getGia())+" VND");
 
         if(monAnNH.getHinhAnh().isEmpty()){
-            holder.imv_hinhMonAn.setImageResource(R.drawable.im_food);
+            holder.imv_hinhMonAn.setImageResource(R.drawable.ic_addimage);
         }else{
             Picasso.with(context).load(monAnNH.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imv_hinhMonAn);
         }
@@ -96,6 +96,19 @@ public class MonAnAdapter extends BaseAdapter{
             }
         });
 
+        holder.imv_hinhMonAn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(kiemTraQuyenDangNhapLongClick()){
+                    fragment.dialogXoaMonAn(position);
+                }
+
+                return false;
+            }
+        });
+
+        kiemTraQuyenDangNhap(holder);
+
         return convertView;
     }
 
@@ -111,4 +124,25 @@ public class MonAnAdapter extends BaseAdapter{
 
         return en.format(number);
     }
+
+    // Ẩn các tác vụ người dùng không được sủ dụng
+    private void kiemTraQuyenDangNhap(MonAnAdapter.ViewHolder holder){
+
+        if(fragment.quyenTKDN == 2){
+            holder.tv_ChinhSuaMA.setVisibility(View.INVISIBLE);
+        }else if(!fragment.maTKDangNhap.equals(fragment.maTKChuNH) && fragment.quyenTKDN == 1){
+            holder.tv_ChinhSuaMA.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    // Kiểm tra tài khoản được nhấn longClick để xóa các tác vụ không
+    private Boolean kiemTraQuyenDangNhapLongClick(){
+        if(fragment.quyenTKDN == 0){
+            return true; // Tài khoản có quyền nhấn xóa
+        }else if(fragment.maTKDangNhap.equals(fragment.maTKChuNH) && fragment.quyenTKDN == 1){
+            return true;
+        }
+        return false;
+    }
+
 }

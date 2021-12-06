@@ -26,6 +26,7 @@ import android.widget.ToggleButton;
 
 import com.example.myapplication.Adapter.LoaiNhaHangAdapter;
 import com.example.myapplication.Adapter.MonAnThemAdapter;
+import com.example.myapplication.Model.GioHang;
 import com.example.myapplication.Model.GioHangCT;
 import com.example.myapplication.Model.MonAnThem;
 import com.example.myapplication.Model.MonAnNH;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public class MonAnCTFragment extends Fragment {
     private RecyclerView rcv_monAnThem;
@@ -59,12 +61,16 @@ public class MonAnCTFragment extends Fragment {
     private List<MonAnNH> listMonAn;
     private List<MonAnThem> listMonThem;
 
+    private List<GioHang> listGioHang;
+    private List<GioHangCT> listGioHangCT;
+
     private GioHangCT gioHangCT;
 
     private MonAnNH monAnNH;
 
     private String TenMonThem;
     private String MaGioHang = "";
+    private int SoLuongMonAnGH = 0; // Số lượng món ăn từ giỏ hàng có mã món ăn đã tìm
 //    private String MaDanhGia = "";
 
 //    private Dialog dialogDanhGiaNH;
@@ -101,6 +107,8 @@ public class MonAnCTFragment extends Fragment {
         anhXa(view);
 
         getMaGH();
+
+        getAllGioHang();
 
         thayDoiSoLuongMonAn();
 
@@ -157,7 +165,12 @@ public class MonAnCTFragment extends Fragment {
                 if(MaGioHang.isEmpty()) {
                     themGioHangToFireStore();
                 }else{
-                    themGioHangCTToFireStore(MaGioHang);
+                    if(kiemTraMonAnTrongGH(gioHangCT.getMaMA()).isEmpty()){
+                        themGioHangCTToFireStore(MaGioHang);
+                    }else{
+                        updateMonAnTrongGioHang(kiemTraMonAnTrongGH(gioHangCT.getMaMA()), SoLuongMA);
+                    }
+
                 }
             }
         });
@@ -220,7 +233,7 @@ public class MonAnCTFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         String maTK = intent.getStringExtra("MaTK");
         //Lấy model để thêm giỏ hàng mới
-        gioHangCT = new GioHangCT("", "", maMA, maTK, SoLuongMA, gia, tenMon, "", "", 0, hinhAnh, false);
+        gioHangCT = new GioHangCT("", "", maMA, maTK, SoLuongMA, gia, tenMon, "", "", 0, hinhAnh, false, 0);
 
         tv_tenMonCT.setText(tenMon);
         tv_giaMonCT.setText(formatNumber(gia) + " VND");
@@ -321,6 +334,7 @@ public class MonAnCTFragment extends Fragment {
 
                             if(gioHangCT.getMaTK().equals(maTK)){
                                 MaGioHang = maGH;
+                                return;
                             }
                         }
                     }else{
@@ -337,9 +351,8 @@ public class MonAnCTFragment extends Fragment {
     private void themGioHangCTToFireStore(String _maGH){
         final CollectionReference collectionReference = db.collection("GIOHANGCT");
 
-        Random random =  new Random();
-        int x = random.nextInt((50000-1+1)+1);
-        String maGHCT = "GHCT" + x;
+        UUID uuid = UUID.randomUUID();
+        String maGHCT = String.valueOf(uuid);
 
         Map<String, Object> data = new HashMap<>();
         data.put("MaGH", _maGH);
@@ -349,15 +362,19 @@ public class MonAnCTFragment extends Fragment {
         data.put("TenMonThem", TenMonThem);
         data.put("ThoiGian", FieldValue.serverTimestamp());
         data.put("TrangThai", gioHangCT.getTrangThai());
+        data.put("TongTien", 0);
 
         try {
-            collectionReference.document(maGHCT).set(data);
-
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
-                    .replace(R.id.nav_FrameFragment, new NhaHangFragment())
-                    .addToBackStack(null)
-                    .commit();
+            collectionReference.document(maGHCT).set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                            .replace(R.id.nav_FrameFragment, new NhaHangFragment())
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
 
         }catch (Exception e){
             Log.d("Error add Firebase:", e.getMessage());
@@ -386,6 +403,31 @@ public class MonAnCTFragment extends Fragment {
     }
 
 
+    //Khi thêm  món ăn đã có trong giỏ hàng thì món ăn đó sẽ tăng số lượng lên
+    private void updateMonAnTrongGioHang(String _maGHCT, int _soLuong){
+        //Cho tài khoản thành quyền chủ nhà hàng
+        db.collection("GIOHANGCT").document(_maGHCT)
+                .update(
+                        "SoLuong", _soLuong + SoLuongMonAnGH,
+                        "ThoiGian", FieldValue.serverTimestamp(),
+                        "TenMonThem", TenMonThem
+                ).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                SoLuongMonAnGH += _soLuong;
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new NhaHangFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+
+    }
+
+
     // Định dạng sang số tiền
     private String formatNumber(int number){
         // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
@@ -393,6 +435,96 @@ public class MonAnCTFragment extends Fragment {
         NumberFormat en = NumberFormat.getInstance(localeEN);
 
         return en.format(number);
+    }
+
+
+    //Kiểm tra đã có món ăn tồn tại trong giỏ hàng hay chưa, nếu có thì xuất ră mã giỏ hàng chi tiết của món ăn, còn không xuất rỗng
+    private String kiemTraMonAnTrongGH(String _maMA){
+        for(GioHangCT ghct: listGioHangCT){
+            if(ghct.getMaMA().equals(_maMA)){
+                SoLuongMonAnGH = ghct.getSoLuong();
+                return ghct.getMaGHCT();
+            }
+        }
+        return "";
+    }
+
+    //Lấy danh sách giỏ hàng từ Firebase xuống
+    public void getAllGioHang(){
+        listGioHang = new ArrayList<>();
+
+        Intent intent = getActivity().getIntent();
+        String _maTK = intent.getStringExtra("MaTK");
+
+        final CollectionReference reference = db.collection("GIOHANG");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    GioHang gioHang;
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String maGH = doc.get("MaGH").toString();
+                            String maTK = doc.get("MaTK").toString();
+
+                            if(maTK.equals(_maTK)) {
+                                gioHang = new GioHang(maGH, maTK);
+                                listGioHang.add(gioHang);
+
+                                // Lấy list giỏ hàng chi tiết
+                                getAllGioHangCT(maGH);
+                                break;
+                            }
+                        }
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), "Error getAllGioHang: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+    // Lấy danh sách giỏ hàng chi tiết từ Firebase xuống
+    public void getAllGioHangCT(String _maGH){
+        listGioHangCT = new ArrayList<>();
+
+        final CollectionReference reference = db.collection("GIOHANGCT");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    GioHangCT gioHangCT;
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot) {
+                            String maMA = doc.get("MaMA").toString();
+                            String maGHCT = doc.get("MaGHCT").toString();
+                            String maGH = doc.get("MaGH").toString();
+                            int soLuong = Integer.parseInt(doc.get("SoLuong").toString());
+                            String tenMonThem = doc.get("TenMonThem").toString();
+                            String thoiGian = doc.get("ThoiGian").toString();
+                            int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+
+                            if(_maGH.equals(maGH) && trangThai==0) {
+                                gioHangCT = new GioHangCT(maGH, maGHCT, maMA, "", soLuong, 0, "", tenMonThem, thoiGian, trangThai, "", false, 0);
+                                listGioHangCT.add(gioHangCT);
+                            }
+                        }
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", e.getMessage());
+                }
+            }
+        });
     }
 
 }

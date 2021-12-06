@@ -51,6 +51,7 @@ public class KhachHangAdapter extends RecyclerView.Adapter<KhachHangAdapter.MyVi
         }catch (Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
         holder.tvXoaItemTK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

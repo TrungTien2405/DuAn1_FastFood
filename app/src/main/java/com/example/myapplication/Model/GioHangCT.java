@@ -15,8 +15,10 @@ public class GioHangCT implements Serializable {
     private int TrangThai;
     private String HinhAnh;
     private Boolean TrangThaiCheckbox;
+    private long tongGiaDH;
 
-    public GioHangCT(String maGH, String maGHCT, String maMA, String maTK, int soLuong, int giaMA, String tenMA, String tenMonThem, String thoiGian, int trangThai, String hinhAnh, Boolean trangThaiCheckbox) {
+
+    public GioHangCT(String maGH, String maGHCT, String maMA, String maTK, int soLuong, int giaMA, String tenMA, String tenMonThem, String thoiGian, int trangThai, String hinhAnh, Boolean trangThaiCheckbox, long tongGiaDH) {
         MaGH = maGH;
         MaGHCT = maGHCT;
         MaMA = maMA;
@@ -29,6 +31,15 @@ public class GioHangCT implements Serializable {
         TrangThai = trangThai;
         HinhAnh = hinhAnh;
         TrangThaiCheckbox = trangThaiCheckbox;
+        this.tongGiaDH = tongGiaDH;
+    }
+
+    public long getTongGiaDH() {
+        return tongGiaDH;
+    }
+
+    public void setTongGiaDH(long tongGiaDH) {
+        this.tongGiaDH = tongGiaDH;
     }
 
     public String getMaGH() {

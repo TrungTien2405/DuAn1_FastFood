@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="40dp"
                 android:text="Mã nhà hàng"
                 android:fontFamily="@font/asap_medium"/>
@@ -52,26 +52,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_dialogSuaMaNH"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16dp"
                     android:background="@drawable/custom_edt"
-                    android:padding="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:fontFamily="@font/asap_medium"/>
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="-30dp"
-                    app:srcCompat="@drawable/ic_updown" />
+                </ScrollView>
+
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Mã thực đơn nhà hàng"
                 android:fontFamily="@font/asap_medium"/>
@@ -81,18 +83,18 @@
                 android:orientation="horizontal">
                 <Spinner
                     android:id="@+id/sp_dialogSuaMaMenuNH"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
                     android:fontFamily="@font/asap_medium"
-                    android:background="@drawable/custom_edt"
-                    android:padding="10dp"/>
+                    android:background="@drawable/custom_edt" />
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginLeft="-30dp"
+                    android:layout_marginLeft="-45dp"
                     app:srcCompat="@drawable/ic_updown" />
             </LinearLayout>
         </LinearLayout>
@@ -111,13 +113,25 @@
             android:background="@drawable/custom_edt"
             android:ems="10"
             android:fontFamily="@font/asap_medium"
-            android:hint="Nhập tên món ăn"
+            android:hint=". . ."
+            android:paddingLeft="85dp"
             android:inputType="textPersonName"
-            android:paddingLeft="10dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+        </EditText>
+
+        <TextView
+            android:id="@+id/tv_dialogSuaTenMA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="14dp"
+            android:text="Tên món ăn"
+            android:fontFamily="@font/asap_medium"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogSuaTenMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaTenMA" />
 
         <EditText
             android:id="@+id/ed_dialogSuaChiTietMA"
@@ -128,13 +142,24 @@
             android:background="@drawable/custom_edt"
             android:ems="10"
             android:fontFamily="@font/asap_medium"
-            android:hint="Nhập chi tiết món ăn"
+            android:hint=". . ."
             android:inputType="textPersonName"
-            android:paddingLeft="10dp"
+            android:paddingLeft="110dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogSuaTenMA" />
+
+        <TextView
+            android:id="@+id/tv_dialogSuaChiTietMA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Chi tiết món ăn "
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogSuaChiTietMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaChiTietMA" />
 
         <EditText
             android:id="@+id/ed_dialogSuaGiaMA"
@@ -145,13 +170,24 @@
             android:background="@drawable/custom_edt"
             android:ems="10"
             android:fontFamily="@font/asap_medium"
-            android:hint="Nhập giá món ăn"
+            android:hint=". . ."
             android:inputType="number"
-            android:paddingLeft="10dp"
+            android:paddingLeft="100dp"
             android:paddingRight="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ed_dialogSuaChiTietMA" />
+
+        <TextView
+            android:id="@+id/tv_dialogSuaGiaMA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="Giá món ăn(đ)"
+            app:layout_constraintStart_toStartOf="@+id/ed_dialogSuaGiaMA"
+            app:layout_constraintTop_toTopOf="@+id/ed_dialogSuaGiaMA" />
 
         <ImageView
             android:id="@+id/imageView15"

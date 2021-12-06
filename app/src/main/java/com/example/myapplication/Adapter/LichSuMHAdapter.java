@@ -57,10 +57,10 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
             holder.tvDiaChi.setText(diaChi);
             holder.tvTenMA.setText(gioHangCT.getTenMA());
             holder.tvTenNH.setText("");
-            holder.tvGia.setText(formatNumber(gioHangCT.getGiaMA() * gioHangCT.getSoLuong()) + " VND");
+            holder.tvGia.setText(formatNumber(gioHangCT.getTongGiaDH()) + " VND");
 
             if (gioHangCT.getHinhAnh().isEmpty()) {
-                holder.imvHinhMA.setImageResource(R.drawable.im_food);
+                holder.imvHinhMA.setImageResource(R.drawable.ic_addimage);
             } else Picasso.with(context).load(gioHangCT.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvHinhMA);
 
             holder.chkChon.setVisibility(View.INVISIBLE);
@@ -103,7 +103,7 @@ public class LichSuMHAdapter extends RecyclerView.Adapter<LichSuMHAdapter.MyView
     }
 
     // Định dạng sang số tiền
-    private String formatNumber(int number){
+    private String formatNumber(long number){
         // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
         Locale localeEN = new Locale("en", "EN");
         NumberFormat en = NumberFormat.getInstance(localeEN);

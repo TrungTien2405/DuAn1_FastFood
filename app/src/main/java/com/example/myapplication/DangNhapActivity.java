@@ -99,7 +99,7 @@ public class DangNhapActivity extends AppCompatActivity {
                         }
                     }
                     if(check == 0){
-                        Toast.makeText(DangNhapActivity.this, "Tài khoản hoặc mật khẩu không tồn tại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DangNhapActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

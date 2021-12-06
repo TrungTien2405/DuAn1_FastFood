@@ -7,6 +7,13 @@
     tools:context=".Fagment.DoanhThuNHFragment"
     android:background="@color/mauchinh">
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart_doanhThuNH"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
     <TextView
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
@@ -35,25 +42,25 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_doanhThuNH"
         android:layout_width="match_parent"
-        android:layout_height="530dp"
+        android:layout_height="330dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
         android:background="@color/mauchinh"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/sv_doanhThuNhaHang" />
 
     <TextView
         android:id="@+id/tv_chonNgay1DTNH"
         android:layout_width="130dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="250dp"
         android:background="@drawable/custom_edtchonngay"
+        android:fontFamily="@font/asap_medium"
         android:gravity="center"
         android:text="Chọn ngày đầu"
-        android:textSize="12dp"
-        android:fontFamily="@font/asap_medium"
         android:textColor="@color/white"
+        android:textSize="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imv_TroveTrongDTNH" />
 
@@ -61,19 +68,19 @@
         android:id="@+id/tv_chonNgay2DTNH"
         android:layout_width="130dp"
         android:layout_height="30dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="250dp"
         android:layout_marginEnd="9dp"
         android:background="@drawable/custom_edtchonngay"
+        android:fontFamily="@font/asap_medium"
         android:gravity="center"
         android:text="Chọn ngày cuối"
-        android:textSize="12dp"
-        android:fontFamily="@font/asap_medium"
         android:textColor="@color/white"
+        android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/sv_doanhThuNhaHang"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginHorizontal="10dp"

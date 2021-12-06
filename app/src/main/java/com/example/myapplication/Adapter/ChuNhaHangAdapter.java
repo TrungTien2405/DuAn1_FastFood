@@ -44,6 +44,9 @@ public class ChuNhaHangAdapter extends RecyclerView.Adapter<ChuNhaHangAdapter.My
         holder.tvItemSoDTTK.setText((taiKhoan.getSDT()+""));
         holder.tvItemDiaChiTK.setText(taiKhoan.getDiaChi());
 
+        if (taiKhoan.getQuyen() == 1){
+            holder.tvXoaItemTK.setVisibility(View.INVISIBLE);
+        }
         try {
             if (taiKhoan.getHinhAnh().isEmpty()) {
                 holder.imgv_ItemHinhTK.setImageResource(R.drawable.avatar);
@@ -51,13 +54,6 @@ public class ChuNhaHangAdapter extends RecyclerView.Adapter<ChuNhaHangAdapter.My
         }catch (Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        holder.tvXoaItemTK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //gọi fragment lấy hàm dialog xóa bên ChuHangFragment, lấy ra mã cần xóa
-                fragment.dialogXoaChuNhaHang(taiKhoan.getMaTK());
-            }
-        });
     }
 
     @Override

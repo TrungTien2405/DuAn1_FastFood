@@ -80,7 +80,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
         if(!nhaHang.getMaYT().isEmpty() && !nhaHang.getMaYT().isEmpty()) holder.tgb_yeuThich.setChecked(true);
 
         if(nhaHang.getHinhAnh().isEmpty()){
-            holder.imvHinh.setImageResource(R.drawable.im_food);
+            holder.imvHinh.setImageResource(R.drawable.ic_addimage);
         }else{
             Picasso.with(context).load(nhaHang.getHinhAnh()).resize(2048, 1600).centerCrop().onlyScaleDown().into(holder.imvHinh);
         }
@@ -111,7 +111,7 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
             @Override
             public void onClick(View v) {
                 fragment.chuyenDenFragmentMonAN(nhaHang.getMaNH(), nhaHang.getTenNH(), nhaHang.getHinhAnh(),
-                        nhaHang.getPhiVanChuyen(), nhaHang.getThoiGian(), nhaHang.getDanhGia(), nhaHang.getMaDG());
+                        nhaHang.getPhiVanChuyen(), nhaHang.getThoiGian(), nhaHang.getDanhGia(), nhaHang.getMaDG(), nhaHang.getMaTK());
             }
         });
 
@@ -144,9 +144,6 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
 
     // Ẩn các tác vụ người dùng không được sủ dụng
     private void kiemTraQuyenDangNhap(NhaHang nh, adapterNhaHang holder){
-        if(fragment._maTK.equals(nh.getMaTK()) && fragment.QuyenDN == 1){
-
-        }
 
         if(fragment.QuyenDN == 2){
             holder.cons.setVisibility(View.INVISIBLE);
