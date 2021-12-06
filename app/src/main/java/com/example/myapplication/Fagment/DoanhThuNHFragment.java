@@ -409,10 +409,12 @@ public class DoanhThuNHFragment extends Fragment {
                             String tenMonThem = doc.get("TenMonThem").toString();
                             Timestamp thoiGian = (Timestamp) doc.get("ThoiGian");
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+
                             long tongGiaDH = 0;
                             try {
                                 tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
                             }catch (Exception e){}
+
 
                             DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                             Date dateNow = format.parse(format.format(thoiGian.toDate()));
@@ -466,6 +468,7 @@ public class DoanhThuNHFragment extends Fragment {
                             String tenMonThem = doc.get("TenMonThem").toString();
                             Timestamp thoiGian = (Timestamp) doc.get("ThoiGian");
                             int trangThai = Integer.parseInt(doc.get("TrangThai").toString());
+                            long tongGiaDH = Long.parseLong(doc.get("TongTien").toString());
 
                             long tongGiaDH = 0;
                             try {
