@@ -32,10 +32,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="361dp"
-        android:layout_height="661dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/custom_edt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,9 +44,9 @@
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="342dp"
-            android:layout_height="393dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/thongtinungdung"
             android:fontFamily="@font/asap_medium"
             android:textColor="@color/black"
