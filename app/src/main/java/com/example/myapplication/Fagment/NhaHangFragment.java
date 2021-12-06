@@ -195,7 +195,9 @@ public class NhaHangFragment extends Fragment {
 
             @Override
             public void onLongClick(View view, int position) {
-                xoaLoaiNhaHang(listLoaiNhaHang.get(position).getMaLoaiNH(), listLoaiNhaHang.get(position).getTenLoaiNH());
+                if(QuyenDN == 0) {
+                    xoaLoaiNhaHang(listLoaiNhaHang.get(position).getMaLoaiNH(), listLoaiNhaHang.get(position).getTenLoaiNH());
+                }
                 Log.d("===> ", "Mã loại nhà hàng đầu vào: " + listLoaiNhaHang.get(position).getMaLoaiNH());
             }
         }));
@@ -208,7 +210,10 @@ public class NhaHangFragment extends Fragment {
 
             @Override
             public void onLongClick(View view, int position) {
-                deleteNhaHangFireBase(position);
+                if(kiemTraQuyenDangNhapLongClick(listNhaHangTheoLoai.get(position))){
+                    deleteNhaHangFireBase(position);
+                };
+
             }
         }));
 
@@ -232,6 +237,16 @@ public class NhaHangFragment extends Fragment {
         search();
 
         return v;
+    }
+
+    // Kiểm tra tài khoản được nhấn longClick để xóa các tác vụ không
+    private Boolean kiemTraQuyenDangNhapLongClick(NhaHang nh){
+        if(QuyenDN == 0){
+            return true; // Tài khoản có quyền nhấn xóa
+        }else if(_maTK.equals(nh.getMaTK()) && QuyenDN == 1){
+            return true;
+        }
+        return false;
     }
 
     public String getMaTK(){
@@ -417,6 +432,7 @@ public class NhaHangFragment extends Fragment {
 
                         }catch (Exception e){
                             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("===> ", "alertDialogXoaNH " + e.getMessage());
                         }
                     }
                 }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -463,7 +479,10 @@ public class NhaHangFragment extends Fragment {
                             String MaTK = doc.get("MaTK").toString().trim();
                             String TenNH = doc.get("TenNH").toString().trim();
                             String ThoiGian = doc.get("ThoiGian").toString().trim();
-                            int PhiVanChuyen = Integer.parseInt(doc.get("PhiVanChuyen").toString());
+                            int PhiVanChuyen = 0;
+                            try {
+                                PhiVanChuyen = Integer.parseInt(doc.get("PhiVanChuyen").toString());
+                            }catch (Exception e){};
                             String HinhAnh = doc.get("HinhAnh").toString();
                             String MaDG = doc.get("MaDG").toString().trim();
 
@@ -543,7 +562,8 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(),"Error getAllDanhGia: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(),"Error getAllDanhGia: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("===> ", "getAllDanhGia " + e.getMessage());
                 }
             }
         });
@@ -583,7 +603,8 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "Error getLoaiNhaHang "+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Error getLoaiNhaHang "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("===> ", "getLoaiNhaHang " + e.getMessage());
                 }
             }
         });
@@ -615,7 +636,8 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "Error getAllYeuThich"+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Error getAllYeuThich"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("====> ", "getAllYeuThich " + e.getMessage());
                 }
             }
         });
@@ -700,7 +722,8 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("===> ", "getAllDanhGia " + e.getMessage());
                 }
             }
         });
@@ -739,8 +762,8 @@ public class NhaHangFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("=====>", e.getMessage());
+//                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", "getAllGioHangChiTiet" + e.getMessage());
                 }
             }
         });
@@ -951,6 +974,7 @@ public class NhaHangFragment extends Fragment {
 
     }
 
+    //Kiểm tra ô nhập có nhập toàn khoảng trắng ko
     private Boolean kiemKhoangTrang(String _duLieu){
         for (int i = 0; i < _duLieu.length(); i++) {
             if(!Character.isWhitespace(_duLieu.charAt(i))){

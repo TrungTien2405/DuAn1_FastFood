@@ -171,12 +171,6 @@ public class MonAnCTFragment extends Fragment {
                         updateMonAnTrongGioHang(kiemTraMonAnTrongGH(gioHangCT.getMaMA()), SoLuongMA);
                     }
 
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
-                            .replace(R.id.nav_FrameFragment, new NhaHangFragment())
-                            .addToBackStack(null)
-                            .commit();
-
                 }
             }
         });
@@ -340,6 +334,7 @@ public class MonAnCTFragment extends Fragment {
 
                             if(gioHangCT.getMaTK().equals(maTK)){
                                 MaGioHang = maGH;
+                                return;
                             }
                         }
                     }else{
@@ -367,9 +362,19 @@ public class MonAnCTFragment extends Fragment {
         data.put("TenMonThem", TenMonThem);
         data.put("ThoiGian", FieldValue.serverTimestamp());
         data.put("TrangThai", gioHangCT.getTrangThai());
+        data.put("TongTien", 0);
 
         try {
-            collectionReference.document(maGHCT).set(data);
+            collectionReference.document(maGHCT).set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                            .replace(R.id.nav_FrameFragment, new NhaHangFragment())
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
 
         }catch (Exception e){
             Log.d("Error add Firebase:", e.getMessage());
@@ -410,6 +415,12 @@ public class MonAnCTFragment extends Fragment {
             @Override
             public void onSuccess(Void aVoid) {
                 SoLuongMonAnGH += _soLuong;
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new NhaHangFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

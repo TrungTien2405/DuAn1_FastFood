@@ -32,8 +32,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="370dp"
-        android:layout_height="610dp"
+        android:layout_width="361dp"
+        android:layout_height="661dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="36dp"
         android:background="@drawable/custom_edt"

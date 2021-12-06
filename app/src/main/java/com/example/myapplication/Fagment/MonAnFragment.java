@@ -331,7 +331,7 @@ public class MonAnFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("===> ", "getAllMonAN " + e.getMessage());
                 }
             }
         });
@@ -359,7 +359,7 @@ public class MonAnFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Log.d("=====> ", "Lỗi: " + e.getMessage());
+                    Log.d("=====> ", "getAllMaNH: " + e.getMessage());
                 }
             }
         });
@@ -386,7 +386,7 @@ public class MonAnFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Log.d("=====> ", "Lỗi: " + e.getMessage());
+                    Log.d("=====> ", "getAllMenuNH: " + e.getMessage());
                 }
             }
         });
@@ -426,8 +426,7 @@ public class MonAnFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "Error getAllGioHangCT"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("=====>", e.getMessage());
+                    Log.d("===> ", "getAllGioHangCT " + e.getMessage());
                 }
             }
         });
@@ -713,7 +712,7 @@ public class MonAnFragment extends Fragment {
                             }else Toast.makeText(getContext(), "Món ăn đã được mua, không thể xóa", Toast.LENGTH_SHORT).show();
 
                         }catch (Exception e){
-                            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("===> ", "dialogXoaMonAN " + e.getMessage());
                         }
 
                     }
@@ -897,7 +896,7 @@ public class MonAnFragment extends Fragment {
             //Cập nhật lại girdview
             getAllMonAn(getContext());
         }catch (Exception e){
-            Toast.makeText(getContext(), "Error update Firebase: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("===> ", "CapNhatMonAnToFireStore " + e.getMessage());
         }
     }
 
@@ -968,13 +967,14 @@ public class MonAnFragment extends Fragment {
                             Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }catch (Exception e){
-                        Toast.makeText(getContext(), "Error getAllYeuThich"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("===> ", "deleteGioHangToFriebaase " + e.getMessage());
                     }
                 }
             });
 
         }catch (Exception e){
-            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("===> ", "deleteGioHangToFriebaase " + e.getMessage());
+
         }
 
     }

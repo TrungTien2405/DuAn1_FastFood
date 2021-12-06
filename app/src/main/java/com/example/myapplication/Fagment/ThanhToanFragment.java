@@ -110,13 +110,13 @@ public class ThanhToanFragment extends Fragment {
         ktSoDu = soDuTK - ktSoDu;
         if(ktSoDu>=0) {
             for (GioHangCT gh : list) {
-                int _soDuTK = (soDuTK - (gh.getGiaMA() * gh.getSoLuong())) + 20000;
+                int _soDuTK = (soDuTK - (gh.getGiaMA() * gh.getSoLuong()) - 20000);
                     //Cập nhật thông tin
                     db.collection("GIOHANGCT").document(gh.getMaGHCT())
                             .update(
                                     "TrangThai", 1,
                                     "ThoiGian", FieldValue.serverTimestamp(),
-                                    "TongTien", gh.getGiaMA() * gh.getSoLuong()
+                                    "TongTien", (gh.getGiaMA() * gh.getSoLuong()) + 20000
                             );
 
                     //Cập nhật thông tin

@@ -144,9 +144,6 @@ public class NhaHangAdapter extends RecyclerView.Adapter<NhaHangAdapter.adapterN
 
     // Ẩn các tác vụ người dùng không được sủ dụng
     private void kiemTraQuyenDangNhap(NhaHang nh, adapterNhaHang holder){
-        if(fragment._maTK.equals(nh.getMaTK()) && fragment.QuyenDN == 1){
-
-        }
 
         if(fragment.QuyenDN == 2){
             holder.cons.setVisibility(View.INVISIBLE);

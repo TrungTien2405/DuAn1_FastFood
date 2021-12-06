@@ -159,7 +159,8 @@ public class LichSuMuaFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("===> ", "getAllGioHang " + e.getMessage());
                 }
             }
         });
@@ -196,7 +197,8 @@ public class LichSuMuaFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("===> ", "getAllMonAN" + e.getMessage());
                 }
             }
         });
@@ -237,8 +239,8 @@ public class LichSuMuaFragment extends Fragment {
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("=====>", e.getMessage());
+//                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("=====>", "getAllGioHangCT " + e.getMessage());
                 }
             }
         });
