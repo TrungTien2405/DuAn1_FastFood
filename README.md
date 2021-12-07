@@ -27,7 +27,8 @@ https://user-images.githubusercontent.com/75264221/144964953-bc41757c-5866-40ec-
 https://user-images.githubusercontent.com/75264221/144965004-4ea6c94a-caca-466a-9eb8-e4bd6dff1d8f.mp4
 
 ### Màn hình cài đặt
-![s1](https://user-images.githubusercontent.com/75264221/144965115-49e66b27-9a73-469a-a293-1a707eca6906.png)
+<img src="https://user-images.githubusercontent.com/75264221/144965115-49e66b27-9a73-469a-a293-1a707eca6906.png" height="400" />
+
 
 ### Màn hình lịch sử mua hàng
 https://user-images.githubusercontent.com/75264221/144965193-9e32b18d-5306-446e-a7b0-51b932713635.mp4
