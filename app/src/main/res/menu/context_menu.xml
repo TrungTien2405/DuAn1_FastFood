@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mn_xoalnh"
+        android:title="Xóa"
+        android:enabled="true"
+        android:icon="@drawable/ic_basket" />
+    <item
+        android:id="@+id/mn_chinhsualnh"
+        android:title="Chỉnh sửa"
+        android:enabled="true"
+        android:icon="@drawable/ic_user" />
+</menu>

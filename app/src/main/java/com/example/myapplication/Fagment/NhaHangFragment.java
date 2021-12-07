@@ -20,7 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -183,7 +186,6 @@ public class NhaHangFragment extends Fragment {
         getAllDanhGia(getContext());
 
 
-
         //Loại nhà hàng
         rcv_loainhahang.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_loainhahang, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -195,12 +197,35 @@ public class NhaHangFragment extends Fragment {
 
             @Override
             public void onLongClick(View view, int position) {
+//                if(QuyenDN == 0) {
+//                    xoaLoaiNhaHang(listLoaiNhaHang.get(position).getMaLoaiNH(), listLoaiNhaHang.get(position).getTenLoaiNH());
+//                }
+
                 if(QuyenDN == 0) {
-                    xoaLoaiNhaHang(listLoaiNhaHang.get(position).getMaLoaiNH(), listLoaiNhaHang.get(position).getTenLoaiNH());
+                    final CharSequence[] items = {"Xóa", "Chỉnh sửa"};
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                    builder.setTitle(listLoaiNhaHang.get(position).getTenLoaiNH());
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+
+                            if(item == 0){
+                                alertDialogXoaNH(listLoaiNhaHang.get(position).getMaLoaiNH());
+                                dialog.dismiss();
+                            }else{
+                                suaLoaiNH(listLoaiNhaHang.get(position).getMaLoaiNH(), listLoaiNhaHang.get(position).getTenLoaiNH());
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                    builder.show();
+                    Log.d("===> ", "Mã loại nhà hàng đầu vào: " + listLoaiNhaHang.get(position).getMaLoaiNH());
                 }
-                Log.d("===> ", "Mã loại nhà hàng đầu vào: " + listLoaiNhaHang.get(position).getMaLoaiNH());
             }
         }));
+
 
         // RecycleView nhà hàng
         rcv_nhahang.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rcv_nhahang, new RecyclerTouchListener.ClickListener() {
@@ -229,15 +254,18 @@ public class NhaHangFragment extends Fragment {
         flBtnThemNH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog_themNH(0);
+//                dialog_themNH(0);
+
             }
         });
+
 
         //Nhấn tìm kiếm nút search
         search();
 
         return v;
     }
+
 
     // Kiểm tra tài khoản được nhấn longClick để xóa các tác vụ không
     private Boolean kiemTraQuyenDangNhapLongClick(NhaHang nh){
