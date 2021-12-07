@@ -1,14 +1,19 @@
 # DUAN1
 ## FastFood - ỨNG DỤNG ĐẶT ĐỒ ĂN NHANH
-### Dự án 1, lấy cảm hứng từ các ứng dụng đặt đồ ăn trên thị trường, chúng tôi đã xây dựng một ứng dụng cho dự án 1 mình
+### Dự án 1, lấy cảm hứng từ các ứng dụng đặt đồ ăn trên thị trường, chúng tôi đã xây dựng một ứng dụng đặt đồ ăn nhanh cho riêng mình
 ### Nền tảng triển khai
 #### Database - Firebase và language Java
 
 ## GIAO DIỆN DỨNG DỤNG
 ### Màn hình đăng nhập
+#### Màn hình đăng nhập có thể lưu lại mật khẩu tài khoản từ lần đăng nhập sau
+#### Bắt lỗi các trường hợp nhập liệu sai
 <img src="https://user-images.githubusercontent.com/75264221/144962608-f10bfcce-43d4-400d-8513-383e00e90777.png" height="400" />
 
 ### Màn hình đăng kí
+#### Hình ảnh được tải lên được lưu trữ trên Firebase
+#### Bắt lỗi các trường hợp nhập liệu sai
+#### Sau khi nhập xong tất cả các thông tin, nhấn xác nhận và mã OTP sẽ được gửi đến số điện thoại đăng kí
 <img src="https://user-images.githubusercontent.com/75264221/144962874-ca94b755-f1ab-4947-8607-4a5b466c8edc.png" height="400" />
 
 ### Màn hình chính
