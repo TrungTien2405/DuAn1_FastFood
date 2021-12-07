@@ -12,6 +12,7 @@
 ![s1](https://user-images.githubusercontent.com/75264221/144962874-ca94b755-f1ab-4947-8607-4a5b466c8edc.png)
 
 ### Màn hình chính
+https://user-images.githubusercontent.com/75264221/144964355-0f67fe8a-7ea6-4535-8431-40d47ab12ca3.mp4
 
 ### Màn hình món ăn
 
@@ -30,3 +31,5 @@
 ### Màn hình doanh thu nhà hàng
 
 ### Màn hình doanh thu món ăn
+
+
