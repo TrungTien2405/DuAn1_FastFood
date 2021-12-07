@@ -1,6 +1,6 @@
 # DUAN1
 ## FastFood - ỨNG DỤNG ĐẶT ĐỒ ĂN NHANH
-<img src="https://user-images.githubusercontent.com/75264221/145009568-67fe0a9c-c5c8-4bdb-aacb-9c9917bf21b2.png" height="600" />
+<img src="https://user-images.githubusercontent.com/75264221/145009568-67fe0a9c-c5c8-4bdb-aacb-9c9917bf21b2.png" height="600"   display: block margin-left: auto margin-right: auto />
 
 ### Dự án 1, lấy cảm hứng từ các ứng dụng đặt đồ ăn trên thị trường, chúng tôi đã xây dựng một ứng dụng đặt đồ ăn nhanh cho riêng mình
 ### Nền tảng triển khai
