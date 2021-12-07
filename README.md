@@ -6,9 +6,7 @@
 
 ## GIAO DIỆN DỨNG DỤNG
 ### Màn hình đăng nhập
-![s1](https://user-images.githubusercontent.com/75264221/144962608-f10bfcce-43d4-400d-8513-383e00e90777.png = 250x250)
-
-<img src="https://user-images.githubusercontent.com/75264221/144962608-f10bfcce-43d4-400d-8513-383e00e90777.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/75264221/144962608-f10bfcce-43d4-400d-8513-383e00e90777.png" height="400" />
 
 
 
