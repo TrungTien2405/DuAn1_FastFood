@@ -11,8 +11,8 @@
 <img src="https://user-images.githubusercontent.com/75264221/144962608-f10bfcce-43d4-400d-8513-383e00e90777.png" height="400" />
 
 ### Màn hình đăng kí
-#### Hình ảnh được tải lên được lưu trữ trên Firebase
-#### Bắt lỗi các trường hợp nhập liệu sai
+#### * Hình ảnh được tải lên được lưu trữ trên Firebase
+#### * Bắt lỗi các trường hợp nhập liệu sai
 #### Sau khi nhập xong tất cả các thông tin, nhấn xác nhận và mã OTP sẽ được gửi đến số điện thoại đăng kí
 <img src="https://user-images.githubusercontent.com/75264221/144962874-ca94b755-f1ab-4947-8607-4a5b466c8edc.png" height="400" />
 
