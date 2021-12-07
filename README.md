@@ -8,10 +8,8 @@
 ### Màn hình đăng nhập
 <img src="https://user-images.githubusercontent.com/75264221/144962608-f10bfcce-43d4-400d-8513-383e00e90777.png" height="400" />
 
-
-
 ### Màn hình đăng kí
-![s1](https://user-images.githubusercontent.com/75264221/144962874-ca94b755-f1ab-4947-8607-4a5b466c8edc.png)
+<img src="https://user-images.githubusercontent.com/75264221/144962874-ca94b755-f1ab-4947-8607-4a5b466c8edc.png" height="400" />
 
 ### Màn hình chính
 https://user-images.githubusercontent.com/75264221/144964355-0f67fe8a-7ea6-4535-8431-40d47ab12ca3.mp4
