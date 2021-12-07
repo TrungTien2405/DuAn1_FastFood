@@ -7,6 +7,7 @@
 ## GIAO DIỆN DỨNG DỤNG
 ### Màn hình đăng nhập
 ![s1](https://user-images.githubusercontent.com/75264221/144962608-f10bfcce-43d4-400d-8513-383e00e90777.png | width=100)
+![](https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png | width=100)
 
 ### Màn hình đăng kí
 ![s1](https://user-images.githubusercontent.com/75264221/144962874-ca94b755-f1ab-4947-8607-4a5b466c8edc.png)
