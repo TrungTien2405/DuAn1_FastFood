@@ -92,7 +92,6 @@ public class MonAnCTFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
 
     @Override
@@ -204,7 +203,6 @@ public class MonAnCTFragment extends Fragment {
         tv_DanhGiaMACT = view.findViewById(R.id.tv_DanhGiaMACT);
         imv_hinhMonAnCT = view.findViewById(R.id.imv_hinhMonAnCT);
         imv_TroVe = view.findViewById(R.id.imv_TroVe);
-//        imv_danhGiaNH = view.findViewById(R.id.imv_danhGiaNHMACT);
         imv_toGioHang = view.findViewById(R.id.imv_toGioHang);
         tv_tenMonCT = view.findViewById(R.id.tv_tenMonAnCT);
         tv_giaMonCT = view.findViewById(R.id.tv_giaMonAnCT);
@@ -271,12 +269,16 @@ public class MonAnCTFragment extends Fragment {
                         .commit();
             }
         });
-//        imv_danhGiaNH.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog_danhGiaNH();
-//            }
-//        });
+        imv_toGioHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
+                        .replace(R.id.nav_FrameFragment, new GioHangFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     public void getAllMonAnChiTiet(Context context){

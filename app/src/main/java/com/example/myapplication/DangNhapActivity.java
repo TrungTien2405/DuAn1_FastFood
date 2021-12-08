@@ -69,6 +69,8 @@ public class DangNhapActivity extends AppCompatActivity {
         });
     }
 
+
+    //lấy dữ liệu từ firebase xuống, so sánh username, password
     public void CheckAccount(String username, String password){
 
         firestore =  FirebaseFirestore.getInstance();
@@ -106,6 +108,8 @@ public class DangNhapActivity extends AppCompatActivity {
         });
     }
 
+
+    //ghi nhớ tài khoản mật khẩu
     public void rememberUser(String u, String p, boolean status){
         SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
         SharedPreferences.Editor edit = pref.edit();

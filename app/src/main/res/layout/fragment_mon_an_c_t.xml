@@ -24,15 +24,6 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="12dp"
                 android:src="@drawable/ic_trove"/>
-<!--            <ImageView-->
-<!--                android:id="@+id/imv_danhGiaNHMACT"-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:layout_marginLeft="287dp"-->
-<!--                android:padding="10dp"-->
-<!--                android:background="@drawable/custom_search"-->
-<!--                android:src="@drawable/ic_star1"/>-->
-
             <ImageView
                 android:id="@+id/imv_toGioHang"
                 android:layout_width="50dp"

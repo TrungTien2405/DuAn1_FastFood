@@ -7,17 +7,30 @@
     tools:context=".DangKyActivity"
     android:background="@color/mauchinh"
     android:orientation="vertical">
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_trove"
-        android:id="@+id/imgTrove"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_trove"
+            android:id="@+id/imgTrove"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng ký"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/asap_medium"
+            android:textSize="28dp"/>
+    </LinearLayout>
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/logo_pizza"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="220dp"/>
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +41,15 @@
         android:layout_marginTop="-50dp"
         android:textSize="50dp"
         android:textStyle="bold"
-        android:layout_gravity="center"
+        android:layout_gravity="center" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="FastFood luôn ở bên bạn!"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:fontFamily="@font/asap_medium"
+        android:textAlignment="center"
         android:layout_marginBottom="40dp"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,4 +126,11 @@
         android:fontFamily="@font/asap_medium"
         android:background="@drawable/custom_edt"
         android:text="Đăng ký"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vui lòng điền đầy đủ thông tin để được đăng ký"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:fontFamily="@font/asap_medium" />
 </LinearLayout>
