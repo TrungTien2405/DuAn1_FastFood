@@ -41,6 +41,7 @@
                 android:background="@drawable/custom_edt"
                 android:paddingLeft="10dp"
                 android:enabled="false"
+                android:textColor="@color/black"
                 android:text="Số dư: 23.000.000 VND"
                 android:textSize="15dp" />
         </com.google.android.material.textfield.TextInputLayout>
