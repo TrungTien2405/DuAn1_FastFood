@@ -238,12 +238,12 @@ public class MonAnFragment extends Fragment {
         btnGuiDanhGia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int danhGia = 0;
-                if(tg1.isChecked()) danhGia+=1;
-                if(tg2.isChecked()) danhGia+=1;
-                if(tg3.isChecked()) danhGia+=1;
-                if(tg4.isChecked()) danhGia+=1;
-                if(tg5.isChecked()) danhGia+=1;
+//                int danhGia = 0;
+//                if(tg1.isChecked()) danhGia+=1;
+//                if(tg2.isChecked()) danhGia+=1;
+//                if(tg3.isChecked()) danhGia+=1;
+//                if(tg4.isChecked()) danhGia+=1;
+//                if(tg5.isChecked()) danhGia+=1;
 
                 if(danhGia != 0) {
                     db.collection("DANHGIANH").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -35,7 +35,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_doanhThuMA"
         android:layout_width="match_parent"
-        android:layout_height="590dp"
+        android:layout_height="560dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
         android:background="@color/mauchinh"
