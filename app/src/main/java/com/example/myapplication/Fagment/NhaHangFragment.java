@@ -983,6 +983,9 @@ public class NhaHangFragment extends Fragment {
 
             if(tenNh.length() < 5) loi += "\nTên nhà hàng quá ngắn";
 
+            if(tenNh.length() >= 50) loi += "\nTên nhà hàng quá dài";
+
+
             if (thoiGian.isEmpty()) loi += "\nBạn chưa nhập thời gian giao hàng";
             else if (!kiemKhoangTrang(thoiGian))
                 loi += "\nThời gian không được nhập khoảng trắng";
