@@ -280,7 +280,7 @@ public class DangKyActivity extends AppCompatActivity {
 
         if (_diaChi.isEmpty())
             loi += "\nBạn chưa nhập địa chỉ";
-        else if (!kiemKhoangTrang(_hoTen))
+        else if (!kiemKhoangTrang(_diaChi))
             loi += "Không được nhập khoảng trắng";
         else if(_diaChi.length()<5 || _diaChi.length()>30)
             loi += "\nĐịa chỉ bao gồm 5 đến 30 kí tự";
@@ -537,18 +537,17 @@ public class DangKyActivity extends AppCompatActivity {
 
                         } else {
                             //verification unsuccessful.. display an error message
-                            String message = "Somthing is wrong, we will fix it soon...";
-                            Toast.makeText(DangKyActivity.this, message, Toast.LENGTH_SHORT).show();
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                message = "Invalid code entered...";
+                                String message = "Nhập mã xác thực không hợp lệ";
+                                Toast.makeText(DangKyActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
-                            Snackbar snackbar = Snackbar.make(findViewById(R.id.parent), message, Snackbar.LENGTH_LONG);
-                            snackbar.setAction("Dismiss", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                }
-                            });
-                            snackbar.show();
+//                            Snackbar snackbar = Snackbar.make(findViewById(R.id.parent), message, Snackbar.LENGTH_LONG);
+//                            snackbar.setAction("Dismiss", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                }
+//                            });
+//                            snackbar.show();
                         }
                     }
                 });
