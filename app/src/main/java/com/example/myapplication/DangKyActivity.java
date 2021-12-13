@@ -280,7 +280,7 @@ public class DangKyActivity extends AppCompatActivity {
 
         if (_diaChi.isEmpty())
             loi += "\nBạn chưa nhập địa chỉ";
-        else if (!kiemKhoangTrang(_hoTen))
+        else if (!kiemKhoangTrang(_diaChi))
             loi += "Không được nhập khoảng trắng";
         else if(_diaChi.length()<5 || _diaChi.length()>30)
             loi += "\nĐịa chỉ bao gồm 5 đến 30 kí tự";
