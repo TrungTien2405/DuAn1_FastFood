@@ -254,7 +254,7 @@ public class NhaHangFragment extends Fragment {
         flBtnThemNH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                dialog_themNH(0);
+                dialog_themNH(0);
 
             }
         });
